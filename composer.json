@@ -1,0 +1,27 @@
+{
+    "name": "howyi/conv",
+    "description": "Migration auto generate from schema",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hayashi Takuya",
+            "email": "qrbys@outlook.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0.16",
+        "symfony/console": "^3.3",
+        "symfony/yaml": "^3.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "Conv": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.2",
+        "symfony/var-dumper": "^3.3"
+    }
+}
