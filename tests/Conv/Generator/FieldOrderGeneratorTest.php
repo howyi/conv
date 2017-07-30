@@ -4,7 +4,7 @@ namespace Conv\Generator;
 
 use Conv\Util\FieldOrder;
 
-class FieldOrderTest extends \PHPUnit\Framework\TestCase
+class FieldOrderGeneratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider generateProvider
@@ -50,8 +50,8 @@ class FieldOrderTest extends \PHPUnit\Framework\TestCase
     {
         $actual = FieldOrderGenerator::oneside($before, $after);
         $this->assertEquals($expected, $actual);
-
     }
+
     public function onesideProvider()
     {
         return [
@@ -99,22 +99,3 @@ class FieldOrderTest extends \PHPUnit\Framework\TestCase
         ];
     }
 }
-
-
-
-['A', 'B', 'C', 'D',      'E'];
-['A',      'C', 'D', 'B', 'E'];
-
-['A',           'B', 'C', 'D', 'E'];
-['A', 'C', 'D', 'B',           'E'];
-
-
-['A',      'B', 'C', 'D', 'E'];
-[     'D', 'B', 'C',      'E', 'A'];
-
-['A', 'B', 'C', 'D', 'E'];
-[     'B', 'C', 'D', 'E', 'A'];
-
-
-['A',      'B', 'C',      'D', 'E'];
-[     'E', 'B', 'C', 'A', 'D'];
