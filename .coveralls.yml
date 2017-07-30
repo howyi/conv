@@ -1,0 +1,2 @@
+coverage_clover: build/log/clover.xml
+json_path: build/log/coveralls-upload.json

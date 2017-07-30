@@ -13,7 +13,6 @@ class FieldOrderTest extends \PHPUnit\Framework\TestCase
     {
         $actual = FieldOrderGenerator::generate($before, $after);
         $this->assertEquals($expected, $actual);
-
     }
 
     public function generateProvider()
