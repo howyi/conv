@@ -1,4 +1,4 @@
-table: tbl_players
+table: tbl_player
 comment: Player management table
 column:
   player_id:
@@ -30,7 +30,7 @@ column:
     nullable: false
     comment: Player registered date
 primaryKey:
-  - id
+  - player_id
   - name
 index:
   period:
@@ -39,6 +39,4 @@ index:
       - id
       - level
 
-
-option:
-    op: 333
+country: mexico

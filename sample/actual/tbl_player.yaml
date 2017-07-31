@@ -8,13 +8,11 @@ column:
     comment: Unique player ID
   name:
     type: varchar
-    default: noname
     nullable: false
     comment: Player name
   age:
     type: int
     unsigned: false
-    default: 20
     nullable: false
     comment: Player age
   level:
@@ -22,7 +20,8 @@ column:
     unsigned: false
     nullable: false
     comment: Player character level
-  expa:
+    konnnitiha: true
+  exp:
     type: int
     unsigned: false
     nullable: false
@@ -32,7 +31,7 @@ column:
     nullable: false
     comment: Player registered date
 primaryKey:
-  - id
+  - player_id
   - name
 index:
   period:
