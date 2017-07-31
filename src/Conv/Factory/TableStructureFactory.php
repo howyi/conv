@@ -44,7 +44,7 @@ class TableStructureFactory
      * @param string $path
      * @return TableStructure
      */
-    public static function fromYaml(string $path) : TableStructure
+    public static function fromYaml(string $path): TableStructure
     {
         $yamlSpec = Yaml::parse(file_get_contents($path));
 
@@ -93,6 +93,57 @@ class TableStructureFactory
             $indexStructureList,
             $properties
         );
+        return $tableStructure;
+    }
+
+    /**
+     * @param \PDO    $pdo
+      * @param string $tableName
+     * @return TableStructure
+     */
+    public static function fromTable(\PDO $pdo, string $tableName): TableStructure
+    {
+        $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
+        $rawColumnList = $pdo->query("SHOW FULL COLUMNS FROM $tableName")->fetchAll();
+        $columnStructureList = [];
+
+        foreach ($rawColumnList as $column) {
+            $columnStructureList[] = new ColumnStructure(
+                $column['Field'],
+                str_replace(' unsigned', '', $column['Type']),
+                $column['Comment'],
+                'YES' === $column['Null'],
+                (bool) preg_match('/unsigned/', $column['Type']),
+                $column['Default'],
+                []
+            );
+        }
+
+        $rawIndexList = $pdo->query("SHOW INDEX FROM $tableName")->fetchAll();
+        $keyList = [];
+        foreach ($rawIndexList as $index) {
+            $keyList[$index['Key_name']][] = $index;
+        }
+        $indexStructureList = [];
+        foreach ($keyList as $keyName => $indexList) {
+            $indexStructureList[] = new IndexStructure(
+                $keyName,
+                array_column($indexList, 'Column_name'),
+                '0' === $indexList[0]['Non_unique']
+            );
+        }
+
+        $tableStructure = new TableStructure(
+            $tableName,
+            $rawStatus['Comment'],
+            self::ENGINE,
+            self::DEFAULT_CHARSET,
+            self::COLLATE,
+            $columnStructureList,
+            $indexStructureList,
+            []
+        );
+
         return $tableStructure;
     }
 }
