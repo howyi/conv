@@ -10,6 +10,7 @@ class ColumnStructure
     public $isUnsigned = false;
     public $isNullable = false;
     public $default;
+    private $properties;
 
     /**
      * @param string $field
@@ -18,6 +19,7 @@ class ColumnStructure
      * @param bool   $isNullable
      * @param mixed  $isUnsigned
      * @param mixed  $default
+     * @param array  $properties
      */
     public function __construct(
         string $field,
@@ -25,7 +27,8 @@ class ColumnStructure
         string $comment,
         bool $isNullable,
         $isUnsigned,
-        $default
+        $default,
+        array $properties
     ) {
         $this->field = $field;
         $this->type = $type;
@@ -33,6 +36,7 @@ class ColumnStructure
         $this->isNullable = $isNullable;
         $this->isUnsigned = $isUnsigned;
         $this->default = $default;
+        $this->properties = $properties;
     }
 
     /**
@@ -100,5 +104,13 @@ class ColumnStructure
         } else{
             return "'$this->default'";
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 }
