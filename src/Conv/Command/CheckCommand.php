@@ -29,7 +29,7 @@ class CheckCommand extends Command
         // );
         //
         // $expectStructure = TableStructureFactory::fromYaml(
-        //     'sample/expect/tbl_player.yaml'
+        //     'sample/expected/tbl_player.yaml'
         // );
         //
         // $alter = TableAlterMigrationGenerator::generate(
@@ -42,7 +42,7 @@ class CheckCommand extends Command
         // dump($alter);
 
         $actualStructure = DatabaseStructureFactory::fromDir('sample/actual');
-        $expectStructure = DatabaseStructureFactory::fromDir('sample/expect');
+        $expectStructure = DatabaseStructureFactory::fromDir('sample/expected');
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,
