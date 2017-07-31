@@ -30,7 +30,7 @@ class ColumnModifyMigrationLine extends AbstractMigrationLine
             } elseif ($upModifiedColumn->isOrderChanged()) {
                 $upModifyQueryLineList[] = $upModifiedColumn->generateModifyQuery();
             } else {
-                $upChangeQueryLineList[] = $upModifiedColumn->generateChangeQuery();
+                $upModifyQueryLineList[] = $upModifiedColumn->generateModifyQuery();
             }
 
             $downModifiedColumn = $value->getDownColumn();
@@ -42,7 +42,7 @@ class ColumnModifyMigrationLine extends AbstractMigrationLine
             } elseif ($downModifiedColumn->isOrderChanged()) {
                 $downModifyQueryLineList[] = $downModifiedColumn->generateModifyQuery();
             } else {
-                $downChangeQueryLineList[] = $downModifiedColumn->generateChangeQuery();
+                $downModifyQueryLineList[] = $downModifiedColumn->generateModifyQuery();
             }
         }
 
