@@ -52,6 +52,14 @@ class TableStructure
     }
 
     /**
+     * @return string
+     */
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    /**
      * @return array
      */
     public function getProperties(): array

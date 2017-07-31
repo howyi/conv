@@ -7,6 +7,7 @@ use Conv\Migration\Line\ColumnDropMigrationLine;
 use Conv\Migration\Line\ColumnModifyMigrationLine;
 use Conv\Migration\Line\IndexModifyMigrationLine;
 use Conv\Migration\Line\TableRenameMigrationLine;
+use Conv\Migration\Line\TableCommentMigrationLine;
 use Conv\Migration\Table\MigrationLineList;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Structure\TableStructure;
@@ -101,6 +102,11 @@ class TableAlterMigrationGenerator
                 new TableRenameMigrationLine($beforeTable->getTableName(), $afterTable->getTableName())
             );
         }
+        if ($beforeTable->getComment() !== $afterTable->getComment()) {
+            $migrationLineList->add(
+                new TableCommentMigrationLine($beforeTable->getComment(), $afterTable->getComment())
+            );
+        }
         if ($indexAllMigration->isFirstExist()) {
             $migrationLineList->add(
                 $indexAllMigration->getFirst()
@@ -139,6 +145,10 @@ class TableAlterMigrationGenerator
             }
             $operator->output(sprintf('<info>TableName</> : %s', $displayTableName));
 
+            if ($beforeTable->getComment() !== $afterTable->getComment()) {
+                $operator->output(sprintf('    <fg=cyan>Comment</> : %s -> %s', $beforeTable->getComment(), $afterTable->getComment()));
+            }
+
             foreach ($droppedModifiedColumnList as $modifiedColumn) {
                 $operator->output(sprintf('    <fg=red>dropped:   %s</>', $modifiedColumn->getField()));
             }
@@ -150,7 +160,7 @@ class TableAlterMigrationGenerator
                 } else {
                     $displayColumn = $modifiedColumn->getField();
                 }
-                $operator->output(sprintf('    <fg=green>modified:  %s</>',$displayColumn));
+                $operator->output(sprintf('    <fg=green>modified:  %s</>', $displayColumn));
             }
 
             foreach ($addedModifiedColumnList as $modifiedColumn) {
