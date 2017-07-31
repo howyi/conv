@@ -23,6 +23,7 @@ class DatabaseStructureFactory
         foreach ($iterator as $fileinfo) {
             if ($fileinfo->isFile()) {
                 switch (strtolower($fileinfo->getExtension())) {
+                    case 'yml':
                     case 'yaml':
                         $table = TableStructureFactory::fromYaml($fileinfo->getPathName());
                         $tableList[$table->getTableName()] = $table;
