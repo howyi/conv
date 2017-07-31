@@ -21,15 +21,23 @@ class TableStructureFactory
     const DEFAULT_CHARSET = 'utf8mb4';
     const COLLATE = 'utf8mb4_bin';
 
-    const YAML_REQUIRE_KEYS = [
+    const YAML_TABLE_REQUIRE_KEYS = [
         'table',
         'comment',
         'column',
-        'primaryKey'
+        'primaryKey',
     ];
 
-    const YAML_OPTIONAL_KEYS = [
-        'index'
+    const YAML_TABLE_OPTIONAL_KEYS = [
+        'index',
+    ];
+
+    const YAML_COLUMN_OPTIONAL_KEYS = [
+        'alias',
+        'type',
+        'unsigned',
+        'nullable',
+        'comment',
     ];
 
     /**
@@ -42,17 +50,19 @@ class TableStructureFactory
 
         $columnStructureList = [];
         foreach ($yamlSpec['column'] as $field => $column) {
+            $properties = array_diff_key($column, array_flip(self::YAML_COLUMN_OPTIONAL_KEYS));
             $columnStructureList[] = new ColumnStructure(
                 $field,
                 array_key_exists($column['type'], self::FIELD_ALIAS) ? self::FIELD_ALIAS[$column['type']] : $column['type'],
                 $column['comment'],
                 array_key_exists('nullable', $column) ? $column['nullable'] : false,
                 array_key_exists('unsigned', $column) ? $column['unsigned'] : false,
-                array_key_exists('default', $column) ? $column['default'] : null
+                array_key_exists('default', $column) ? $column['default'] : null,
+                $properties
             );
         }
 
-        $columnStructureList[] = new ColumnStructure('created_at', 'datetime', '作成日時', false, false, null);
+        $columnStructureList[] = new ColumnStructure('created_at', 'datetime', '作成日時', false, false, null, []);
 
         $indexStructureList[] = new IndexStructure(
             'PRIMARY',
@@ -70,7 +80,7 @@ class TableStructureFactory
             }
         }
 
-        $incluedeKeys = array_merge(self::YAML_REQUIRE_KEYS, self::YAML_OPTIONAL_KEYS);
+        $incluedeKeys = array_merge(self::YAML_TABLE_REQUIRE_KEYS, self::YAML_TABLE_OPTIONAL_KEYS);
         $properties = array_diff_key($yamlSpec, array_flip($incluedeKeys));
 
         $tableStructure = new TableStructure(
