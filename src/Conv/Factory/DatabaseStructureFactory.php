@@ -15,7 +15,7 @@ class DatabaseStructureFactory
      */
     public static function fromDir(
         string $path
-    ) {
+    ): DatabaseStructure {
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($path)
         );
@@ -32,6 +32,22 @@ class DatabaseStructureFactory
                         break;
                 }
             }
+        }
+        return new DatabaseStructure($tableList);
+    }
+
+    /**
+     * @param \PDO $pdo
+     */
+    public static function fromPDO(
+        \PDO $pdo
+    ): DatabaseStructure {
+        $rawTableList = $pdo->query("SHOW TABLES")->fetchAll();
+        $tableList = [];
+        foreach ($rawTableList as $value) {
+            $tableName = $value[0];
+            $table = TableStructureFactory::fromTable($pdo, $tableName);
+            $tableList[$tableName] = $table;
         }
         return new DatabaseStructure($tableList);
     }

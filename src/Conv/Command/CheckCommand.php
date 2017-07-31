@@ -53,6 +53,10 @@ class CheckCommand extends Command
             $operator
         );
 
-        dump($alter);
+        // $pdo = new \PDO('mysql:host=localhost;dbname=conv', 'root', '');
+        // $structure = DatabaseStructureFactory::fromPDO(
+        //     $pdo
+        // );
+        // dump($structure);
     }
 }
