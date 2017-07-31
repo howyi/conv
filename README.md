@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.org/howyi/conv.svg?branch=master)](https://travis-ci.org/howyi/conv)
 [![Coverage Status](https://coveralls.io/repos/github/howyi/conv/badge.svg?branch=master)](https://coveralls.io/github/howyi/conv?branch=master)
 # conv
-Migration auto generate from schema
+MySQL migration query auto generate from schema
 
 #### 概要
-指定したPDOのテーブルとYAMLのスキーマ差分からクエリを生成する
+指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
 
 ### YAML定義例
 ```yaml
