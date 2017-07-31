@@ -3,10 +3,10 @@
 # conv
 MySQL migration query auto generate from schema
 
-#### 概要
+### 概要
 指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
 
-### YAML定義例
+#### YAML定義例
 ```yaml
 table: tbl_user
 comment: ユーザ管理テーブル
