@@ -11,28 +11,21 @@ use Conv\Migration\Table\MigrationLineList;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Structure\TableStructure;
 use Conv\Util\FieldOrder;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Conv\Util\Operator;
 
 class TableAlterMigrationGenerator
 {
     /**
      * @param TableStructure  $beforeTable
      * @param TableStructure  $afterTable
-     * @param QuestionHelper  $helper
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param Operator        $operator
      * @return TableMigration
      */
     public static function generate(
         TableStructure $beforeTable,
         TableStructure $afterTable,
-        QuestionHelper $helper,
-        InputInterface $input,
-        OutputInterface $output
-    ) {
+        Operator $operator
+    ): TableAlterMigration {
         // DROP-INDEX → DROP → MODIFY → ADD → ADD-INDEX の順でマイグレーションを生成する
 
         // 全ての消滅したカラム配列
@@ -53,11 +46,11 @@ class TableAlterMigrationGenerator
                 continue;
             }
 
-            $question = new ChoiceQuestion(
+            $answer = $operator->choiceQuestion(
                 sprintf('Column %s.%s is missing. Choose an action.', $beforeTable->tableName, $missingField),
                 ['dropped', sprintf('renamed (%s)', implode(', ', $addedFieldList))]
             );
-            if ('dropped' === $helper->ask($input, $output, $question)) {
+            if ('dropped' === $answer) {
                 $droppedFieldList[] = $missingField;
                 continue;
             }
@@ -65,11 +58,10 @@ class TableAlterMigrationGenerator
             if (1 === count($addedFieldList)) {
                 $renamedField = current($addedFieldList);
             } else {
-                $question = new ChoiceQuestion(
+                $renamedField = $operator->choiceQuestion(
                     'Select a renamed column.',
                     $addedFieldList
                 );
-                $renamedField = $helper->ask($input, $output, $question);
             }
             $renamedFieldList[$missingField] = $renamedField;
             $addedFieldList = array_diff($addedFieldList, [$renamedField]);
@@ -145,10 +137,10 @@ class TableAlterMigrationGenerator
             } else {
                 $displayTableName = $afterTable->getTableName();
             }
-            $output->writeln(sprintf('<info>TableName</> : %s', $displayTableName));
+            $operator->output(sprintf('<info>TableName</> : %s', $displayTableName));
 
             foreach ($droppedModifiedColumnList as $modifiedColumn) {
-                $output->writeln(sprintf('    <fg=red>dropped:   %s</>', $modifiedColumn->getField()));
+                $operator->output(sprintf('    <fg=red>dropped:   %s</>', $modifiedColumn->getField()));
             }
 
             foreach ($modifiedColumnSetList as $modifiedColumnSet) {
@@ -158,11 +150,11 @@ class TableAlterMigrationGenerator
                 } else {
                     $displayColumn = $modifiedColumn->getField();
                 }
-                $output->writeln(sprintf('    <fg=green>modified:  %s</>',$displayColumn));
+                $operator->output(sprintf('    <fg=green>modified:  %s</>',$displayColumn));
             }
 
             foreach ($addedModifiedColumnList as $modifiedColumn) {
-                $output->writeln(sprintf('    <fg=cyan>added:     %s</>', $modifiedColumn->getField()));
+                $operator->output(sprintf('    <fg=cyan>added:     %s</>', $modifiedColumn->getField()));
             }
         }
 
