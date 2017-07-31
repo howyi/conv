@@ -8,7 +8,7 @@ class DatabaseStructureFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFromYaml()
     {
-        $actual = DatabaseStructureFactory::fromDir('tests/schema/');
+        $actual = DatabaseStructureFactory::fromDir('test/schema/');
         // TODO
         $this->assertInstanceOf(DatabaseStructure::class, $actual);
     }
