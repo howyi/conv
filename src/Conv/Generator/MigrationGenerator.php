@@ -7,28 +7,21 @@ use Conv\Migration\Table\TableCreateMigration;
 use Conv\Migration\Database\Migration;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Structure\DatabaseStructure;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Conv\Util\Operator;
 
 class MigrationGenerator
 {
     /**
      * @param DatabaseStructure  $beforeDatabase
      * @param DatabaseStructure  $afterDatabase
-     * @param QuestionHelper  $helper
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @return TableMigration
+     * @param Operator           $operator
+     * @return Migration
      */
     public static function generate(
         DatabaseStructure $beforeDatabase,
         DatabaseStructure $afterDatabase,
-        QuestionHelper $helper,
-        InputInterface $input,
-        OutputInterface $output
-    ) {
+        Operator $operator
+    ): Migration {
         // DROP → MODIFY → ADD の順でマイグレーションを生成する
 
         // 全ての消滅したテーブル配列
@@ -49,11 +42,11 @@ class MigrationGenerator
                 continue;
             }
 
-            $question = new ChoiceQuestion(
+            $answer = $operator->choiceQuestion(
                 sprintf('Table %s is missing. Choose an action.', $missingTableName),
                 ['dropped', sprintf('renamed (%s)', implode(', ', $addedTableNameList))]
             );
-            if ('dropped' === $helper->ask($input, $output, $question)) {
+            if ('dropped' === $answer) {
                 $droppedTableNameList[] = $missingTableName;
                 continue;
             }
@@ -61,11 +54,10 @@ class MigrationGenerator
             if (1 === count($addedTableNameList)) {
                 $renamedTableName = current($addedTableNameList);
             } else {
-                $question = new ChoiceQuestion(
+                $renamedTableName = $operator->choiceQuestion(
                     'Select a renamed column.',
                     $addedTableNameList
                 );
-                $renamedTableName = $helper->ask($input, $output, $question);
             }
             $renamedTableNameList[$missingTableName] = $renamedTableName;
             $addedTableNameList = array_diff($addedTableNameList, [$renamedTableName]);
@@ -86,9 +78,7 @@ class MigrationGenerator
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
                 $beforeTable,
                 $afterDatabase->getTableList()[$tableName],
-                $helper,
-                $input,
-                $output
+                $operator
             );
             if (!$tableAlterMigration->isAltered()) {
                 continue;
@@ -100,9 +90,7 @@ class MigrationGenerator
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
                 $beforeDatabase->getTableList()[$beforeTableName],
                 $afterDatabase->getTableList()[$afterTableName],
-                $helper,
-                $input,
-                $output
+                $operator
             );
             $migration->add($tableAlterMigration);
         }

@@ -2,16 +2,14 @@
 
 namespace Conv\Command;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Conv\Factory\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
-use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Generator\MigrationGenerator;
+use Conv\Generator\TableAlterMigrationGenerator;
+use Conv\Util\Operator;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckCommand extends Command
 {
@@ -41,14 +39,18 @@ class CheckCommand extends Command
         // );
         // dump($alter);
 
+        $operator = new Operator(
+            $this->getHelper('question'),
+            $input,
+            $output
+        );
+
         $actualStructure = DatabaseStructureFactory::fromDir('sample/actual');
         $expectStructure = DatabaseStructureFactory::fromDir('sample/expected');
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,
-            $this->getHelper('question'),
-            $input,
-            $output
+            $operator
         );
 
         dump($alter);
