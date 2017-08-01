@@ -179,4 +179,31 @@ class TableStructure
         }
         return $modifiedColumnList;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $array = [
+            'table' => $this->getTableName(),
+            'comment' => $this->getComment(),
+            'column' => [],
+        ];
+        foreach ($this->columnStructureList as $column) {
+            $array['column'][$column->getField()] = $column->toArray();
+        }
+        $indexList = [];
+        foreach ($this->getIndexList() as $index) {
+            if($index->isPrimary) {
+                $array['primaryKey'] = $index->columnNameList;
+            } else {
+                $indexList[$index->keyName] = $index->toArray();
+            }
+        }
+        if (!empty($indexList)) {
+            $array['index'] = $indexList;
+        }
+        return $array;
+    }
 }
