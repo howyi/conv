@@ -2,22 +2,26 @@
 
 namespace Conv\Generator;
 
-use Conv\Structure\TableStructure;
 use Conv\Migration\Line\IndexAddMigrationLine;
 use Conv\Migration\Line\IndexDropMigrationLine;
 use Conv\Migration\Line\IndexAllMigrationLine;
 
 class IndexMigrationGenerator
 {
+    /**
+     * @param array  $beforeIndexList
+     * @param array  $afterIndexList
+     * @return IndexAllMigrationLine
+     */
     public static function generate(
-        TableStructure $beforeTable,
-        TableStructure $afterTable
+        array $beforeIndexList,
+        array $afterIndexList
     ): IndexAllMigrationLine {
         $firstDownIndexList = [];
         $lastUpIndexList = [];
-        foreach ($afterTable->getIndexList() as $keyName => $afterIndex) {
-            if (array_key_exists($keyName, $beforeTable->getIndexList())) {
-                $beforeIndex = $beforeTable->getIndexList()[$keyName];
+        foreach ($afterIndexList as $keyName => $afterIndex) {
+            if (array_key_exists($keyName, $beforeIndexList)) {
+                $beforeIndex = $beforeIndexList[$keyName];
                 if ($afterIndex->isChanged($beforeIndex)) {
                     $firstDownIndexList[] = $beforeIndex;
                     $lastUpIndexList[] = $afterIndex;
