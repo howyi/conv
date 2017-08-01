@@ -1,0 +1,17 @@
+comment: 'Music management table'
+column:
+  music_id:
+    type: int(10)
+    unsigned: true
+    nullable: false
+    comment: 'Unique music ID'
+  name:
+    type: varchar(255)
+    nullable: false
+    comment: 'Music name'
+  released_at:
+    type: datetime
+    nullable: false
+    comment: 'Music released date'
+primaryKey:
+  - music_id
