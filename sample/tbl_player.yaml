@@ -1,0 +1,19 @@
+table: tbl_music
+comment: Music management table
+column:
+  music_id:
+    type: int
+    unsigned: true
+    nullable: false
+    comment: Unique music ID
+  name:
+    type: varchar
+    nullable: false
+    comment: Music name
+  released_at:
+    type: datetime
+    unsigned: false
+    nullable: false
+    comment: Music released date
+primaryKey:
+  - music_id
