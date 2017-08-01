@@ -17,6 +17,8 @@ class SetupCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $operator = $this->getOperator($input, $output);
+
         $pdo = $this->getPDO();
         $pdo->exec('CREATE DATABASE conv');
 
