@@ -15,4 +15,12 @@ class Migration
     {
         return $this->migrationList[] = $migration;
     }
+
+    /**
+     * @return TableMigrationInterface[]
+     */
+    public function getMigrationList(): array
+    {
+        return $this->migrationList;
+    }
 }
