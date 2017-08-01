@@ -97,4 +97,15 @@ class IndexStructure
         }
         return true;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'isUnique' => $this->isUnique,
+            'column' => $this->columnNameList
+        ];
+    }
 }

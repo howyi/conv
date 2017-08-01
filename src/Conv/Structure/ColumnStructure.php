@@ -42,6 +42,14 @@ class ColumnStructure
     /**
      * @return string
      */
+    public function getField(): string
+    {
+        return $this->field;
+    }
+
+    /**
+     * @return string
+     */
     public function generateCreateQuery(): string
     {
         $query = ["`$this->field`"];
@@ -112,5 +120,20 @@ class ColumnStructure
     public function getProperties(): array
     {
         return $this->properties;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $array = [];
+        $array['type'] = $this->type;
+        if ($this->isUnsigned) {
+            $array['unsigned'] = true;
+        }
+        $array['nullable'] = $this->isNullable;
+        $array['comment'] = $this->comment;
+        return $array;
     }
 }
