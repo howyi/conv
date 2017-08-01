@@ -1,21 +1,18 @@
 table: tbl_user
-comment: User management table
+comment: 'User management table'
 column:
   user_id:
     type: int(11)
-    unsigned: false
     nullable: false
-    comment: User ID
+    comment: 'User ID'
   name:
     type: int(11)
-    unsigned: false
     nullable: true
-    comment: User name
+    comment: 'User name'
   age:
     type: int(11)
-    unsigned: false
     nullable: true
-    comment: User age
+    comment: 'User age'
 primaryKey:
   - user_id
 index:
