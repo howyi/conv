@@ -8,7 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SetupCommand extends Command
+class SetupCommand extends AbstractCommand
 {
     protected function configure()
     {
@@ -20,10 +20,12 @@ class SetupCommand extends Command
         $pdo = $this->getPDO();
         $pdo->exec('CREATE DATABASE conv');
 
-        $databaseStructure = DatabaseStructureFactory::fromDir('sample');
+        $databaseStructure = DatabaseStructureFactory::fromDir('schema');
         $pdo = $this->getPDO('conv');
         foreach ($databaseStructure->getTableList() as $table) {
             $migration = new TableCreateMigration($table);
+            $operator->output('<fg=green>実行クエリ</>');
+            $operator->output($migration->getUp());
             $pdo->exec($migration->getUp());
         }
         $output->writeln('<fg=cyan>setup success</>');

@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Conv\Util\SchemaReflector;
 
-class ReflectCommand extends Command
+class ReflectCommand extends AbstractCommand
 {
     protected function configure()
     {
