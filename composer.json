@@ -23,6 +23,7 @@
     "require-dev": {
         "phpunit/phpunit": "^6.2",
         "symfony/var-dumper": "^3.3",
-        "satooshi/php-coveralls": "^1.0"
+        "satooshi/php-coveralls": "^1.0",
+        "phpspec/prophecy": "^1.7"
     }
 }
