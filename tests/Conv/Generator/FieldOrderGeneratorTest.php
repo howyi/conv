@@ -39,6 +39,11 @@ class FieldOrderGeneratorTest extends \PHPUnit\Framework\TestCase
                     'A' => new FieldOrder('A', null, 'E'),
                     'D' => new FieldOrder('D', 'C', null),
                 ],
+            ],
+            [
+                ['A', 'B', 'C', 'D', 'E'],
+                ['A', 'B', 'C', 'D', 'E'],
+                [],
             ]
         ];
     }
