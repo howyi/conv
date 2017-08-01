@@ -1,41 +1,21 @@
-table: tbl_player
-comment: Player management table
+comment: 'User management table'
 column:
-  player_id:
-    type: int
-    unsigned: true
+  user_id:
+    type: int(11)
     nullable: false
-    comment: Unique player ID
+    comment: 'User ID'
   name:
-    type: varchar
-    nullable: false
-    comment: Player name
+    type: int(11)
+    nullable: true
+    comment: 'User name'
   age:
-    type: int
-    unsigned: false
-    nullable: false
-    comment: Player age
-  level:
-    type: int
-    unsigned: false
-    nullable: false
-    comment: Player character level
-    konnnitiha: true
-  exp:
-    type: int
-    unsigned: false
-    nullable: false
-    comment: Player character exp
-  registered_at:
-    type: datetime
-    nullable: false
-    comment: Player registered date
+    type: int(11)
+    nullable: true
+    comment: 'User age'
 primaryKey:
-  - player_id
-  - name
+  - user_id
 index:
-  period:
+  name:
     isUnique: true
     column:
-      - id
-      - level
+      - name

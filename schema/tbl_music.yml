@@ -1,4 +1,3 @@
-table: tbl_music
 comment: 'Music management table'
 column:
   music_id:
@@ -9,7 +8,7 @@ column:
   name:
     type: varchar(255)
     nullable: false
-    comment: Musicnamea
+    comment: 'Music name'
   released_at:
     type: datetime
     nullable: false

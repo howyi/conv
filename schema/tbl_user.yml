@@ -1,4 +1,3 @@
-table: tbl_user
 comment: 'User management table'
 column:
   user_id:
