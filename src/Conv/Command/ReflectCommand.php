@@ -9,6 +9,7 @@ use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Util\Operator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Conv\Structure\TableStructure;
 use Symfony\Component\Console\Output\OutputInterface;
 use Conv\Util\SchemaReflector;
 
@@ -23,6 +24,12 @@ class ReflectCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // $structure = DatabaseStructureFactory::fromPDO(
+        //     $this->getPDO('conv'),
+        //     function(TableStructure $table) {
+        //         return (bool) preg_match('/user/', $table->getTableName());
+        //     }
+        // );
         $structure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
         SchemaReflector::fromDatabaseStructure('schema', $structure);
     }
