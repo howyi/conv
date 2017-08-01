@@ -22,27 +22,38 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                [new IndexStructure('id', ['id'], false)],
-                [new IndexStructure('id', ['id'], false)],
+                ['id' => new IndexStructure('id', ['id'], false)],
+                ['id' => new IndexStructure('id', ['id'], false)],
                 new IndexAllMigrationLine(),
             ],
             [
-                $a = [new IndexStructure('id', ['id'], false)],
-                $b = [new IndexStructure('id', ['id'], true)],
+                $before = ['id' => new IndexStructure('id', ['id'], false)],
+                $after = ['id' => new IndexStructure('id', ['id'], true)],
                 new IndexAllMigrationLine(
-                    new IndexDropMigrationLine($a),
-                    new IndexAddMigrationLine($b)
+                    new IndexDropMigrationLine($before),
+                    new IndexAddMigrationLine($after)
                 ),
             ],
             [
-                $a = [],
-                $b = [
-                    new IndexStructure('id', ['id'], true),
-                    new IndexStructure('age', ['age'], false)
+                [],
+                $after = [
+                    'id'  => new IndexStructure('id', ['id'], true),
+                    'age' => new IndexStructure('age', ['age'], false)
                 ],
                 new IndexAllMigrationLine(
                     null,
-                    new IndexAddMigrationLine($b)
+                    new IndexAddMigrationLine($after)
+                ),
+            ],
+            [
+                $before = [
+                    'id'  => new IndexStructure('id', ['id'], true),
+                    'age' => new IndexStructure('age', ['age'], false)
+                ],
+                [],
+                new IndexAllMigrationLine(
+                    new IndexDropMigrationLine($before),
+                    null
                 ),
             ]
         ];

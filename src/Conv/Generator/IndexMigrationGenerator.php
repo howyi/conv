@@ -17,7 +17,7 @@ class IndexMigrationGenerator
         array $beforeIndexList,
         array $afterIndexList
     ): IndexAllMigrationLine {
-        $firstDownIndexList = [];
+        $firstDownIndexList = array_diff_key($beforeIndexList, $afterIndexList);
         $lastUpIndexList = [];
         foreach ($afterIndexList as $keyName => $afterIndex) {
             if (array_key_exists($keyName, $beforeIndexList)) {
