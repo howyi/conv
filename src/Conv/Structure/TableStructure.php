@@ -186,7 +186,6 @@ class TableStructure
     public function toArray(): array
     {
         $array = [
-            'table' => $this->getTableName(),
             'comment' => $this->getComment(),
             'column' => [],
         ];

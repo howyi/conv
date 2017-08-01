@@ -46,6 +46,7 @@ class TableStructureFactory
      */
     public static function fromYaml(string $path): TableStructure
     {
+        $tableName = pathinfo($path, PATHINFO_FILENAME);
         $yamlSpec = Yaml::parse(file_get_contents($path));
 
         $columnStructureList = [];
@@ -83,7 +84,7 @@ class TableStructureFactory
         $properties = array_diff_key($yamlSpec, array_flip($incluedeKeys));
 
         $tableStructure = new TableStructure(
-            $yamlSpec['table'],
+            $tableName,
             $yamlSpec['comment'],
             self::ENGINE,
             self::DEFAULT_CHARSET,
