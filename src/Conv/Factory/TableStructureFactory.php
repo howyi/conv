@@ -62,8 +62,6 @@ class TableStructureFactory
             );
         }
 
-        $columnStructureList[] = new ColumnStructure('created_at', 'datetime', '作成日時', false, false, null, []);
-
         $indexStructureList[] = new IndexStructure(
             'PRIMARY',
             $yamlSpec['primaryKey'],
