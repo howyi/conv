@@ -20,11 +20,7 @@ class CheckAlterCommand extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $operator = new Operator(
-            $this->getHelper('question'),
-            $input,
-            $output
-        );
+        $operator = $this->getOperator($input, $output);
 
         $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
         $expectStructure = DatabaseStructureFactory::fromDir('schema');

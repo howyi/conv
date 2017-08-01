@@ -3,6 +3,9 @@
 namespace Conv\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Conv\Util\Operator;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractCommand extends Command
 {
@@ -15,5 +18,14 @@ abstract class AbstractCommand extends Command
         }
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         return $pdo;
+    }
+
+    public function getOperator(InputInterface $input, OutputInterface $output): Operator
+    {
+        return new Operator(
+            $this->getHelper('question'),
+            $input,
+            $output
+        );
     }
 }
