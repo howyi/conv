@@ -46,5 +46,4 @@ class FieldOrder
     {
         return $this->nextAfterField;
     }
-
 }
