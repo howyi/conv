@@ -7,8 +7,19 @@ namespace Conv\Migration\Line;
  */
 class IndexAllMigrationLine
 {
-    private $first = null;
-    private $last  = null;
+    private $first;
+    private $last;
+
+    /**
+     * @param bool
+     */
+    public function __construct(
+        IndexDropMigrationLine $first = null,
+        IndexAddMigrationLine $last = null
+    ) {
+        $this->first = $first;
+        $this->last = $last;
+    }
 
     /**
      * @return bool

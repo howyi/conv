@@ -9,8 +9,8 @@ use Conv\Migration\Line\IndexAllMigrationLine;
 class IndexMigrationGenerator
 {
     /**
-     * @param array  $beforeIndexList
-     * @param array  $afterIndexList
+     * @param IndexStructure[] $beforeIndexList
+     * @param IndexStructure[] $afterIndexList
      * @return IndexAllMigrationLine
      */
     public static function generate(
