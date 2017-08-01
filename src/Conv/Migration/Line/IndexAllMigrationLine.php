@@ -19,9 +19,9 @@ class IndexAllMigrationLine
     }
 
     /**
-     * @param IndexDropMigration
+     * @param IndexDropMigrationLine
      */
-    public function setFirst(IndexDropMigration $first)
+    public function setFirst(IndexDropMigrationLine $first)
     {
         return $this->first = $first;
     }
@@ -29,7 +29,7 @@ class IndexAllMigrationLine
     /**
      * @return bool
      */
-    public function getFirst(): IndexDropMigration
+    public function getFirst(): IndexDropMigrationLine
     {
         return $this->first;
     }
@@ -43,9 +43,9 @@ class IndexAllMigrationLine
     }
 
     /**
-     * @param IndexAddMigration
+     * @param IndexAddMigrationLine
      */
-    public function setLast(IndexAddMigration $last)
+    public function setLast(IndexAddMigrationLine $last)
     {
         return $this->last = $last;
     }
@@ -53,7 +53,7 @@ class IndexAllMigrationLine
     /**
      * @return bool
      */
-    public function getLast(): IndexAddMigration
+    public function getLast(): IndexAddMigrationLine
     {
         return $this->last;
     }
