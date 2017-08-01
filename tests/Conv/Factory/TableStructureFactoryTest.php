@@ -8,7 +8,7 @@ class TableStructureFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFromYaml()
     {
-        $actual = TableStructureFactory::fromYaml('test/schema/tbl_player.yaml');
+        $actual = TableStructureFactory::fromYaml('tests/schema/tbl_user.yaml');
         // TODO
         $this->assertInstanceOf(TableStructure::class, $actual);
     }
