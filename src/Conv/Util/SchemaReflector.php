@@ -21,7 +21,16 @@ class SchemaReflector
         string $path,
         DatabaseStructure $database
     ) {
-        if(!file_exists($path)){
+        if(file_exists($path)) {
+            $iterator = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path)
+            );
+            foreach ($iterator as $fileinfo) {
+                if ($fileinfo->isFile()) {
+                    unlink($fileinfo->getPathName());
+                }
+            }
+        } else {
             mkdir($path, 0777, true);
         }
         foreach ($database->getTableList() as $tableName => $tableStructure) {
