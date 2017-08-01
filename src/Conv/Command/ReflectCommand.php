@@ -23,9 +23,7 @@ class ReflectCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pdo = new \PDO('mysql:host=localhost;dbname=conv;charset=utf8;', 'root', '');
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $structure = DatabaseStructureFactory::fromPDO($pdo);
+        $structure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
         SchemaReflector::fromDatabaseStructure('schema', $structure);
     }
 }
