@@ -2,17 +2,16 @@ table: tbl_music
 comment: Music management table
 column:
   music_id:
-    type: int
+    type: int(10)
     unsigned: true
     nullable: false
     comment: Unique music ID
   name:
-    type: varchar
+    type: varchar(255)
     nullable: false
     comment: Music name
   released_at:
     type: datetime
-    unsigned: false
     nullable: false
     comment: Music released date
 primaryKey:
