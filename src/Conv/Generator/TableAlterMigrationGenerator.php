@@ -96,7 +96,10 @@ class TableAlterMigrationGenerator
 
         // Generate Migrations
 
-        $indexAllMigration = IndexMigrationGenerator::generate($beforeTable, $afterTable);
+        $indexAllMigration = IndexMigrationGenerator::generate(
+            $beforeTable->getIndexList(),
+            $afterTable->getIndexList()
+        );
 
         $migrationLineList = new MigrationLineList();
         if ($beforeTable->getTableName() !== $afterTable->getTableName()) {
