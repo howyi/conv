@@ -11,6 +11,8 @@ use Conv\Migration\Line\TableCommentMigrationLine;
 use Conv\Migration\Table\MigrationLineList;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Structure\TableStructure;
+use Conv\Structure\ModifiedColumnStructure;
+use Conv\Structure\ModifiedColumnStructureSet;
 use Conv\Util\FieldOrder;
 use Conv\Util\Operator;
 
