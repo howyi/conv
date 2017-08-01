@@ -20,7 +20,7 @@ class CheckCommand extends Command
             ->setDescription('check');
     }
 
-    protected function execute(Inputinterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         // $actualStructure = TableStructureFactory::fromYaml(
         //     'sample/actual/tbl_player.yaml'

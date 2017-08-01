@@ -21,7 +21,7 @@ class ReflectCommand extends Command
             ->setDescription('reflect');
     }
 
-    protected function execute(Inputinterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pdo = new \PDO('mysql:host=localhost;dbname=conv', 'root', '');
         $structure = DatabaseStructureFactory::fromPDO(
