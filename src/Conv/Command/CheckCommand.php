@@ -45,8 +45,10 @@ class CheckCommand extends Command
             $output
         );
 
-        $actualStructure = DatabaseStructureFactory::fromDir('sample/actual');
-        $expectStructure = DatabaseStructureFactory::fromDir('sample/expected');
+        $pdo = new \PDO('mysql:host=localhost;dbname=conv;charset=utf8;', 'root', '');
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $actualStructure = DatabaseStructureFactory::fromPDO($pdo);
+        $expectStructure = DatabaseStructureFactory::fromDir('sample');
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,

@@ -18,14 +18,16 @@ class SetupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pdo = new \PDO('mysql:host=localhost;charset=utf8;', 'root', '');
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $pdo->exec('CREATE DATABASE conv');
 
         $databaseStructure = DatabaseStructureFactory::fromDir('sample');
+        $pdo = new \PDO('mysql:host=localhost;dbname=conv;charset=utf8;', 'root', '');
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         foreach ($databaseStructure->getTableList() as $table) {
-            $pdo = new \PDO('mysql:host=localhost;dbname=conv;charset=utf8;', 'root', '');
             $migration = new TableCreateMigration($table);
-            dump($migration->getUp());
             $pdo->exec($migration->getUp());
         }
+        $output->writeln('<fg=cyan>setup success</>');
     }
 }
