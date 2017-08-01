@@ -6,11 +6,13 @@ require dirname(__FILE__).'/vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
 use Conv\Command\CheckCommand;
+use Conv\Command\CheckAlterCommand;
 use Conv\Command\ReflectCommand;
 use Conv\Command\SetupCommand;
 
 $app = new Application();
 $app->add(new CheckCommand());
+$app->add(new CheckAlterCommand());
 $app->add(new ReflectCommand());
 $app->add(new SetupCommand());
 $app->run();
