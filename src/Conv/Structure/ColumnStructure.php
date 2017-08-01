@@ -10,6 +10,7 @@ class ColumnStructure
     public $isUnsigned = false;
     public $isNullable = false;
     public $default;
+    public $autoIncrement;
     private $properties;
 
     /**
@@ -19,6 +20,7 @@ class ColumnStructure
      * @param bool   $isNullable
      * @param mixed  $isUnsigned
      * @param mixed  $default
+     * @param bool   $autoIncrement
      * @param array  $properties
      */
     public function __construct(
@@ -28,6 +30,7 @@ class ColumnStructure
         bool $isNullable,
         $isUnsigned,
         $default,
+        bool $autoIncrement,
         array $properties
     ) {
         $this->field = $field;
@@ -36,6 +39,7 @@ class ColumnStructure
         $this->isNullable = $isNullable;
         $this->isUnsigned = $isUnsigned;
         $this->default = $default;
+        $this->autoIncrement = $autoIncrement;
         $this->properties = $properties;
     }
 
@@ -72,6 +76,8 @@ class ColumnStructure
         if (!is_null($this->default)) {
             $query[] = 'DEFAULT';
             $query[] = $this->getDefault();
+        } elseif ($this->autoIncrement) {
+            $query[] = 'AUTO_INCREMENT';
         }
         $query[] = 'COMMENT';
         $query[] = "'$this->comment'";
@@ -96,7 +102,8 @@ class ColumnStructure
             $this->comment === $target->comment and
             $this->isNullable === $target->isNullable and
             $this->isUnsigned === $target->isUnsigned and
-            $this->default === $target->default) {
+            $this->default === $target->default and
+            $this->autoIncrement === $target->autoIncrement) {
             return false;
         }
         return true;

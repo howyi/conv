@@ -58,6 +58,7 @@ class TableStructureFactory
                 array_key_exists('nullable', $column) ? $column['nullable'] : false,
                 array_key_exists('unsigned', $column) ? $column['unsigned'] : false,
                 array_key_exists('default', $column) ? $column['default'] : null,
+                array_key_exists('autoIncrement', $column) ? $column['autoIncrement'] : false,
                 $properties
             );
         }
@@ -106,6 +107,7 @@ class TableStructureFactory
         $columnStructureList = [];
 
         foreach ($rawColumnList as $column) {
+            $autoIncrement = (bool) preg_match('/auto_increment/', $column['Extra']);
             $columnStructureList[] = new ColumnStructure(
                 $column['Field'],
                 str_replace(' unsigned', '', $column['Type']),
@@ -113,6 +115,7 @@ class TableStructureFactory
                 'YES' === $column['Null'],
                 (bool) preg_match('/unsigned/', $column['Type']),
                 $column['Default'],
+                $autoIncrement,
                 []
             );
         }
