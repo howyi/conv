@@ -1,6 +1,6 @@
 {
     "name": "howyi/conv",
-    "description": "Migration auto generate from schema",
+    "description": "MySQL migration query auto generate from schema",
     "type": "library",
     "license": "MIT",
     "authors": [
