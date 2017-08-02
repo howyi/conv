@@ -21,7 +21,7 @@ class SchemaReflector
         string $path,
         DatabaseStructure $database
     ) {
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             $iterator = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($path)
             );
@@ -53,7 +53,7 @@ class SchemaReflector
                 $path,
                 $table->getTableName()
             ),
-            Yaml::dump($table->toArray(), 10, 2)
+            Yaml::dump($table->toArray(), 3, 2)
         );
     }
 }
