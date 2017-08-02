@@ -64,11 +64,14 @@ class TableStructureFactory
             );
         }
 
-        $indexStructureList[] = new IndexStructure(
-            'PRIMARY',
-            $yamlSpec['primaryKey'],
-            true
-        );
+        $indexStructureList = [];
+        if (true === array_key_exists('primaryKey', $yamlSpec)) {
+            $indexStructureList[] = new IndexStructure(
+                'PRIMARY',
+                $yamlSpec['primaryKey'],
+                true
+            );
+        }
 
         if (true === array_key_exists('index', $yamlSpec)) {
             foreach ($yamlSpec['index'] as $keyName => $value) {
