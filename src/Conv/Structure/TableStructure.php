@@ -2,6 +2,8 @@
 
 namespace Conv\Structure;
 
+use Conv\Util\SchemaKey;
+
 class TableStructure
 {
     public  $tableName;
@@ -186,22 +188,22 @@ class TableStructure
     public function toArray(): array
     {
         $array = [
-            'comment' => $this->getComment(),
-            'column' => [],
+            SchemaKey::TABLE_COMMENT => $this->getComment(),
+            SchemaKey::TABLE_COLUMN  => [],
         ];
         foreach ($this->columnStructureList as $column) {
-            $array['column'][$column->getField()] = $column->toArray();
+            $array[SchemaKey::TABLE_COLUMN][$column->getField()] = $column->toArray();
         }
         $indexList = [];
         foreach ($this->getIndexList() as $index) {
-            if($index->isPrimary) {
-                $array['primaryKey'] = $index->columnNameList;
+            if ($index->isPrimary) {
+                $array[SchemaKey::TABLE_PRIMARY_KEY] = $index->columnNameList;
             } else {
                 $indexList[$index->keyName] = $index->toArray();
             }
         }
         if (!empty($indexList)) {
-            $array['index'] = $indexList;
+            $array[SchemaKey::TABLE_INDEX] = $indexList;
         }
         return $array;
     }

@@ -22,13 +22,13 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                ['id' => new IndexStructure('id', ['id'], false)],
-                ['id' => new IndexStructure('id', ['id'], false)],
+                ['id' => new IndexStructure('id', false, ['id'])],
+                ['id' => new IndexStructure('id', false, ['id'])],
                 new IndexAllMigrationLine(),
             ],
             [
-                $before = ['id' => new IndexStructure('id', ['id'], false)],
-                $after = ['id' => new IndexStructure('id', ['id'], true)],
+                $before = ['id' => new IndexStructure('id', false, ['id'])],
+                $after = ['id' => new IndexStructure('id', true, ['id'])],
                 new IndexAllMigrationLine(
                     new IndexDropMigrationLine($before),
                     new IndexAddMigrationLine($after)
@@ -37,8 +37,8 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             [
                 [],
                 $after = [
-                    'id'  => new IndexStructure('id', ['id'], true),
-                    'age' => new IndexStructure('age', ['age'], false)
+                    'id'  => new IndexStructure('id', true, ['id']),
+                    'age' => new IndexStructure('age', false, ['age'])
                 ],
                 new IndexAllMigrationLine(
                     null,
@@ -47,8 +47,8 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $before = [
-                    'id'  => new IndexStructure('id', ['id'], true),
-                    'age' => new IndexStructure('age', ['age'], false)
+                    'id'  => new IndexStructure('id', true, ['id']),
+                    'age' => new IndexStructure('age', false, ['age'])
                 ],
                 [],
                 new IndexAllMigrationLine(

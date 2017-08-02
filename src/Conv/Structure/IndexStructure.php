@@ -2,26 +2,28 @@
 
 namespace Conv\Structure;
 
+use Conv\Util\SchemaKey;
+
 class IndexStructure
 {
     public $keyName;
-    public $columnNameList;
     public $isUnique;
+    public $columnNameList;
     public $isPrimary;
 
     /**
      * @param string   $keyName
-     * @param string[] $columnNameList
      * @param bool     $isUnique
+     * @param string[] $columnNameList
      */
     public function __construct(
         string $keyName,
-        array $columnNameList,
-        bool $isUnique
+        bool $isUnique,
+        array $columnNameList
     ) {
         $this->keyName = $keyName;
-        $this->columnNameList = $columnNameList;
         $this->isUnique = $isUnique;
+        $this->columnNameList = $columnNameList;
         $this->isPrimary = 'PRIMARY' === $this->keyName;
     }
 
@@ -104,8 +106,8 @@ class IndexStructure
     public function toArray(): array
     {
         return [
-            'isUnique' => $this->isUnique,
-            'column' => $this->columnNameList
+            SchemaKey::INDEX_TYPE => $this->isUnique,
+            SchemaKey::INDEX_COLUMN => $this->columnNameList
         ];
     }
 }

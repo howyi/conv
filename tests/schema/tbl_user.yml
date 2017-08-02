@@ -2,20 +2,18 @@ comment: 'User management table'
 column:
   user_id:
     type: int(11)
-    nullable: false
     comment: 'User ID'
   name:
     type: int(11)
-    nullable: true
     comment: 'User name'
+    attribute: [nullable]
   age:
     type: int(11)
-    nullable: true
     comment: 'User age'
-primaryKey:
+    attribute: [nullable]
+primary_key:
   - user_id
 index:
   name:
-    isUnique: true
-    column:
-      - name
+    is_unique: true
+    column: [name]
