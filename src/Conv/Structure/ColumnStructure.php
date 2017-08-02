@@ -139,6 +139,12 @@ class ColumnStructure
         if ($this->isUnsigned) {
             $array['unsigned'] = true;
         }
+        if (!is_null($this->default)) {
+            $array['default'] = $this->default;
+        }
+        if ($this->autoIncrement) {
+            $array['autoIncrement'] = true;
+        }
         $array['nullable'] = $this->isNullable;
         $array['comment'] = $this->comment;
         return $array;
