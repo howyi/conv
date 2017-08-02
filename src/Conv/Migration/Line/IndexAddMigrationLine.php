@@ -2,13 +2,15 @@
 
 namespace Conv\Migration\Line;
 
+use Conv\Structure\IndexStructure;
+
 /**
  * ALTER TABLE ~ KEY ~
  */
 class IndexAddMigrationLine extends AbstractMigrationLine
 {
     /**
-     * @param array[] $indexList
+     * @param IndexStructure[] $indexList
      */
     public function __construct(
         array $indexList

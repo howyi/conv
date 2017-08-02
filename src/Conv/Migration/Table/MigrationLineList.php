@@ -13,7 +13,7 @@ class MigrationLineList
      */
     public function add(MigrationLineInterface $migrationLine)
     {
-        return $this->migrationList[] = $migrationLine;
+        return $this->migrationLineList[] = $migrationLine;
     }
 
 
@@ -22,7 +22,7 @@ class MigrationLineList
      */
     public function isMigratable(): bool
     {
-        return !empty($this->migrationList);
+        return !empty($this->migrationLineList);
     }
 
     /**
@@ -31,7 +31,7 @@ class MigrationLineList
     public function getUp(): string
     {
         $upLineList = [];
-        foreach ($this->migrationList as $migrationLine) {
+        foreach ($this->migrationLineList as $migrationLine) {
             $upLineList = array_merge($upLineList, $migrationLine->getUp());
         }
         return '  '.join(',' . PHP_EOL . '  ', $upLineList);
@@ -43,9 +43,9 @@ class MigrationLineList
     public function getDown(): string
     {
         $downLineList = [];
-        foreach (array_reverse($this->migrationList) as $migrationLine) {
+        foreach (array_reverse($this->migrationLineList) as $migrationLine) {
             $downLineList = array_merge($downLineList, $migrationLine->getDown());
         }
-        return '  '.join(',' . PHP_EOL . '  ', $downLineList);;
+        return '  '.join(',' . PHP_EOL . '  ', $downLineList);
     }
 }

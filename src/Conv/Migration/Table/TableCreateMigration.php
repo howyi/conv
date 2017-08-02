@@ -19,6 +19,8 @@ class TableCreateMigration extends AbstractTableMigration
         $this->type = MigrationType::CREATE;
 
         $createQueryHeader = "CREATE TABLE `$this->tableName` (";
+        $createQueryLineList = [];
+
         foreach ($tableStructure->columnStructureList as $columnStructure) {
             $createQueryLineList[] = $columnStructure->generateCreateQuery();
         }

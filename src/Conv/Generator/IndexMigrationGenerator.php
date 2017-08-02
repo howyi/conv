@@ -5,6 +5,7 @@ namespace Conv\Generator;
 use Conv\Migration\Line\IndexAddMigrationLine;
 use Conv\Migration\Line\IndexDropMigrationLine;
 use Conv\Migration\Line\IndexAllMigrationLine;
+use Conv\Structure\IndexStructure;
 
 class IndexMigrationGenerator
 {
