@@ -9,38 +9,23 @@ MySQL migration query auto generate from schema
 #### YAML定義例
 tbl_user.yml
 ```yaml
-comment: ユーザ管理テーブル
+comment: 'User management table'
 column:
   user_id:
-    type: int(10)
-    auto_increment: true
-    unsigned: false
-    nullable: false
-    comment: ユーザID
+    type: int(11)
+    comment: 'User ID'
   name:
-    type: varchar(255)
-    nullable: false
-    comment: ユーザ名
-  age:
-    type: smallint(5)
-    unsigned: false
-    nullable: false
-    comment: 年齢
-  address:
-    type: varchar(255)
-    nullable: true
-    comment: 住所
-  registered_at:
-    type: datetime
-    nullable: false
-    comment: 登録日時
-primaryKey:
+    type: int(11)
+    comment: 'User name'
+    attribute: [nullable]
+  age:
+    type: int(11)
+    comment: 'User age'
+    attribute: [nullable]
+primary_key:
   - user_id
 index:
-  layer:
-    isUnique: false
-    column:
-      - age
-      - registered_at
-
+  name:
+    is_unique: true
+    column: [name]
 ```
