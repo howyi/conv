@@ -10,7 +10,7 @@ class ModifiedColumnStructure
 
     /**
      * @param string $beforeField
-     * @param string $column
+     * @param ColumnStructure $column
      */
     public function __construct(
         string $beforeField,

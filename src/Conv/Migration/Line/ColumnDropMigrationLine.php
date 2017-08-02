@@ -2,6 +2,8 @@
 
 namespace Conv\Migration\Line;
 
+use Conv\Structure\ModifiedColumnStructure;
+
 /**
  * ALTER TABLE ~ DROP ~
  */

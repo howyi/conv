@@ -26,7 +26,7 @@ abstract class AbstractTableMigration implements TableMigrationInterface
     }
 
     /**
-     * @return string[]
+     * @return string
      */
     public function getUp(): string
     {
@@ -34,7 +34,7 @@ abstract class AbstractTableMigration implements TableMigrationInterface
     }
 
     /**
-     * @return string[]
+     * @return string
      */
     public function getDown(): string
     {
