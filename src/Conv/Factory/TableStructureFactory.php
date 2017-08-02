@@ -8,6 +8,7 @@ use Conv\Structure\Attribute;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Util\SchemaKey;
+use Conv\Util\SchemaValidator;
 
 class TableStructureFactory
 {
@@ -37,6 +38,7 @@ class TableStructureFactory
             E_USER_DEPRECATED
         );
         $yamlSpec = Yaml::parse(file_get_contents($path));
+        SchemaValidator::validate($path, $yamlSpec);
         restore_error_handler();
 
         $columnStructureList = [];
