@@ -22,7 +22,22 @@ class TableStructureFactory
     public static function fromYaml(string $path): TableStructure
     {
         $tableName = pathinfo($path, PATHINFO_FILENAME);
+
+        // エラー制御演算子によって表示されないキー重複エラーを出力させる
+        set_error_handler(
+            function ($errno, $errstr, $errfile, $errline) {
+                throw new \ErrorException(
+                    $errstr,
+                    0,
+                    $errno,
+                    $errfile,
+                    $errline
+                );
+            },
+            E_USER_DEPRECATED
+        );
         $yamlSpec = Yaml::parse(file_get_contents($path));
+        restore_error_handler();
 
         $columnStructureList = [];
         foreach ($yamlSpec[SchemaKey::TABLE_COLUMN] as $field => $column) {
