@@ -28,7 +28,7 @@ class TableCreateMigration extends AbstractTableMigration
         foreach ($tableStructure->indexStructureList as $indexStructure) {
             $createQueryLineList[] = $indexStructure->generateCreateQuery();
         }
-        $createQueryFooter = ") ENGINE=$tableStructure->engine DEFAULT CHARSET=$tableStructure->defaultCharset COMMENT='$tableStructure->comment';";
+        $createQueryFooter = ") ENGINE=$tableStructure->engine DEFAULT CHARSET=$tableStructure->defaultCharset COLLATE=$tableStructure->collate COMMENT='$tableStructure->comment';";
         $createQueryBody = "  ".join(',' . PHP_EOL . '  ', $createQueryLineList);
         $this->up = $createQueryHeader . PHP_EOL . $createQueryBody . PHP_EOL . $createQueryFooter;
 
