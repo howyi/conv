@@ -3,6 +3,10 @@
 # conv
 MySQL migration query auto generate from schema
 
+```
+composer require howyi/conv --dev
+```
+
 ### 概要
 指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
 
@@ -26,10 +30,6 @@ index:
     column: [user_id, age]
 ```
 
-### インストール
-```
-composer require howyi/conv --dev
-```
 ### 使用方法
 ##### 基本部分
 `Conv\Factory\DatabaseStructureFactory` によって生成される `Conv\Structure\DatabaseStructure` をベースとしてマイグレーションの生成などを行う
