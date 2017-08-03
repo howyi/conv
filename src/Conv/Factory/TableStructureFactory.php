@@ -8,6 +8,7 @@ use Conv\Structure\Attribute;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Util\SchemaKey;
+use Conv\Config;
 use Conv\Util\SchemaValidator;
 
 class TableStructureFactory
@@ -78,9 +79,9 @@ class TableStructureFactory
         $tableStructure = new TableStructure(
             $tableName,
             $yamlSpec[SchemaKey::TABLE_COMMENT],
-            self::ENGINE,
-            self::DEFAULT_CHARSET,
-            self::COLLATE,
+            Config::table('engine'),
+            Config::table('default_charset'),
+            Config::table('collate'),
             $columnStructureList,
             $indexStructureList,
             $properties
@@ -134,12 +135,21 @@ class TableStructureFactory
             );
         }
 
+        $createQuery = $pdo->query("SHOW CREATE TABLE $tableName")->fetch()[1];
+        $defaultCharsetSearch = mb_strstr($createQuery, 'DEFAULT CHARSET=');
+        if (false !== $defaultCharsetSearch) {
+            $defaultCharsetSearch = str_replace('DEFAULT CHARSET=', '', $defaultCharsetSearch);
+            $defaultCharset = explode(' ', $defaultCharsetSearch)[0];
+        } else {
+            $defaultCharset = null;
+        }
+
         $tableStructure = new TableStructure(
             $tableName,
             $rawStatus['Comment'],
-            self::ENGINE,
-            self::DEFAULT_CHARSET,
-            self::COLLATE,
+            $rawStatus['Engine'],
+            $defaultCharset,
+            $rawStatus['Collation'],
             $columnStructureList,
             $indexStructureList,
             []
