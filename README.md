@@ -11,23 +11,19 @@ tbl_user.yml
 ```yaml
 comment: 'User management table'
 column:
-  user_id:
+  user_id:
     type: int(11)
     comment: 'User ID'
-  name:
-    type: int(11)
-    comment: 'User name'
-    attribute: [nullable]
   age:
-    type: int(11)
+    type: tinyint(3)
     comment: 'User age'
-    attribute: [nullable]
+    attribute: [nullable, unsigned]
 primary_key:
   - user_id
 index:
-  name:
+  id_age:
     is_unique: true
-    column: [name]
+    column: [user_id, age]
 ```
 
 ### インストール
@@ -43,3 +39,28 @@ composer require howyi/conv --dev
 `Conv\Util\SchemaReflector::fromDatabaseStructure` に生成した `DatabaseStructure` とディレクトリのパスを与えることで、`DatabaseStrucuture` を1テーブル1ファイルとしてディレクトリに保存する
 ##### 差分のマイグレーションを生成する
 `Conv\Generator\MigrationGenerator` に `DatabaseStructure` を渡すことで `Conv\Migration\Database\Migration` が作成される
+
+### スキーマの書き方
+`tbl_user.yaml` というように名前を設定することで、ファイル名がテーブル名として扱われる
+```yaml
+comment: 'User management table'
+column:
+# columnはキーでカラム名を設定する
+  user_id:
+    type: int(11)
+    comment: 'User ID'
+  age:
+    type: tinyint(3)
+    comment: 'User age'
+    attribute: [nullable, unsigned]
+# attributeに指定できる属性は [auto_increment, unsigned, nullable] の三種類
+primary_key:
+  - user_id
+# PKは配列になっており、複数指定することで複合PKとなる
+index:
+# indexはキーでindex名を設定する
+  id_age:
+    is_unique: true
+    column: [user_id, age]
+# columnを複数指定することで複合INDEXとなる
+```
