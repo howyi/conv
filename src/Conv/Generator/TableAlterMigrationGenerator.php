@@ -8,6 +8,9 @@ use Conv\Migration\Line\ColumnModifyMigrationLine;
 use Conv\Migration\Line\IndexModifyMigrationLine;
 use Conv\Migration\Line\TableRenameMigrationLine;
 use Conv\Migration\Line\TableCommentMigrationLine;
+use Conv\Migration\Line\TableEngineMigrationLine;
+use Conv\Migration\Line\TableCollateMigrationLine;
+use Conv\Migration\Line\TableDefaultCharsetMigrationLine;
 use Conv\Migration\Table\MigrationLineList;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Structure\TableStructure;
@@ -110,6 +113,21 @@ class TableAlterMigrationGenerator
         if ($beforeTable->getComment() !== $afterTable->getComment()) {
             $migrationLineList->add(
                 new TableCommentMigrationLine($beforeTable->getComment(), $afterTable->getComment())
+            );
+        }
+        if ($beforeTable->getEngine() !== $afterTable->getEngine()) {
+            $migrationLineList->add(
+                new TableEngineMigrationLine($beforeTable->getEngine(), $afterTable->getEngine())
+            );
+        }
+        if ($beforeTable->getDefaultCharset() !== $afterTable->getDefaultCharset()) {
+            $migrationLineList->add(
+                new TableDefaultCharsetMigrationLine($beforeTable->getDefaultCharset(), $afterTable->getDefaultCharset())
+            );
+        }
+        if ($beforeTable->getCollate() !== $afterTable->getCollate()) {
+            $migrationLineList->add(
+                new TableCollateMigrationLine($beforeTable->getCollate(), $afterTable->getCollate())
             );
         }
         if ($indexAllMigration->isFirstExist()) {

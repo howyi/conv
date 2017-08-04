@@ -4,10 +4,13 @@ namespace Conv\Util;
 
 class SchemaKey
 {
-    const TABLE_COMMENT     = 'comment';
-    const TABLE_COLUMN      = 'column';
-    const TABLE_PRIMARY_KEY = 'primary_key';
-    const TABLE_INDEX       = 'index';
+    const TABLE_COMMENT         = 'comment';
+    const TABLE_COLUMN          = 'column';
+    const TABLE_PRIMARY_KEY     = 'primary_key';
+    const TABLE_INDEX           = 'index';
+    const TABLE_ENGINE          = 'engine';
+    const TABLE_COLLATE         = 'collate';
+    const TABLE_DEFAULT_CHARSET = 'default_charset';
 
     const TABLE_KEYS = [
         self::TABLE_COMMENT,
@@ -24,6 +27,9 @@ class SchemaKey
     const TABLE_OPTIONAL_KEYS = [
         self::TABLE_PRIMARY_KEY,
         self::TABLE_INDEX,
+        self::TABLE_ENGINE,
+        self::TABLE_COLLATE,
+        self::TABLE_DEFAULT_CHARSET,
     ];
 
     const COLUMN_TYPE      = 'type';
