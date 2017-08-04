@@ -62,6 +62,30 @@ class TableStructure
     }
 
     /**
+     * @return string
+     */
+    public function getEngine(): string
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultCharset(): string
+    {
+        return $this->defaultCharset;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCollate(): string
+    {
+        return $this->collate;
+    }
+
+    /**
      * @return array
      */
     public function getProperties(): array

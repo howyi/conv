@@ -13,10 +13,6 @@ use Conv\Util\SchemaValidator;
 
 class TableStructureFactory
 {
-    const ENGINE          = 'InnoDB';
-    const DEFAULT_CHARSET = 'utf8mb4';
-    const COLLATE         = 'utf8mb4_bin';
-
     /**
      * @param string $path
      * @return TableStructure
@@ -79,9 +75,9 @@ class TableStructureFactory
         $tableStructure = new TableStructure(
             $tableName,
             $yamlSpec[SchemaKey::TABLE_COMMENT],
-            Config::table('engine'),
-            Config::table('default_charset'),
-            Config::table('collate'),
+            array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_ENGINE] : Config::table('engine'),
+            array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET] : Config::table('default_charset'),
+            array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_COLLATE] : Config::table('collate'),
             $columnStructureList,
             $indexStructureList,
             $properties
