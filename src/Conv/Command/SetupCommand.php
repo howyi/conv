@@ -20,6 +20,7 @@ class SetupCommand extends AbstractCommand
         $operator = $this->getOperator($input, $output);
 
         $pdo = $this->getPDO();
+        $pdo->exec('DROP DATABASE IF EXISTS conv');
         $pdo->exec('CREATE DATABASE conv');
 
         $databaseStructure = DatabaseStructureFactory::fromDir('schema');
