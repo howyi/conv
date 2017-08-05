@@ -7,10 +7,10 @@ use Symfony\Component\Yaml\Yaml;
 class Config
 {
     const DEFAULT = [
-        'table' => [
-            'engine'          => 'InnoDB',
-            'default_charset' => 'utf8mb4',
-            'collate'         => 'utf8mb4_bin',
+        'default' => [
+            'engine'  => 'InnoDB',
+            'charset' => 'utf8mb4',
+            'collate' => 'utf8mb4_bin',
         ]
     ];
 
