@@ -80,6 +80,12 @@ class TableAlterMigrationGenerator
         $beforeOrderFieldList = $beforeTable->getOrderFieldList($droppedFieldList);
         $afterOrderFieldList = $afterTable->getOrderFieldList($addedFieldList, array_flip($renamedFieldList));
         $movedFieldOrderList = FieldOrderGenerator::generate($beforeOrderFieldList, $afterOrderFieldList);
+        foreach ($movedFieldOrderList as $field => $fieldOrder) {
+            // ソートの為に戻した名前を変更後に再度修正する
+            if (array_key_exists($fieldOrder->getNextAfterField(), $renamedFieldList)) {
+                $fieldOrder->setNextAfterField($renamedFieldList[$fieldOrder->getNextAfterField()]);
+            }
+        }
 
         foreach ($movedFieldOrderList as $beforeField => $fieldOrder) {
             if (array_key_exists($beforeField, $modifiedColumnSetList)) {

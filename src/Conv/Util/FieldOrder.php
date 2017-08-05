@@ -46,4 +46,12 @@ class FieldOrder
     {
         return $this->nextAfterField;
     }
+
+    /**
+     * @param string
+     */
+    public function setNextAfterField(string $nextAfterField)
+    {
+        $this->nextAfterField = $nextAfterField;
+    }
 }
