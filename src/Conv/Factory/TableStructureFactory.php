@@ -75,9 +75,9 @@ class TableStructureFactory
         $tableStructure = new TableStructure(
             $tableName,
             $yamlSpec[SchemaKey::TABLE_COMMENT],
-            array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_ENGINE] : Config::table('engine'),
-            array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET] : Config::table('default_charset'),
-            array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_COLLATE] : Config::table('collate'),
+            array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_ENGINE] : Config::default('engine'),
+            array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET] : Config::default('charset'),
+            array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_COLLATE] : Config::default('collate'),
             $columnStructureList,
             $indexStructureList,
             $properties

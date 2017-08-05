@@ -9,8 +9,8 @@ class SchemaKey
     const TABLE_PRIMARY_KEY     = 'primary_key';
     const TABLE_INDEX           = 'index';
     const TABLE_ENGINE          = 'engine';
-    const TABLE_COLLATE         = 'collate';
     const TABLE_DEFAULT_CHARSET = 'default_charset';
+    const TABLE_COLLATE         = 'collate';
 
     const TABLE_KEYS = [
         self::TABLE_COMMENT,
@@ -28,8 +28,8 @@ class SchemaKey
         self::TABLE_PRIMARY_KEY,
         self::TABLE_INDEX,
         self::TABLE_ENGINE,
-        self::TABLE_COLLATE,
         self::TABLE_DEFAULT_CHARSET,
+        self::TABLE_COLLATE,
     ];
 
     const COLUMN_TYPE      = 'type';

@@ -2,6 +2,7 @@
 
 namespace Conv\Structure;
 
+use Conv\Config;
 use Conv\Util\SchemaKey;
 
 class TableStructure
@@ -228,6 +229,15 @@ class TableStructure
         }
         if (!empty($indexList)) {
             $array[SchemaKey::TABLE_INDEX] = $indexList;
+        }
+        if (Config::default('engine') !== $this->getEngine()) {
+            $array[SchemaKey::TABLE_ENGINE] = $this->getEngine();
+        }
+        if (Config::default('charset') !== $this->getDefaultCharset()) {
+            $array[SchemaKey::TABLE_DEFAULT_CHARSET] = $this->getDefaultCharset();
+        }
+        if (Config::default('collate') !== $this->getCollate()) {
+            $array[SchemaKey::TABLE_COLLATE] = $this->getCollate();
         }
         return $array;
     }
