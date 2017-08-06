@@ -38,20 +38,7 @@ class ModifiedColumnStructure
      */
     public function generateChangeQuery(): string
     {
-        $query = ['CHANGE', "`{$this->beforeField}`"];
-        if ($this->isRenamed()) {
-            $query[] = "`{$this->column->field}`";
-        }
-        $query[] = $this->column->generateBaseQuery();
-        return implode(' ', $query);
-    }
-
-    /**
-     * @return string
-     */
-    public function generateModifyQuery(): string
-    {
-        $query = ['MODIFY', 'COLUMN', "`{$this->column->field}`"];
+        $query = ['CHANGE', "`{$this->beforeField}`", "`{$this->column->field}`"];
         $query[] = $this->column->generateBaseQuery();
         if ($this->isOrderChanged()) {
             $query[] = $this->modifiedAfter;
