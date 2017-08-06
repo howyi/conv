@@ -31,6 +31,6 @@ class ReflectCommand extends AbstractCommand
         //     }
         // );
         $structure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
-        SchemaReflector::fromDatabaseStructure('schema', $structure);
+        SchemaReflector::fromDatabaseStructure('schema', $structure, $this->getOperator($input, $output));
     }
 }
