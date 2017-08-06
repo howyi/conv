@@ -16,37 +16,11 @@ class ColumnModifyMigrationLine extends AbstractMigrationLine
         array $modifiedColumnSetList
     ) {
         $upChangeQueryLineList = [];
-        $upModifyQueryLineList = [];
         $downChangeQueryLineList = [];
-        $downModifyQueryLineList = [];
 
         foreach ($modifiedColumnSetList as $value) {
-            $upModifiedColumn = $value->getUpColumn();
-            if ($upModifiedColumn->isRenamed() and $upModifiedColumn->isOrderChanged()) {
-                $upChangeQueryLineList[] = $upModifiedColumn->generateChangeQuery();
-                $upModifyQueryLineList[] = $upModifiedColumn->generateModifyQuery();
-            } elseif ($upModifiedColumn->isRenamed()) {
-                $upChangeQueryLineList[] = $upModifiedColumn->generateChangeQuery();
-            } elseif ($upModifiedColumn->isOrderChanged()) {
-                $upModifyQueryLineList[] = $upModifiedColumn->generateModifyQuery();
-            } else {
-                $upModifyQueryLineList[] = $upModifiedColumn->generateModifyQuery();
-            }
-
-            $downModifiedColumn = $value->getDownColumn();
-            if ($downModifiedColumn->isRenamed() and $downModifiedColumn->isOrderChanged()) {
-                $downChangeQueryLineList[] = $downModifiedColumn->generateChangeQuery();
-                $downModifyQueryLineList[] = $downModifiedColumn->generateModifyQuery();
-            } elseif ($downModifiedColumn->isRenamed()) {
-                $downChangeQueryLineList[] = $downModifiedColumn->generateChangeQuery();
-            } elseif ($downModifiedColumn->isOrderChanged()) {
-                $downModifyQueryLineList[] = $downModifiedColumn->generateModifyQuery();
-            } else {
-                $downModifyQueryLineList[] = $downModifiedColumn->generateModifyQuery();
-            }
+            $this->upLineList[] = $value->getUpColumn()->generateChangeQuery();
+            $this->downLineList[] = $value->getDownColumn()->generateChangeQuery();
         }
-
-        $this->upLineList = array_merge($upChangeQueryLineList, $upModifyQueryLineList);
-        $this->downLineList = array_merge($downChangeQueryLineList, $downModifyQueryLineList);
     }
 }
