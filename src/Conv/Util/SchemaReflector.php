@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
+use Conv\Util\Operator;
 
 class SchemaReflector
 {
@@ -16,10 +17,12 @@ class SchemaReflector
      * @param QuestionHelper  $helper
      * @param InputInterface  $input
      * @param OutputInterface $output
+     * @param Operator        $operator
      */
     public static function fromDatabaseStructure(
         string $path,
-        DatabaseStructure $database
+        DatabaseStructure $database,
+        Operator $operator
     ) {
         if (file_exists($path)) {
             $iterator = new \RecursiveIteratorIterator(
@@ -33,9 +36,17 @@ class SchemaReflector
         } else {
             mkdir($path, 0777, true);
         }
+        $operator->output("\nGenerate schemas to '$path' dqirectory");
+        $progress = $operator->getProgress(count($database->getTableList()));
+        $progress->start();
+        $progress->setFormat('debug');
         foreach ($database->getTableList() as $tableName => $tableStructure) {
             self::fromTableStructure($path, $tableStructure);
+            $progress->setMessage("Table: $tableName");
+            $progress->advance();
         }
+        $progress->finish();
+        $operator->output("\nFinish");
     }
 
     /**

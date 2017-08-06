@@ -6,6 +6,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class Operator
 {
@@ -45,5 +46,13 @@ class Operator
     public function output(string $message)
     {
         return $this->output->writeln($message);
+    }
+    /**
+     * @param int $max
+     * @return ProgressBar
+     */
+    public function getProgress(int $max): ProgressBar
+    {
+        return new ProgressBar($this->output, $max);
     }
 }
