@@ -46,5 +46,4 @@ class Operator
     {
         return $this->output->writeln($message);
     }
-
 }
