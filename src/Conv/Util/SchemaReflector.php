@@ -36,7 +36,7 @@ class SchemaReflector
         } else {
             mkdir($path, 0777, true);
         }
-        $operator->output("\nGenerate schemas to '$path' dqirectory");
+        $operator->output("\nGenerate schemas to '$path' directory");
         $progress = $operator->getProgress(count($database->getTableList()));
         $progress->start();
         $progress->setFormat('debug');
