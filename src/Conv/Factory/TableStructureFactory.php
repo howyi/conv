@@ -116,25 +116,28 @@ class TableStructureFactory
     public static function fromTable(\PDO $pdo, string $tableName): TableStructure
     {
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
-        $rawColumnList = $pdo->query("SHOW FULL COLUMNS FROM $tableName")->fetchAll();
+        $rawColumnList = $pdo->query(
+            "SELECT * FROM information_schema.COLUMNS WHERE table_name = '$tableName' ORDER BY ORDINAL_POSITION ASC"
+        )->fetchAll();
+
         $columnStructureList = [];
 
         foreach ($rawColumnList as $column) {
             $attribute = [];
-            if ((bool) preg_match('/auto_increment/', $column['Extra'])) {
+            if ((bool) preg_match('/auto_increment/', $column['EXTRA'])) {
                 $attribute[] = Attribute::AUTO_INCREMENT;
             }
-            if ('YES' === $column['Null']) {
+            if ('YES' === $column['IS_NULLABLE']) {
                 $attribute[] = Attribute::NULLABLE;
             }
-            if ((bool) preg_match('/unsigned/', $column['Type'])) {
+            if ((bool) preg_match('/unsigned/', $column['COLUMN_TYPE'])) {
                 $attribute[] = Attribute::UNSIGNED;
             }
             $columnStructureList[] = new ColumnStructure(
-                $column['Field'],
-                str_replace(' unsigned', '', $column['Type']),
-                $column['Default'],
-                $column['Comment'],
+                $column['COLUMN_NAME'],
+                str_replace(' unsigned', '', $column['COLUMN_TYPE']),
+                $column['COLUMN_DEFAULT'],
+                $column['COLUMN_COMMENT'],
                 $attribute,
                 []
             );
