@@ -75,14 +75,32 @@ class TableStructureFactory
             }
         }
 
+        if (array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec)) {
+            $engine = $yamlSpec[SchemaKey::TABLE_ENGINE];
+        } else {
+            $engine = Config::default('engine');
+        }
+
+        if (array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec)) {
+            $defaultCharset = $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET];
+        } else {
+            $defaultCharset = Config::default('charset');
+        }
+
+        if (array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec)) {
+            $collate = $yamlSpec[SchemaKey::TABLE_COLLATE];
+        } else {
+            $collate = Config::default('collate');
+        }
+
         $properties = array_diff_key($yamlSpec, array_flip(SchemaKey::TABLE_KEYS));
 
         $tableStructure = new TableStructure(
             $tableName,
             $yamlSpec[SchemaKey::TABLE_COMMENT],
-            array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_ENGINE] : Config::default('engine'),
-            array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET] : Config::default('charset'),
-            array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec) ? $yamlSpec[SchemaKey::TABLE_COLLATE] : Config::default('collate'),
+            $engine,
+            $defaultCharset,
+            $collate,
             $columnStructureList,
             $indexStructureList,
             $properties
