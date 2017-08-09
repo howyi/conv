@@ -41,13 +41,14 @@ class DatabaseStructureFactory
      */
     public static function fromPDO(
         \PDO $pdo,
-        callable $filter = null
+        callable $filter = null,
+        string $tableSchema = null
     ): DatabaseStructure {
         $rawTableList = $pdo->query("SHOW TABLES")->fetchAll();
         $tableList = [];
         foreach ($rawTableList as $value) {
             $tableName = $value[0];
-            $table = TableStructureFactory::fromTable($pdo, $tableName);
+            $table = TableStructureFactory::fromTable($pdo, $tableName, $tableSchema);
             if (!is_null($filter) and !$filter($table)) {
                 continue;
             }
