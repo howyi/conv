@@ -5,9 +5,9 @@ namespace Conv\Structure;
 interface TableStructureInterface
 {
     /**
-     * @return int
+     * @return string
      */
-    public function getType(): int;
+    public function getType(): string;
 
     /**
      * @return string
