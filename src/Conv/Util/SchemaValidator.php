@@ -2,22 +2,23 @@
 
 namespace Conv\Util;
 
-use Conv\Util\SchemaKey;
 use Conv\Structure\Attribute;
+use Conv\Structure\TableStructureType;
+use Conv\Util\SchemaKey;
 
 class SchemaValidator
 {
     /**
-     * @param string $path
+     * @param string $name
      * @param array  $spec
      * @throws SchemaValidateException
      */
-    public static function validate(string $path, array $spec)
+    public static function validate(string $name, array $spec)
     {
         if (0 !== count(array_diff(SchemaKey::TABLE_REQUIRE_KEYS, array_keys($spec)))) {
             throw new SchemaValidateException(
                 sprintf(
-                    $path . PHP_EOL . 'Table require key (%s) does not exist',
+                    $name . PHP_EOL . 'Table require key (%s) does not exist',
                     implode(
                         ', ',
                         array_diff(SchemaKey::TABLE_REQUIRE_KEYS, array_keys($spec))
@@ -26,11 +27,28 @@ class SchemaValidator
             );
         }
 
+        switch ($spec[SchemaKey::TABLE_TYPE]) {
+            case TableStructureType::TABLE:
+                self::validateTableSpec($name, $spec);
+                break;
+            case TableStructureType::VIEW:
+                self::validateViewSpec($name, $spec);
+                break;
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param array  $spec
+     * @throws SchemaValidateException
+     */
+    private static function validateTableSpec(string $name, array $spec)
+    {
         foreach ($spec[SchemaKey::TABLE_COLUMN] as $key => $value) {
             if (0 !== count(array_diff(SchemaKey::COLUMN_REQUIRE_KEYS, array_keys($value)))) {
                 throw new SchemaValidateException(
                     sprintf(
-                        $path . PHP_EOL .'Column %s require key (%s) does not exist',
+                        $name . PHP_EOL .'Column %s require key (%s) does not exist',
                         $key,
                         implode(
                             ', ',
@@ -53,7 +71,7 @@ class SchemaValidator
             if (0 !== count(array_diff($pkList, array_keys($spec[SchemaKey::TABLE_COLUMN])))) {
                 throw new SchemaValidateException(
                     sprintf(
-                        $path . PHP_EOL .'Primary key (%s) is not column',
+                        $name . PHP_EOL .'Primary key (%s) is not column',
                         implode(
                             ', ',
                             array_diff($pkList, array_keys($spec[SchemaKey::TABLE_COLUMN]))
@@ -65,7 +83,7 @@ class SchemaValidator
             if (count($pkList) !== count(array_unique($pkList))) {
                 throw new SchemaValidateException(
                     sprintf(
-                        $path . PHP_EOL .'Duplicate primary_key (%s)',
+                        $name . PHP_EOL .'Duplicate primary_key (%s)',
                         implode(', ', $pkList)
                     )
                 );
@@ -77,7 +95,7 @@ class SchemaValidator
                 if (0 !== count(array_diff(SchemaKey::INDEX_REQUIRE_KEYS, array_keys($value)))) {
                     throw new SchemaValidateException(
                         sprintf(
-                            $path . PHP_EOL .'Index %s require key (%s) does not exist',
+                            $name . PHP_EOL .'Index %s require key (%s) does not exist',
                             $key,
                             implode(
                                 ', ',
@@ -90,7 +108,7 @@ class SchemaValidator
                 if (count($value[SchemaKey::INDEX_COLUMN]) !== count(array_unique($value[SchemaKey::INDEX_COLUMN]))) {
                     throw new SchemaValidateException(
                         sprintf(
-                            $path . PHP_EOL .'Duplicate index (%s)',
+                            $name . PHP_EOL .'Duplicate index (%s)',
                             implode(', ', $value[SchemaKey::INDEX_COLUMN])
                         )
                     );
@@ -99,7 +117,7 @@ class SchemaValidator
                 if (0 !== count(array_diff($value[SchemaKey::INDEX_COLUMN], array_keys($spec[SchemaKey::TABLE_COLUMN])))) {
                     throw new SchemaValidateException(
                         sprintf(
-                            $path . PHP_EOL .'Index %s (%s) is not column',
+                            $name . PHP_EOL .'Index %s (%s) is not column',
                             $key,
                             implode(
                                 ', ',
@@ -110,5 +128,15 @@ class SchemaValidator
                 }
             }
         }
+    }
+
+    /**
+     * @param string $name
+     * @param array  $spec
+     * @throws SchemaValidateException
+     */
+    private static function validateViewSpec(string $name, array $spec)
+    {
+        // TODO
     }
 }
