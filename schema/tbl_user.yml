@@ -4,7 +4,7 @@ column:
     type: int(11)
     comment: 'User ID'
   name:
-    type: int(11)
+    type: varchar(255)
     comment: 'User name'
     attribute: [nullable]
   age:
@@ -13,7 +13,3 @@ column:
     attribute: [nullable]
 primary_key:
   - user_id
-index:
-  name:
-    is_unique: true
-    column: [name]
