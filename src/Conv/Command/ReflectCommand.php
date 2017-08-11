@@ -30,7 +30,10 @@ class ReflectCommand extends AbstractCommand
         //         return (bool) preg_match('/user/', $table->getTableName());
         //     }
         // );
-        $structure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
+        $structure = DatabaseStructureFactory::fromPDO(
+            $this->getPDO('conv'),
+            'conv'
+        );
         SchemaReflector::fromDatabaseStructure('schema', $structure, $this->getOperator($input, $output));
     }
 }
