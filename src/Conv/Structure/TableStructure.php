@@ -243,9 +243,9 @@ class TableStructure implements TableStructureInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getType(): int
+    public function getType(): string
     {
         return TableStructureType::TABLE;
     }
