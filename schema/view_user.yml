@@ -1,0 +1,28 @@
+type: view
+comment: 'User management view'
+alias:
+  tbl_user:         tu
+  tbl_user_address: tua
+  tbl_country:      tc
+column:
+  user_id:      tu.user_id
+  user_name:    tu.name
+  address_line: tua.address_line
+  zip_code:     tua.zip_code
+  country_name: tc.country_name
+select:
+  - join: tu.user_id = tua.user_id
+  - join: tua.country_id = tc.country_id
+
+# CREATE VIEW `view_user`
+# AS SELECT
+# 	`tu`.`user_id` AS `user_id`,
+# 	`tu`.`name` AS `user_name`,
+# 	`tua`.`address_line` AS `address_line`,
+# 	`tua`.`zip_code` AS `zip_code`,
+# 	`tc`.`country_name` AS `country_name`
+# FROM (
+# 	(
+# 		`tbl_user` `tu` join `tbl_user_address` `tua` on((`tu`.`user_id` = `tua`.`user_id`))
+# 	) join `tbl_country` `tc` on((`tua`.`country_id` = `tc`.`country_id`))
+# )
