@@ -52,7 +52,16 @@ class DatabaseStructureFactory
         $tableList = [];
         foreach ($rawTableList as $value) {
             $tableName = $value['TABLE_NAME'];
-            $table = TableStructureFactory::fromTable($pdo, $dbName, $tableName);
+            switch ($value['TABLE_TYPE']) {
+                case 'BASE TABLE':
+                    $table = TableStructureFactory::fromTable($pdo, $dbName, $tableName);
+                    break;
+                case 'VIEW':
+                    // TODO
+                    continue 2;
+                default:
+                    continue 2;
+            }
             if (!is_null($filter) and !$filter($table)) {
                 continue;
             }
