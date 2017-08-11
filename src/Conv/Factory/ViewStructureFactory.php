@@ -3,7 +3,6 @@
 namespace Conv\Factory;
 
 use Conv\Structure\ViewStructure;
-use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Util\SchemaKey;
 use Conv\Util\Evaluator;
@@ -15,20 +14,28 @@ class ViewStructureFactory
     /**
      * @param string $viewName
      * @param array  $spec
-     * @return TableStructure
+     * @return ViewStructure
      */
-    public static function fromSpec(string $viewName, array $spec): TableStructure
+    public static function fromSpec(string $viewName, array $spec): ViewStructure
     {
-        // TODO
+        $properties = array_diff_key($spec, array_flip(SchemaKey::VIEW_KEYS));
+
+        return new ViewStructure(
+            $viewName,
+            $spec[SchemaKey::VIEW_ALIAS],
+            $spec[SchemaKey::VIEW_COLUMN],
+            $spec[SchemaKey::VIEW_JOIN],
+            $properties
+        );
     }
 
     /**
      * @param \PDO   $pdo
      * @param string $dbName
      * @param string $viewName
-     * @return TableStructure
+     * @return ViewStructure
      */
-    public static function fromView(\PDO $pdo, string $dbName, string $viewName)
+    public static function fromView(\PDO $pdo, string $dbName, string $viewName): ViewStructure
     {
         $rawViewStatus = $pdo->query(
             sprintf(

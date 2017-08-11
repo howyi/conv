@@ -10,7 +10,7 @@ column:
   address_line: tua.address_line
   zip_code:     tua.zip_code
   country_name: tc.country_name
-select:
+join:
   - join: tu.user_id = tua.user_id
   - join: tua.country_id = tc.country_id
 

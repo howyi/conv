@@ -67,4 +67,24 @@ class SchemaKey
         self::INDEX_TYPE,
         self::INDEX_COLUMN,
     ];
+
+    const VIEW_ALIAS  = 'alias';
+    const VIEW_COLUMN = 'column';
+    const VIEW_JOIN   = 'join';
+
+
+    const VIEW_KEYS = [
+        self::VIEW_COLUMN,
+        self::VIEW_JOIN,
+        self::VIEW_ALIAS,
+    ];
+
+    const VIEW_REQUIRE_KEYS = [
+        self::VIEW_COLUMN,
+        self::VIEW_JOIN,
+    ];
+
+    const VIEW_OPTIONAL_KEYS = [
+        self::VIEW_ALIAS,
+    ];
 }
