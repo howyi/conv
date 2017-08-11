@@ -4,6 +4,7 @@ namespace Conv\Util;
 
 class SchemaKey
 {
+    const TABLE_TYPE            = 'type';
     const TABLE_COMMENT         = 'comment';
     const TABLE_COLUMN          = 'column';
     const TABLE_PRIMARY_KEY     = 'primary_key';
@@ -13,13 +14,18 @@ class SchemaKey
     const TABLE_COLLATE         = 'collate';
 
     const TABLE_KEYS = [
+        self::TABLE_TYPE,
         self::TABLE_COMMENT,
         self::TABLE_COLUMN,
         self::TABLE_PRIMARY_KEY,
         self::TABLE_INDEX,
+        self::TABLE_ENGINE,
+        self::TABLE_DEFAULT_CHARSET,
+        self::TABLE_COLLATE,
     ];
 
     const TABLE_REQUIRE_KEYS = [
+        self::TABLE_TYPE,
         self::TABLE_COMMENT,
         self::TABLE_COLUMN,
     ];

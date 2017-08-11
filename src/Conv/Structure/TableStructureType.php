@@ -4,6 +4,6 @@ namespace Conv\Structure;
 
 class TableStructureType
 {
-    const TABLE = 0;
-    const VIEW  = 1;
+    const TABLE = 'table';
+    const VIEW  = 'view';
 }
