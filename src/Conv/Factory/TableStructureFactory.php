@@ -109,18 +109,19 @@ class TableStructureFactory
     }
 
     /**
-     * @param \PDO        $pdo
-     * @param string      $tableName
-     * @param string|null $tableSchema
+     * @param \PDO   $pdo
+     * @param string $dbName
+     * @param string $tableName
      * @return TableStructure
      */
-    public static function fromTable(\PDO $pdo, string $tableName, $tableSchema): TableStructure
+    public static function fromTable(\PDO $pdo, string $dbName, string $tableName): TableStructure
     {
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
         $rawColumnList = $pdo->query(
             sprintf(
-                "SELECT * FROM information_schema.COLUMNS WHERE%s table_name = '$tableName' ORDER BY ORDINAL_POSITION ASC",
-                is_null($tableSchema) ? '' : " table_schema = '$tableSchema' AND"
+                "SELECT * FROM information_schema.COLUMNS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY ORDINAL_POSITION ASC",
+                $dbName,
+                $tableName
             )
         )->fetchAll();
 

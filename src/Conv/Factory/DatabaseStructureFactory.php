@@ -37,18 +37,22 @@ class DatabaseStructureFactory
     }
 
     /**
-     * @param \PDO $pdo
+     * @param \PDO          $pdo
+     * @param string        $dbName
+     * @param callable|null $filter
      */
     public static function fromPDO(
         \PDO $pdo,
-        callable $filter = null,
-        string $tableSchema = null
+        string $dbName,
+        callable $filter = null
     ): DatabaseStructure {
-        $rawTableList = $pdo->query("SHOW TABLES")->fetchAll();
+        $rawTableList = $pdo->query(
+            "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$dbName'"
+        )->fetchAll();
         $tableList = [];
         foreach ($rawTableList as $value) {
-            $tableName = $value[0];
-            $table = TableStructureFactory::fromTable($pdo, $tableName, $tableSchema);
+            $tableName = $value['TABLE_NAME'];
+            $table = TableStructureFactory::fromTable($pdo, $dbName, $tableName);
             if (!is_null($filter) and !$filter($table)) {
                 continue;
             }
