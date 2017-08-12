@@ -5,7 +5,7 @@ namespace Conv\Structure;
 use Conv\Config;
 use Conv\Util\SchemaKey;
 
-class TableStructure
+class TableStructure implements TableStructureInterface
 {
     public  $tableName;
     public  $comment;
@@ -240,5 +240,21 @@ class TableStructure
             $array[SchemaKey::TABLE_COLLATE] = $this->getCollate();
         }
         return $array;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return TableStructureType::TABLE;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->tableName;
     }
 }

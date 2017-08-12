@@ -15,36 +15,14 @@ use Conv\Util\SchemaValidator;
 class TableStructureFactory
 {
     /**
-     * @param string $path
+     * @param string $tableName
+     * @param array  $spec
      * @return TableStructure
      */
-    public static function fromYaml(string $path): TableStructure
+    public static function fromSpec(string $tableName, array $spec): TableStructure
     {
-        $tableName = pathinfo($path, PATHINFO_FILENAME);
-
-        // エラー制御演算子によって表示されないキー重複エラーを出力させる
-        set_error_handler(
-            function ($errno, $errstr, $errfile, $errline) {
-                throw new \ErrorException(
-                    $errstr,
-                    0,
-                    $errno,
-                    $errfile,
-                    $errline
-                );
-            },
-            E_USER_DEPRECATED
-        );
-        $yamlSpec = Yaml::parse(file_get_contents($path));
-        SchemaValidator::validate($path, $yamlSpec);
-        restore_error_handler();
-
-        if (Config::option('eval')) {
-            $yamlSpec = Evaluator::evaluate($yamlSpec);
-        }
-
         $columnStructureList = [];
-        foreach ($yamlSpec[SchemaKey::TABLE_COLUMN] as $field => $column) {
+        foreach ($spec[SchemaKey::TABLE_COLUMN] as $field => $column) {
             $properties = array_diff_key($column, array_flip(SchemaKey::COLUMN_KEYS));
             $columnStructureList[] = new ColumnStructure(
                 $field,
@@ -57,16 +35,16 @@ class TableStructureFactory
         }
 
         $indexStructureList = [];
-        if (true === array_key_exists(SchemaKey::TABLE_PRIMARY_KEY, $yamlSpec)) {
+        if (true === array_key_exists(SchemaKey::TABLE_PRIMARY_KEY, $spec)) {
             $indexStructureList[] = new IndexStructure(
                 'PRIMARY',
                 true,
-                $yamlSpec[SchemaKey::TABLE_PRIMARY_KEY]
+                $spec[SchemaKey::TABLE_PRIMARY_KEY]
             );
         }
 
-        if (true === array_key_exists(SchemaKey::TABLE_INDEX, $yamlSpec)) {
-            foreach ($yamlSpec[SchemaKey::TABLE_INDEX] as $keyName => $value) {
+        if (true === array_key_exists(SchemaKey::TABLE_INDEX, $spec)) {
+            foreach ($spec[SchemaKey::TABLE_INDEX] as $keyName => $value) {
                 $indexStructureList[] = new IndexStructure(
                     $keyName,
                     $value[SchemaKey::INDEX_TYPE],
@@ -75,29 +53,29 @@ class TableStructureFactory
             }
         }
 
-        if (array_key_exists(SchemaKey::TABLE_ENGINE, $yamlSpec)) {
-            $engine = $yamlSpec[SchemaKey::TABLE_ENGINE];
+        if (array_key_exists(SchemaKey::TABLE_ENGINE, $spec)) {
+            $engine = $spec[SchemaKey::TABLE_ENGINE];
         } else {
             $engine = Config::default('engine');
         }
 
-        if (array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $yamlSpec)) {
-            $defaultCharset = $yamlSpec[SchemaKey::TABLE_DEFAULT_CHARSET];
+        if (array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $spec)) {
+            $defaultCharset = $spec[SchemaKey::TABLE_DEFAULT_CHARSET];
         } else {
             $defaultCharset = Config::default('charset');
         }
 
-        if (array_key_exists(SchemaKey::TABLE_COLLATE, $yamlSpec)) {
-            $collate = $yamlSpec[SchemaKey::TABLE_COLLATE];
+        if (array_key_exists(SchemaKey::TABLE_COLLATE, $spec)) {
+            $collate = $spec[SchemaKey::TABLE_COLLATE];
         } else {
             $collate = Config::default('collate');
         }
 
-        $properties = array_diff_key($yamlSpec, array_flip(SchemaKey::TABLE_KEYS));
+        $properties = array_diff_key($spec, array_flip(SchemaKey::TABLE_KEYS));
 
         $tableStructure = new TableStructure(
             $tableName,
-            $yamlSpec[SchemaKey::TABLE_COMMENT],
+            $spec[SchemaKey::TABLE_COMMENT],
             $engine,
             $defaultCharset,
             $collate,
@@ -109,15 +87,20 @@ class TableStructureFactory
     }
 
     /**
-     * @param \PDO    $pdo
-      * @param string $tableName
+     * @param \PDO   $pdo
+     * @param string $dbName
+     * @param string $tableName
      * @return TableStructure
      */
-    public static function fromTable(\PDO $pdo, string $tableName): TableStructure
+    public static function fromTable(\PDO $pdo, string $dbName, string $tableName): TableStructure
     {
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
         $rawColumnList = $pdo->query(
-            "SELECT * FROM information_schema.COLUMNS WHERE table_name = '$tableName' ORDER BY ORDINAL_POSITION ASC"
+            sprintf(
+                "SELECT * FROM information_schema.COLUMNS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY ORDINAL_POSITION ASC",
+                $dbName,
+                $tableName
+            )
         )->fetchAll();
 
         $columnStructureList = [];

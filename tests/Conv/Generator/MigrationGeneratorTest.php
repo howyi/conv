@@ -2,15 +2,16 @@
 
 namespace Conv\Generator;
 
+use Conv\Factory\DatabaseStructureFactory;
+use Conv\Factory\TableStructureFactory;
+use Conv\Migration\Table\TableAlterMigration;
+use Conv\Migration\Table\TableCreateMigration;
+use Conv\Migration\Table\TableDropMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
 use Conv\Util\Operator;
-use Conv\Factory\TableStructureFactory;
-use Conv\Factory\DatabaseStructureFactory;
-use Conv\Migration\Table\TableDropMigration;
-use Conv\Migration\Table\TableCreateMigration;
-use Conv\Migration\Table\TableAlterMigration;
 use Prophecy\Argument as arg;
+use Symfony\Component\Yaml\Yaml;
 
 class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -63,11 +64,20 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     public function testGenerateWhenNotModify()
     {
         $before = new DatabaseStructure([
-            'tbl_user'  => TableStructureFactory::fromYaml('tests/schema/tbl_user.yml'),
-            'tbl_music' => TableStructureFactory::fromYaml('tests/schema/tbl_music.yml'),
+            'tbl_user'  => TableStructureFactory::fromSpec(
+                'tbl_user',
+                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+            ),
+            'tbl_music' => TableStructureFactory::fromSpec(
+                'tbl_music',
+                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+            ),
         ]);
         $after = new DatabaseStructure([
-            TableStructureFactory::fromYaml('tests/schema/tbl_user.yml'),
+            TableStructureFactory::fromSpec(
+                'tbl_user',
+                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+            ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
         $migration = MigrationGenerator::generate($before, $after, $operator->reveal());
@@ -77,10 +87,16 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     public function testGenerateWhenDropAndCreate()
     {
         $before = new DatabaseStructure([
-            'tbl_user' => TableStructureFactory::fromYaml('tests/schema/tbl_user.yml'),
+            'tbl_user' => TableStructureFactory::fromSpec(
+                'tbl_user',
+                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+            ),
         ]);
         $after = new DatabaseStructure([
-            'tbl_music' => TableStructureFactory::fromYaml('tests/schema/tbl_music.yml'),
+            'tbl_music' => TableStructureFactory::fromSpec(
+                'tbl_music',
+                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+            ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
         $operator->choiceQuestion(
@@ -96,10 +112,16 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     public function testGenerateWhenRename()
     {
         $before = new DatabaseStructure([
-            'tbl_user' => TableStructureFactory::fromYaml('tests/schema/tbl_user.yml'),
+            'tbl_user' => TableStructureFactory::fromSpec(
+                'tbl_user',
+                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+            ),
         ]);
         $after = new DatabaseStructure([
-            'tbl_music' => TableStructureFactory::fromYaml('tests/schema/tbl_music.yml'),
+            'tbl_music' => TableStructureFactory::fromSpec(
+                'tbl_music',
+                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+            ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
         $operator->choiceQuestion(

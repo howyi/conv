@@ -8,9 +8,11 @@ use Symfony\Component\Console\Application;
 use Conv\Command\CheckAlterCommand;
 use Conv\Command\ReflectCommand;
 use Conv\Command\SetupCommand;
+use Conv\Command\CheckViewCommand;
 
 $app = new Application();
 $app->add(new CheckAlterCommand());
 $app->add(new ReflectCommand());
 $app->add(new SetupCommand());
+$app->add(new CheckViewCommand());
 $app->run();
