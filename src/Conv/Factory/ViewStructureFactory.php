@@ -84,6 +84,7 @@ class ViewStructureFactory
         foreach ($joins as $row) {
             $rowArray = explode('on', $row);
             $parsedAlias = explode(' ', rtrim(ltrim(trim($rowArray[0]), '('), ')'));
+            $attribute = '';
             if (3 === count($parsedAlias)) {
                 $attribute = $parsedAlias[0];
                 $parsedAlias[0] = $parsedAlias[1];

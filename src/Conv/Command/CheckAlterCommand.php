@@ -22,7 +22,7 @@ class CheckAlterCommand extends AbstractCommand
     {
         $operator = $this->getOperator($input, $output);
 
-        $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'));
+        $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'), 'conv');
         $expectStructure = DatabaseStructureFactory::fromDir('schema');
         $alter = MigrationGenerator::generate(
             $actualStructure,
@@ -37,7 +37,7 @@ class CheckAlterCommand extends AbstractCommand
             $pdo->exec($migration->getUp());
         }
 
-        $actualStructure = DatabaseStructureFactory::fromPDO($pdo);
+        $actualStructure = DatabaseStructureFactory::fromPDO($pdo, 'conv');
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,
