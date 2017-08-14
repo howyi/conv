@@ -19,15 +19,15 @@ class ViewCreateMigration extends AbstractTableMigration
         $this->type = MigrationType::CREATE;
 
         $createQueryHeader = "CREATE VIEW `$this->tableName`" . PHP_EOL . 'AS SELECT';
-        $createSelectLineList = $viewStructure->generateSelectedLineList();
-        $createFromLineList = $viewStructure->generateFromLineList();
-
-        $createSelectQueryBody = "  ".join(',' . PHP_EOL . '  ', $createSelectLineList);
-        $createFromQueryBody = "  ".join(',' . PHP_EOL . '  ', $createFromLineList);
-        $this->up = $createQueryHeader . PHP_EOL . $createSelectQueryBody . PHP_EOL . $createFromQueryBody;
+        // $createSelectLineList = $viewStructure->generateSelectedLineList();
+        // $createFromLineList = $viewStructure->generateFromLineList();
+        //
+        // $createSelectQueryBody = "  ".join(',' . PHP_EOL . '  ', $createSelectLineList);
+        // $createFromQueryBody = "  ".join(',' . PHP_EOL . '  ', $createFromLineList);
+        // $this->up = $createQueryHeader . PHP_EOL . $createSelectQueryBody . PHP_EOL . $createFromQueryBody;
 
         // TODO PARTITION
 
-        $this->down = "DROP TABLE `$this->tableName`;";
+        // $this->down = "DROP TABLE `$this->tableName`;";
     }
 }

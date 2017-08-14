@@ -24,7 +24,7 @@ class ViewStructureFactory
             $viewName,
             $spec[SchemaKey::VIEW_ALIAS],
             $spec[SchemaKey::VIEW_COLUMN],
-            $spec[SchemaKey::VIEW_JOIN],
+            $spec[SchemaKey::VIEW_FROM],
             $properties
         );
     }

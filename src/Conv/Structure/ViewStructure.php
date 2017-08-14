@@ -10,27 +10,27 @@ class ViewStructure implements TableStructureInterface
     private $viewName;
     private $aliasList;
     private $columnList;
-    private $joinList;
+    private $joinStructure;
     private $properties;
 
     /**
      * @param string $viewName
      * @param array  $aliasList
      * @param array  $columnList
-     * @param array  $joinList
+     * @param array  $joinArray
      * @param array  $properties
      */
     public function __construct(
         string $viewName,
         array $aliasList,
         array $columnList,
-        array $joinList,
+        array $joinArray,
         array $properties
     ) {
         $this->viewName = $viewName;
         $this->aliasList = $aliasList;
         $this->columnList = $columnList;
-        $this->joinList = $joinList;
+        $this->joinStructure = new JoinStructure($joinArray, $aliasList);
         $this->properties = $properties;
     }
 
@@ -61,9 +61,9 @@ class ViewStructure implements TableStructureInterface
     /**
      * @return array
      */
-    public function getJoinList(): array
+    public function getJoinStructure(): JoinStructure
     {
-        return $this->joinList;
+        return $this->joinStructure;
     }
 
     /**
