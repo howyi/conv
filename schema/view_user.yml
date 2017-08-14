@@ -1,5 +1,4 @@
 type: view
-comment: 'User management view'
 alias:
   tbl_user:         tu
   tbl_user_address: tua
@@ -10,9 +9,15 @@ column:
   address_line: tua.address_line
   zip_code:     tua.zip_code
   country_name: tc.country_name
-join:
-  - join: tu.user_id = tua.user_id
-  - join: tua.country_id = tc.country_id
+from:
+  reference: tu
+  joins:
+    - join:
+        using:
+          factor: [tua]
+          column: user_id
+    - left_join:
+        on_equal: [tua.country_id, tc.country_id]
 
 # CREATE VIEW `view_user`
 # AS SELECT

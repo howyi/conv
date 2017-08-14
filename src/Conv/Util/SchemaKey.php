@@ -70,21 +70,27 @@ class SchemaKey
 
     const VIEW_ALIAS  = 'alias';
     const VIEW_COLUMN = 'column';
-    const VIEW_JOIN   = 'join';
-
+    const VIEW_FROM   = 'from';
 
     const VIEW_KEYS = [
         self::VIEW_COLUMN,
-        self::VIEW_JOIN,
+        self::VIEW_FROM,
         self::VIEW_ALIAS,
     ];
 
     const VIEW_REQUIRE_KEYS = [
         self::VIEW_COLUMN,
-        self::VIEW_JOIN,
+        self::VIEW_FROM,
     ];
 
     const VIEW_OPTIONAL_KEYS = [
         self::VIEW_ALIAS,
     ];
+
+    const JOIN_REFERENCE     = 'reference';
+    const JOIN_JOINS         = 'joins';
+    const JOIN_TYPE_USING    = 'using';
+    const JOIN_TYPE_ON_EQUAL = 'on_equal';
+    const JOIN_USING_FACTOR  = 'factor';
+    const JOIN_USING_COLUMN  = 'column';
 }
