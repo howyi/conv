@@ -27,17 +27,22 @@ class JoinStructure
     public function genareteJoinQuery(): string
     {
         $joinQuery = $this->getFullTableName($this->joinArray[SchemaKey::JOIN_REFERENCE]);
-        $joinedTableNameList = [$this->joinArray[SchemaKey::JOIN_REFERENCE]];
+        $joinedList = [$this->joinArray[SchemaKey::JOIN_REFERENCE]];
 
         foreach ($this->joinArray[SchemaKey::JOIN_JOINS] as $values) {
             foreach ($values as $joinType => $value) {
                 $join = str_replace('_', ' ', $joinType);
                 if (isset($value[SchemaKey::JOIN_TYPE_USING])) {
                     // $join ~ using()
-                    continue;
-                }
-                if (isset($value[SchemaKey::JOIN_TYPE_ON_EQUAL])) {
-                    // $join ~ on()
+                    foreach ($value[SchemaKey::JOIN_TYPE_USING][SchemaKey::JOIN_USING_FACTOR] as $factor) {
+                        if (in_array($factor, $joinedList, true)) {
+                            continue;
+                        }
+                        $name = $this->getFullTableName($factor);
+                        $column = $value[SchemaKey::JOIN_TYPE_USING][SchemaKey::JOIN_USING_COLUMN];
+                        $joinQuery = "($joinQuery $join $name using(`$column`))";
+                        $joinedList[] = $factor;
+                    }
                     continue;
                 }
             }
