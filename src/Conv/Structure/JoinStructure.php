@@ -40,8 +40,40 @@ class JoinStructure
                         }
                         $name = $this->getFullTableName($factor);
                         $column = $value[SchemaKey::JOIN_TYPE_USING][SchemaKey::JOIN_USING_COLUMN];
-                        $joinQuery = "($joinQuery $join $name using(`$column`))";
+                        $joinQuery = sprintf(
+                            '(%s %s %s using(`%s`))',
+                            $joinQuery,
+                            $join,
+                            $name,
+                            $column
+                        );
                         $joinedList[] = $factor;
+                    }
+                    continue;
+                }
+                if (isset($value[SchemaKey::JOIN_TYPE_ON_EQUAL])) {
+                    // $join ~ on()
+                    foreach ($value[SchemaKey::JOIN_TYPE_ON_EQUAL] as $key => $factor) {
+                        $factorTableName = strstr($factor, '.', true);
+                        if (in_array($factorTableName, $joinedList, true)) {
+                            continue;
+                        }
+                        $name = $this->getFullTableName($factorTableName);
+                        $column = ltrim(strstr($factor, '.', false), '.');
+                        $previousFactor = $value[SchemaKey::JOIN_TYPE_ON_EQUAL][$key - 1];
+                        $previousTableName = strstr($previousFactor, '.', true);
+                        $previousColumn = ltrim(strstr($previousFactor, '.', false), '.');
+                        $joinQuery = sprintf(
+                            '(%s %s %s on(`%s`.`%s` = `%s`.`%s`))',
+                            $joinQuery,
+                            $join,
+                            $name,
+                            $factorTableName,
+                            $column,
+                            $previousTableName,
+                            $previousColumn
+                        );
+                        $joinedList[] = $factorTableName;
                     }
                     continue;
                 }
