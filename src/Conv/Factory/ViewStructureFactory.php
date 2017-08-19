@@ -56,7 +56,7 @@ class ViewStructureFactory
         }
 
         $parsed = explode(' from ', $rawQuery);
-        $selectRows = explode(",",  trim(str_replace('select', '', $parsed[0])));
+        $selectRows = explode(",", trim(str_replace('select', '', $parsed[0])));
         $escColumns = [];
         foreach ($selectRows as $row) {
             $rowArray = explode('AS', $row);

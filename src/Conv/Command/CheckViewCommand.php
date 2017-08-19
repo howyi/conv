@@ -22,14 +22,15 @@ class CheckViewCommand extends AbstractCommand
     {
         $operator = $this->getOperator($input, $output);
 
-        $actualStructure = ViewStructureFactory::fromView(
-            $this->getPDO('conv'),
-            'conv',
-            'view_user'
-        );
-        dump($actualStructure);
+        // $actualStructure = ViewStructureFactory::fromView(
+        //     $this->getPDO('conv'),
+        //     'conv',
+        //     'view_user'
+        // );
+        // dump($actualStructure);
         $spec = Yaml::parse(file_get_contents('schema/view_user.yml'));
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
-        dump($expectStructure);
+        // dump($expectStructure);
+        dump($expectStructure->getJoinStructure()->genareteJoinQuery());
     }
 }
