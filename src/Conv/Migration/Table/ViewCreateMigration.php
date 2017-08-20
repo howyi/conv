@@ -18,16 +18,27 @@ class ViewCreateMigration extends AbstractTableMigration
         $this->tableName = $viewStructure->getViewName();
         $this->type = MigrationType::CREATE;
 
-        $createQueryHeader = "CREATE VIEW `$this->tableName`" . PHP_EOL . 'AS SELECT';
-        // $createSelectLineList = $viewStructure->generateSelectedLineList();
-        // $createFromLineList = $viewStructure->generateFromLineList();
-        //
-        // $createSelectQueryBody = "  ".join(',' . PHP_EOL . '  ', $createSelectLineList);
-        // $createFromQueryBody = "  ".join(',' . PHP_EOL . '  ', $createFromLineList);
-        // $this->up = $createQueryHeader . PHP_EOL . $createSelectQueryBody . PHP_EOL . $createFromQueryBody;
+        $this->addLine("CREATE VIEW `$this->tableName`");
+        $this->addLine('AS SELECT');
 
-        // TODO PARTITION
+        $bodyList = [];
+        foreach ($viewStructure->getColumnList() as $field => $value) {
+            $targetTableName = strstr($value, '.', true);
+            $targetColumn = ltrim(strstr($value, '.', false), '.');
+            $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
+        }
+        $this->up .= "  ".join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
+        $this->addLine('FROM');
+        $this->addLine('  ' . $viewStructure->getJoinStructure()->genareteJoinQuery() . ';');
 
-        // $this->down = "DROP TABLE `$this->tableName`;";
+        $this->down = "DROP VIEW `$this->tableName`;";
+    }
+
+    /**
+     * @param string $text
+     */
+    private function addLine(string $text)
+    {
+        $this->up .= $text . PHP_EOL;
     }
 }
