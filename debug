@@ -5,14 +5,27 @@ set_time_limit(0);
 require dirname(__FILE__).'/vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Conv\Command\CheckAlterCommand;
-use Conv\Command\ReflectCommand;
-use Conv\Command\SetupCommand;
-use Conv\Command\CheckViewCommand;
+
+$composerData = json_decode(file_get_contents('composer.json'));
+$name = key(current($composerData->autoload));
+$dir = current(current($composerData->autoload));
 
 $app = new Application();
-$app->add(new CheckAlterCommand());
-$app->add(new ReflectCommand());
-$app->add(new SetupCommand());
-$app->add(new CheckViewCommand());
+
+$s = DIRECTORY_SEPARATOR;
+$iterator = new \RecursiveIteratorIterator(
+    new \RecursiveDirectoryIterator("$dir$name{$s}Command")
+);
+
+foreach ($iterator as $fileinfo) {
+    if ($fileinfo->isFile() and 'php' === strtolower($fileinfo->getExtension())) {
+        $path = $fileinfo->getPathName();
+        $className = str_replace([$dir, '.php', '/'], ['', '', '\\'], $path);
+        $class = (new \ReflectionClass($className));
+        if ($class->isAbstract() or $class->isInterface()) {
+            continue;
+        }
+        $app->add(new $className());
+    }
+}
 $app->run();
