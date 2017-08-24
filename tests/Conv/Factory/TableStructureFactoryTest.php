@@ -10,7 +10,7 @@ class TableStructureFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testFromSpec()
     {
-        $spec = Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$ext');
+        $spec = Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'));
         $actual = TableStructureFactory::fromSpec('tbl_user', $spec);
         // TODO
         $this->assertInstanceOf(TableStructure::class, $actual);
