@@ -10,7 +10,7 @@ use Conv\Migration\Table\TableCreateMigration;
 use Conv\Migration\Table\TableDropMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
-use Conv\Util\Operator;
+use Conv\Operator;
 use Howyi\Evi;
 use Prophecy\Argument as arg;
 

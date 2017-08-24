@@ -9,7 +9,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
-use Conv\Util\Operator;
+use Conv\Operator;
 
 class SchemaReflector
 {

@@ -17,7 +17,7 @@ use Conv\Structure\TableStructure;
 use Conv\Structure\ModifiedColumnStructure;
 use Conv\Structure\ModifiedColumnStructureSet;
 use Conv\Util\FieldOrder;
-use Conv\Util\Operator;
+use Conv\Operator;
 
 class TableAlterMigrationGenerator
 {
