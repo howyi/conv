@@ -3,7 +3,7 @@
 namespace Conv\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Conv\Util\Operator;
+use Conv\Operator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

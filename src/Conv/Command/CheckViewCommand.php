@@ -6,7 +6,7 @@ use Conv\Util\Config;
 use Conv\Factory\ViewStructureFactory;
 use Conv\MigrationGenerator;
 use Conv\Generator\TableAlterMigrationGenerator;
-use Conv\Util\Operator;
+use Conv\Operator;
 use Howyi\Evi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
