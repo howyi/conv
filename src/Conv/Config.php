@@ -32,7 +32,7 @@ class Config
         if (is_null($config)) {
             $path = getcwd() . DIRECTORY_SEPARATOR . 'conv.yml';
             if (file_exists($path)) {
-                $config = Evi::parse($path, true, '$ref', '$extend');
+                $config = Evi::parse($path, true, '$ref', '$ext');
             } else {
                 $config = self::DEFAULT;
             }

@@ -29,7 +29,7 @@ class DatabaseStructureFactory
         foreach ($iterator as $fileinfo) {
             if ($fileinfo->isFile()) {
                 $name = pathinfo($fileinfo->getPathName(), PATHINFO_FILENAME);
-                $specList[$name] = Evi::parse($fileinfo->getPathName(), Config::option('eval'), '$ref', '$extend');
+                $specList[$name] = Evi::parse($fileinfo->getPathName(), Config::option('eval'), '$ref', '$ext');
             }
         }
 
