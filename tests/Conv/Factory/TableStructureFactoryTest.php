@@ -2,7 +2,7 @@
 
 namespace Conv\Factory;
 
-use Conv\Config;
+use Conv\Util\Config;
 use Conv\Structure\TableStructure;
 use Howyi\Evi;
 

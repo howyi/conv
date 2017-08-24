@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv;
+namespace Conv\Util;
 
 use Howyi\Evi;
 
@@ -16,10 +16,6 @@ class Config
             'eval' => false
         ]
     ];
-
-    private function __construct()
-    {
-    }
 
     /**
      * @param string $key

@@ -2,7 +2,7 @@
 
 namespace Conv\Factory;
 
-use Conv\Config;
+use Conv\Util\Config;
 use Conv\Factory\TableStructureFactory;
 use Conv\Structure\ColumnStructure;
 use Conv\Structure\DatabaseStructure;

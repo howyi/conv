@@ -2,7 +2,7 @@
 
 namespace Conv\Structure;
 
-use Conv\Config;
+use Conv\Util\Config;
 use Conv\Util\SchemaKey;
 
 class TableStructure implements TableStructureInterface

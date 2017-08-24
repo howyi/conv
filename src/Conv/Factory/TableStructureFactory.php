@@ -9,7 +9,7 @@ use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Util\SchemaKey;
 use Conv\Util\Evaluator;
-use Conv\Config;
+use Conv\Util\Config;
 use Conv\Util\SchemaValidator;
 
 class TableStructureFactory
