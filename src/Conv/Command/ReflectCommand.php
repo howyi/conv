@@ -11,7 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Conv\Structure\TableStructureInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Conv\Util\SchemaReflector;
+use Conv\SchemaReflector;
 
 class ReflectCommand extends AbstractCommand
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Util;
+namespace Conv;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
