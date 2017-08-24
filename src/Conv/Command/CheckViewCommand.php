@@ -4,7 +4,7 @@ namespace Conv\Command;
 
 use Conv\Util\Config;
 use Conv\Factory\ViewStructureFactory;
-use Conv\Generator\MigrationGenerator;
+use Conv\MigrationGenerator;
 use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Util\Operator;
 use Howyi\Evi;

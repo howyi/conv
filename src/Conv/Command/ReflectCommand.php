@@ -4,7 +4,7 @@ namespace Conv\Command;
 
 use Conv\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
-use Conv\Generator\MigrationGenerator;
+use Conv\MigrationGenerator;
 use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Util\Operator;
 use Symfony\Component\Console\Command\Command;

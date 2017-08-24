@@ -1,11 +1,12 @@
 <?php
 
-namespace Conv\Generator;
+namespace Conv;
 
-use Conv\Migration\Table\TableDropMigration;
-use Conv\Migration\Table\TableCreateMigration;
+use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Migration\Database\Migration;
 use Conv\Migration\Table\TableAlterMigration;
+use Conv\Migration\Table\TableCreateMigration;
+use Conv\Migration\Table\TableDropMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Util\Operator;
 
