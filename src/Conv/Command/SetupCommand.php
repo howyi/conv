@@ -2,7 +2,7 @@
 
 namespace Conv\Command;
 
-use Conv\Factory\DatabaseStructureFactory;
+use Conv\DatabaseStructureFactory;
 use Conv\Migration\Table\TableCreateMigration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

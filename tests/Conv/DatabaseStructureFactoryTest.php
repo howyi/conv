@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Factory;
+namespace Conv;
 
 use Conv\Structure\DatabaseStructure;
 
