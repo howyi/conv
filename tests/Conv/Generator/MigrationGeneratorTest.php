@@ -2,7 +2,7 @@
 
 namespace Conv\Generator;
 
-use Conv\Config;
+use Conv\Util\Config;
 use Conv\Factory\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
 use Conv\Migration\Table\TableAlterMigration;
