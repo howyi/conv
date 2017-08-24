@@ -67,17 +67,17 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user'  => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
             ),
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -90,13 +90,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -115,13 +115,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$ext')
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);

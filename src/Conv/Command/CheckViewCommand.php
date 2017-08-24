@@ -30,7 +30,7 @@ class CheckViewCommand extends AbstractCommand
         //     'view_user'
         // );
         // dump($actualStructure);
-        $spec = Evi::parse('schema/view_user.yml', Config::option('eval'), '$ref', '$exts');
+        $spec = Evi::parse('schema/view_user.yml', Config::option('eval'));
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
         // dump($expectStructure);
         dump($expectStructure->getJoinStructure()->genareteJoinQuery());
