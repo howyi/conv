@@ -26,11 +26,11 @@ class SchemaKey
 
     const TABLE_REQUIRE_KEYS = [
         self::TABLE_TYPE,
-        self::TABLE_COMMENT,
         self::TABLE_COLUMN,
     ];
 
     const TABLE_OPTIONAL_KEYS = [
+        self::TABLE_COMMENT,
         self::TABLE_PRIMARY_KEY,
         self::TABLE_INDEX,
         self::TABLE_ENGINE,

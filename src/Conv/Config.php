@@ -2,7 +2,7 @@
 
 namespace Conv;
 
-use Symfony\Component\Yaml\Yaml;
+use Howyi\Evi;
 
 class Config
 {
@@ -32,19 +32,7 @@ class Config
         if (is_null($config)) {
             $path = getcwd() . DIRECTORY_SEPARATOR . 'conv.yml';
             if (file_exists($path)) {
-                set_error_handler(
-                    function ($errno, $errstr, $errfile, $errline) {
-                        throw new \ErrorException(
-                            $errstr,
-                            0,
-                            $errno,
-                            $errfile,
-                            $errline
-                        );
-                    },
-                    E_USER_DEPRECATED
-                );
-                $config = Yaml::parse(file_get_contents($path));
+                $config = Evi::parse($path, true, '$ref', '$extend');
             } else {
                 $config = self::DEFAULT;
             }

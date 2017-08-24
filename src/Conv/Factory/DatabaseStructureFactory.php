@@ -11,7 +11,7 @@ use Conv\Structure\TableStructureType;
 use Conv\Util\Evaluator;
 use Conv\Util\SchemaKey;
 use Conv\Util\SchemaValidator;
-use Symfony\Component\Yaml\Yaml;
+use Howyi\Evi;
 
 class DatabaseStructureFactory
 {
@@ -29,35 +29,11 @@ class DatabaseStructureFactory
         foreach ($iterator as $fileinfo) {
             if ($fileinfo->isFile()) {
                 $name = pathinfo($fileinfo->getPathName(), PATHINFO_FILENAME);
-                switch (strtolower($fileinfo->getExtension())) {
-                    case 'yml':
-                    case 'yaml':
-                        // エラー制御演算子によって表示されないキー重複エラーを出力させる
-                        set_error_handler(
-                            function ($errno, $errstr, $errfile, $errline) {
-                                throw new \ErrorException(
-                                    $errstr,
-                                    0,
-                                    $errno,
-                                    $errfile,
-                                    $errline
-                                );
-                            },
-                            E_USER_DEPRECATED
-                        );
-                        $specList[$name] = Yaml::parse(file_get_contents($fileinfo->getPathName()));
-                        restore_error_handler();
-                        break;
-                    default:
-                        break;
-                }
+                $specList[$name] = Evi::parse($fileinfo->getPathName(), Config::option('eval'), '$ref', '$extend');
             }
         }
 
         foreach ($specList as $name => $spec) {
-            if (Config::option('eval')) {
-                $spec = Evaluator::evaluate($spec);
-            }
             if (!isset($spec[SchemaKey::TABLE_TYPE])) {
                 $spec[SchemaKey::TABLE_TYPE] = TableStructureType::TABLE;
             }

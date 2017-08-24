@@ -2,10 +2,12 @@
 
 namespace Conv\Command;
 
+use Conv\Config;
 use Conv\Factory\ViewStructureFactory;
 use Conv\Generator\MigrationGenerator;
 use Conv\Generator\TableAlterMigrationGenerator;
 use Conv\Util\Operator;
+use Howyi\Evi;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +30,7 @@ class CheckViewCommand extends AbstractCommand
         //     'view_user'
         // );
         // dump($actualStructure);
-        $spec = Yaml::parse(file_get_contents('schema/view_user.yml'));
+        $spec = Evi::parse('schema/view_user.yml', Config::option('eval'), '$ref', '$extends');
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
         // dump($expectStructure);
         dump($expectStructure->getJoinStructure()->genareteJoinQuery());
