@@ -2,6 +2,7 @@
 
 namespace Conv\Generator;
 
+use Conv\Config;
 use Conv\Factory\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
 use Conv\Migration\Table\TableAlterMigration;
@@ -10,8 +11,8 @@ use Conv\Migration\Table\TableDropMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
 use Conv\Util\Operator;
+use Howyi\Evi;
 use Prophecy\Argument as arg;
-use Symfony\Component\Yaml\Yaml;
 
 class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 {
@@ -66,17 +67,17 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user'  => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$extend')
             ),
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $after = new DatabaseStructure([
             TableStructureFactory::fromSpec(
                 'tbl_user',
-                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -89,13 +90,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -114,13 +115,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Yaml::parse(file_get_contents('tests/schema/tbl_user.yml'))
+                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Yaml::parse(file_get_contents('tests/schema/tbl_music.yml'))
+                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'), '$ref', '$extend')
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);

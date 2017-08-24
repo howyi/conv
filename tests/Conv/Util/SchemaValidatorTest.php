@@ -47,7 +47,6 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
@@ -65,8 +64,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_COMMENT=> 'Unique music ID',
@@ -83,8 +82,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
@@ -102,8 +101,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
@@ -122,8 +121,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
@@ -145,8 +144,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
@@ -170,8 +169,8 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 [
-                    SchemaKey::TABLE_TYPE=> TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT=> 'Music management table',
+                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
+                    SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
