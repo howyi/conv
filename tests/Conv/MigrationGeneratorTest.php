@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Generator;
+namespace Conv;
 
 use Conv\Util\Config;
 use Conv\DatabaseStructureFactory;
