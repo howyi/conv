@@ -1,3 +1,3 @@
 parameters:
     ignoreErrors:
-        - '#Call to an undefined static method Conv\\Config#'
+        - '#Call to an undefined static method Conv\\Util\\Config#'
