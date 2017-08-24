@@ -14,7 +14,8 @@
         "php":                      ">=7.0.16",
         "symfony/console":          "~2.0 | ~3.0",
         "symfony/yaml":             "~2.0 | ~3.0",
-        "greenlion/php-sql-parser": "^4.1"
+        "greenlion/php-sql-parser": "^4.1",
+        "howyi/evi":                "dev-master"
     },
     "autoload": {
         "psr-0": {
