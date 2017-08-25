@@ -2,6 +2,8 @@
 
 namespace Conv\Migration\Table;
 
+use Conv\MigrationType;
+
 /**
  * ALTER TABLE
  */

@@ -2,6 +2,7 @@
 
 namespace Conv\Migration\Table;
 
+use Conv\MigrationType;
 use Conv\Structure\ViewStructure;
 
 /**
