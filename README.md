@@ -12,7 +12,7 @@ composer require howyi/conv --dev
 ### 概要
 指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
 
-#### YAML定義例
+#### YAML sample
 tbl_user.yml
 ```yaml
 comment: 'User management table'
@@ -31,7 +31,7 @@ index:
     is_unique: true
     column: [user_id, age]
 ```
-generated migration
+#### Generated migration  
 UP
 ```sql
 CREATE TABLE `tbl_user` (
