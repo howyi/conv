@@ -7,6 +7,8 @@ MySQL migration query auto generate from schema
 composer require howyi/conv --dev
 ```
 
+- wiki: https://github.com/howyi/conv/wiki
+
 ### 概要
 指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
 
@@ -29,38 +31,17 @@ index:
     is_unique: true
     column: [user_id, age]
 ```
-
-### 使用方法
-##### 基本部分
-`Conv\DatabaseStructureFactory` によって生成される `Conv\Structure\DatabaseStructure` をベースとしてマイグレーションの生成などを行う
-- テーブルをDatabaseStructureにする場合は `DatabaseStructureFactory::fromPDO()`
-- スキーマディレクトリをDatabaseStructureにする場合は `DatabaseStructureFactory::fromDir()` を使用する
-##### 現在のテーブルをスキーマファイルにする
-`Conv\SchemaReflector::fromDatabaseStructure` に生成した `DatabaseStructure` とディレクトリのパスを与えることで、`DatabaseStrucuture` を1テーブル1ファイルとしてディレクトリに保存する
-##### 差分のマイグレーションを生成する
-`Conv\MigrationGenerator` に `DatabaseStructure` を渡すことで `Conv\Migration\Database\Migration` が作成される
-
-### スキーマの書き方
-`tbl_user.yaml` というように名前を設定することで、ファイル名がテーブル名として扱われる
-```yaml
-comment: 'User management table'
-column:
-# columnはキーでカラム名を設定する
-  user_id:
-    type: int(11)
-    comment: 'User ID'
-  age:
-    type: tinyint(3)
-    comment: 'User age'
-    attribute: [nullable, unsigned]
-# attributeに指定できる属性は [auto_increment, unsigned, nullable] の三種類
-primary_key:
-  - user_id
-# PKは配列になっており、複数指定することで複合PKとなる
-index:
-# indexはキーでindex名を設定する
-  id_age:
-    is_unique: true
-    column: [user_id, age]
-# columnを複数指定することで複合INDEXとなる
+generated migration
+UP
+```sql
+CREATE TABLE `tbl_user` (
+  `user_id` int(11) NOT NULL COMMENT 'User ID',
+  `age` tinyint(3) UNSIGNED COMMENT 'User age',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY ` id_age` (`user_id`, `age`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='User management table';
+```
+DOWN
+```sql
+DROP TABLE `tbl_user`;
 ```
