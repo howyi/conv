@@ -38,6 +38,7 @@ class JoinStructure
                 }
                 $name = $this->getFullTableName($factor);
 
+                $query = '';
                 if (isset($value[SchemaKey::JOIN_TYPE_USING])) {
                     // $join ~ using()
                     $column = $value[SchemaKey::JOIN_TYPE_USING];
