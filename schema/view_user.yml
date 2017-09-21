@@ -13,11 +13,11 @@ from:
   reference: tu
   joins:
     - join:
-        using:
-          factor: [tua]
-          column: user_id
+        factor: tua
+        using: user_id
     - left_join:
-        on_equal: [tua.country_id, tc.country_id]
+        factor: tc
+        on: tua.country_id = tc.country_id
 
 # CREATE VIEW `view_user`
 # AS SELECT
