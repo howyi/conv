@@ -32,7 +32,7 @@ class JoinStructure
 
         foreach ($this->joinArray[SchemaKey::JOIN_JOINS] as $values) {
             foreach ($values as $joinType => $value) {
-                $join = str_replace('_', ' ', $joinType);
+                $join = strtolower(str_replace('_', ' ', $joinType));
                 $factor = $value[SchemaKey::JOIN_FACTOR];
                 if (in_array($factor, $joinedList, true)) {
                     continue;
