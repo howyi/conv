@@ -87,10 +87,9 @@ class SchemaKey
         self::VIEW_ALIAS,
     ];
 
-    const JOIN_REFERENCE     = 'reference';
-    const JOIN_JOINS         = 'joins';
-    const JOIN_TYPE_USING    = 'using';
-    const JOIN_TYPE_ON_EQUAL = 'on_equal';
-    const JOIN_USING_FACTOR  = 'factor';
-    const JOIN_USING_COLUMN  = 'column';
+    const JOIN_REFERENCE    = 'reference';
+    const JOIN_JOINS        = 'joins';
+    const JOIN_FACTOR       = 'factor';
+    const JOIN_TYPE_USING   = 'using';
+    const JOIN_TYPE_ON      = 'on';
 }

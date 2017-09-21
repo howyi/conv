@@ -31,52 +31,26 @@ class JoinStructure
 
         foreach ($this->joinArray[SchemaKey::JOIN_JOINS] as $values) {
             foreach ($values as $joinType => $value) {
-                $join = str_replace('_', ' ', $joinType);
+                $join = strtoupper(str_replace('_', ' ', $joinType));
+                $factor = $value[SchemaKey::JOIN_FACTOR];
+                if (in_array($factor, $joinedList, true)) {
+                    continue;
+                }
+                $name = $this->getFullTableName($factor);
+
                 if (isset($value[SchemaKey::JOIN_TYPE_USING])) {
                     // $join ~ using()
-                    foreach ($value[SchemaKey::JOIN_TYPE_USING][SchemaKey::JOIN_USING_FACTOR] as $factor) {
-                        if (in_array($factor, $joinedList, true)) {
-                            continue;
-                        }
-                        $name = $this->getFullTableName($factor);
-                        $column = $value[SchemaKey::JOIN_TYPE_USING][SchemaKey::JOIN_USING_COLUMN];
-                        $joinQuery = sprintf(
-                            '(%s %s %s using(`%s`))',
-                            $joinQuery,
-                            $join,
-                            $name,
-                            $column
-                        );
-                        $joinedList[] = $factor;
-                    }
-                    continue;
-                }
-                if (isset($value[SchemaKey::JOIN_TYPE_ON_EQUAL])) {
+                    $column = $value[SchemaKey::JOIN_TYPE_USING];
+                    $query = "using(`$column`)";
+                } elseif (isset($value[SchemaKey::JOIN_TYPE_ON])) {
                     // $join ~ on()
-                    foreach ($value[SchemaKey::JOIN_TYPE_ON_EQUAL] as $key => $factor) {
-                        $factorTableName = strstr($factor, '.', true);
-                        if (in_array($factorTableName, $joinedList, true)) {
-                            continue;
-                        }
-                        $name = $this->getFullTableName($factorTableName);
-                        $column = ltrim(strstr($factor, '.', false), '.');
-                        $previousFactor = $value[SchemaKey::JOIN_TYPE_ON_EQUAL][$key - 1];
-                        $previousTableName = strstr($previousFactor, '.', true);
-                        $previousColumn = ltrim(strstr($previousFactor, '.', false), '.');
-                        $joinQuery = sprintf(
-                            '(%s %s %s on(`%s`.`%s` = `%s`.`%s`))',
-                            $joinQuery,
-                            $join,
-                            $name,
-                            $factorTableName,
-                            $column,
-                            $previousTableName,
-                            $previousColumn
-                        );
-                        $joinedList[] = $factorTableName;
-                    }
-                    continue;
+                    $equal = $value[SchemaKey::JOIN_TYPE_ON];
+                    $equal = $this->graveDecorator($equal);
+                    $query = "on($equal)";
                 }
+
+                $joinQuery = "($joinQuery $join $name $query)";
+                $joinedList[] = $factor;
             }
         }
         return $joinQuery;
@@ -96,5 +70,30 @@ class JoinStructure
         }
         $fullTableName .= "`$alias`";
         return $fullTableName;
+    }
+
+    /**
+     * @param string $text
+     * @return string
+     */
+    private function graveDecorator(string $text): string
+    {
+        $replace = [];
+        $replaced = [];
+        $id = 100001;
+        $sep = 'R_%d_R';
+        foreach (explode(' ', trim($text)) as $pieces) {
+            if ('=' === $pieces or ' ' === $pieces) {
+                continue;
+            }
+            foreach (explode('.', trim($pieces)) as $piece) {
+                $insert = sprintf($sep, $id);
+                $text = preg_replace("/$piece/", $insert, $text, 1);
+                $replace[] = $insert;
+                $replaced[] =  "`$piece`";
+                $id++;
+            }
+        }
+        return str_replace($replace, $replaced, $text);
     }
 }
