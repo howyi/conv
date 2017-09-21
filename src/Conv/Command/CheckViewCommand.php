@@ -12,6 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
+use Conv\Migration\Table\ViewCreateMigration;
 
 class CheckViewCommand extends AbstractCommand
 {
@@ -34,5 +35,6 @@ class CheckViewCommand extends AbstractCommand
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
         // dump($expectStructure);
         dump($expectStructure->getJoinStructure()->genareteJoinQuery());
+        dump(new ViewCreateMigration($expectStructure));
     }
 }
