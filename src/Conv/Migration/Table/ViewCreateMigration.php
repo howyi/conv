@@ -20,7 +20,7 @@ class ViewCreateMigration extends AbstractTableMigration
         $this->type = MigrationType::CREATE;
 
         $this->addLine("CREATE VIEW `$this->tableName`");
-        $this->addLine('AS SELECT');
+        $this->addLine('AS select');
 
         $bodyList = [];
         foreach ($viewStructure->getColumnList() as $field => $value) {
@@ -29,7 +29,7 @@ class ViewCreateMigration extends AbstractTableMigration
             $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
         }
         $this->up .= "  ".join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
-        $this->addLine('FROM');
+        $this->addLine('from');
         $this->addLine('  ' . $viewStructure->getJoinStructure()->genareteJoinQuery() . ';');
 
         $this->down = "DROP VIEW `$this->tableName`;";
