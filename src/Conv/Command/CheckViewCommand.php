@@ -31,10 +31,13 @@ class CheckViewCommand extends AbstractCommand
         //     'view_user'
         // );
         // dump($actualStructure);
+        $pdo = $this->getPDO('conv');
+
         $spec = Evi::parse('schema/view_user.yml', Config::option('eval'));
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
         // dump($expectStructure);
-        dump($expectStructure->getJoinStructure()->genareteJoinQuery());
-        dump(new ViewCreateMigration($expectStructure));
+        dump((new ViewCreateMigration($expectStructure))->getUp());
+
+        $pdo->exec((new ViewCreateMigration($expectStructure))->getUp());
     }
 }

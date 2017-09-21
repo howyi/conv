@@ -28,10 +28,11 @@ class JoinStructure
     {
         $joinQuery = $this->getFullTableName($this->joinArray[SchemaKey::JOIN_REFERENCE]);
         $joinedList = [$this->joinArray[SchemaKey::JOIN_REFERENCE]];
+        $reference = $this->joinArray[SchemaKey::JOIN_REFERENCE];
 
         foreach ($this->joinArray[SchemaKey::JOIN_JOINS] as $values) {
             foreach ($values as $joinType => $value) {
-                $join = strtoupper(str_replace('_', ' ', $joinType));
+                $join = str_replace('_', ' ', $joinType);
                 $factor = $value[SchemaKey::JOIN_FACTOR];
                 if (in_array($factor, $joinedList, true)) {
                     continue;
@@ -42,12 +43,13 @@ class JoinStructure
                 if (isset($value[SchemaKey::JOIN_TYPE_USING])) {
                     // $join ~ using()
                     $column = $value[SchemaKey::JOIN_TYPE_USING];
-                    $query = "using(`$column`)";
+                    $query = "on((`$reference`.`$column` = `$factor`.`$column`))";
+                    // TODO: t-hayashi ONに変更する
                 } elseif (isset($value[SchemaKey::JOIN_TYPE_ON])) {
                     // $join ~ on()
                     $equal = $value[SchemaKey::JOIN_TYPE_ON];
                     $equal = $this->graveDecorator($equal);
-                    $query = "on($equal)";
+                    $query = "on(($equal))";
                 }
 
                 $joinQuery = "($joinQuery $join $name $query)";
