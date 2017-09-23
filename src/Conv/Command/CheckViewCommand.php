@@ -47,7 +47,7 @@ class CheckViewCommand extends AbstractCommand
 
         $up = (new ViewCreateMigration($expectStructure))->getUp();
         dump($up);
-        dump(rtrim(str_replace([PHP_EOL, ' '], '', $up), ';'));
+        dump($expectStructure->getCompareQuery());
         dump(str_replace([PHP_EOL, ' '], '', $viewQuery));
     }
 }
