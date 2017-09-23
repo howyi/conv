@@ -16,11 +16,19 @@ class DatabaseStructure
     }
 
     /**
+     * @return array $filter
      * @return array
      */
-    public function getTableList(): array
+    public function getTableList(array $filter = []): array
     {
-        return $this->tableList;
+        $list = [];
+        foreach ($this->tableList as $name => $structure) {
+            if (!empty($filter) and !in_array($structure->getType(), $filter, true)) {
+                continue;
+            }
+            $list[$name] = $structure;
+        }
+        return $list;
     }
 
     /**
@@ -30,8 +38,8 @@ class DatabaseStructure
     public function getDiffTableList(DatabaseStructure $target): array
     {
         $removedTableList = [];
-        foreach ($this->getTableList() as $tableName => $tableStructure) {
-            if (!array_key_exists($tableName, $target->getTableList())) {
+        foreach ($this->getTableList([TableStructureType::TABLE]) as $tableName => $tableStructure) {
+            if (!array_key_exists($tableName, $target->getTableList([TableStructureType::TABLE]))) {
                 $removedTableList[$tableName] = $this->getTableList()[$tableName];
             }
         }

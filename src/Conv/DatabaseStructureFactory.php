@@ -39,17 +39,13 @@ class DatabaseStructureFactory
                 $spec[SchemaKey::TABLE_TYPE] = TableStructureType::TABLE;
             }
             SchemaValidator::validate($name, $spec);
-            switch ($spec[SchemaKey::TABLE_TYPE]) {
-                case TableStructureType::TABLE:
-                    $table = TableStructureFactory::fromSpec($name, $spec);
-                    $tableList[$table->getTableName()] = $table;
-                    break;
-                case TableStructureType::VIEW:
-                    // TODO
-                    break;
+            if ($spec[SchemaKey::TABLE_TYPE] === TableStructureType::TABLE) {
+                $table = TableStructureFactory::fromSpec($name, $spec);
+            } else {
+                $table = ViewStructureFactory::fromSpec($name, $spec);
             }
+            $tableList[$table->getName()] = $table;
         }
-        // dump($specList);
         return new DatabaseStructure($tableList);
     }
 

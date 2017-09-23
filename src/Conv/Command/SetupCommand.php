@@ -4,8 +4,10 @@ namespace Conv\Command;
 
 use Conv\DatabaseStructureFactory;
 use Conv\Migration\Table\TableCreateMigration;
+use Conv\Migration\Table\ViewCreateMigration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Conv\Structure\TableStructureType;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetupCommand extends AbstractCommand
@@ -26,7 +28,11 @@ class SetupCommand extends AbstractCommand
         $databaseStructure = DatabaseStructureFactory::fromDir('schema');
         $pdo = $this->getPDO('conv');
         foreach ($databaseStructure->getTableList() as $table) {
-            $migration = new TableCreateMigration($table);
+            if ($table->getType() === TableStructureType::TABLE) {
+                $migration = new TableCreateMigration($table);
+            } else {
+                $migration = new ViewCreateMigration($table);
+            }
             $operator->output('<fg=green>実行クエリ</>');
             $operator->output($migration->getUp());
             $pdo->exec($migration->getUp());

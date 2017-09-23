@@ -9,6 +9,7 @@ use Conv\Migration\Table\TableCreateMigration;
 use Conv\Migration\Table\TableDropMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Operator;
+use Conv\Structure\TableStructureType;
 
 class MigrationGenerator
 {
@@ -72,7 +73,7 @@ class MigrationGenerator
             );
         }
 
-        foreach ($beforeDatabase->getTableList() as $tableName => $beforeTable) {
+        foreach ($beforeDatabase->getTableList([TableStructureType::TABLE]) as $tableName => $beforeTable) {
             if (!array_key_exists($tableName, $afterDatabase->getTableList())) {
                 continue;
             }
