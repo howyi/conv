@@ -101,4 +101,41 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
     {
         return $this->viewName;
     }
+
+    /**
+     * @return string
+     */
+    public function getCreateQuery(): string
+    {
+        $createQuery = '';
+        if (is_null($this->getAlgorithm())) {
+            $createQuery = "CREATE VIEW `$this->viewName`". PHP_EOL;
+        } else {
+            $algorithm = strtoupper($this->getAlgorithm());
+            $createQuery = "CREATE ALGORITHM=$algorithm VIEW `$this->viewName`". PHP_EOL;
+        }
+        $createQuery .= 'AS select' . PHP_EOL;
+
+        $bodyList = [];
+        foreach ($this->getColumnList() as $field => $value) {
+            $targetTableName = strstr($value, '.', true);
+            $targetColumn = ltrim(strstr($value, '.', false), '.');
+            $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
+        }
+        $createQuery .= "  ".join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
+        $createQuery .= 'from' . PHP_EOL;
+        $createQuery .= '  ' . $this->getJoinStructure()->genareteJoinQuery() . ';' . PHP_EOL;
+
+        return $createQuery;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompareQuery(): string
+    {
+        $createQuery = $this->getCreateQuery();
+        $compareQuery = str_replace([PHP_EOL, ' '], '', $createQuery);
+        return rtrim($compareQuery, ';');
+    }
 }
