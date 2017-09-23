@@ -39,20 +39,10 @@ class JoinStructure
                 }
                 $name = $this->getFullTableName($factor);
 
-                $query = '';
-                if (isset($value[SchemaKey::JOIN_TYPE_USING])) {
-                    // $join ~ using()
-                    $column = $value[SchemaKey::JOIN_TYPE_USING];
-                    $query = "on((`$reference`.`$column` = `$factor`.`$column`))";
-                    // TODO: t-hayashi ONに変更する
-                } elseif (isset($value[SchemaKey::JOIN_TYPE_ON])) {
-                    // $join ~ on()
-                    $equal = $value[SchemaKey::JOIN_TYPE_ON];
-                    $equal = $this->graveDecorator($equal);
-                    $query = "on(($equal))";
-                }
+                $equal = $value[SchemaKey::JOIN_ON];
+                $equal = $this->graveDecorator($equal);
 
-                $joinQuery = "($joinQuery $join $name $query)";
+                $joinQuery = "($joinQuery $join $name on(($equal)))";
                 $joinedList[] = $factor;
             }
         }
