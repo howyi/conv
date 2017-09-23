@@ -38,6 +38,9 @@ class CheckViewCommand extends AbstractCommand
         // dump($expectStructure);
         dump((new ViewCreateMigration($expectStructure))->getUp());
 
+        $pdo->exec('DROP VIEW IF EXISTS view_user');
         $pdo->exec((new ViewCreateMigration($expectStructure))->getUp());
+        $a = $pdo->query('SHOW CREATE VIEW view_user')->fetch();
+        dump($a['Create View']);
     }
 }
