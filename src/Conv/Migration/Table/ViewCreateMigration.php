@@ -19,32 +19,8 @@ class ViewCreateMigration extends AbstractTableMigration
         $this->tableName = $viewStructure->getViewName();
         $this->type = MigrationType::CREATE;
 
-        if (is_null($viewStructure->getAlgorithm())) {
-            $this->addLine("CREATE VIEW `$this->tableName`");
-        } else {
-            $algorithm = strtoupper($viewStructure->getAlgorithm());
-            $this->addLine("CREATE ALGORITHM=$algorithm VIEW `$this->tableName`");
-        }
-        $this->addLine('AS select');
-
-        $bodyList = [];
-        foreach ($viewStructure->getColumnList() as $field => $value) {
-            $targetTableName = strstr($value, '.', true);
-            $targetColumn = ltrim(strstr($value, '.', false), '.');
-            $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
-        }
-        $this->up .= "  ".join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
-        $this->addLine('from');
-        $this->addLine('  ' . $viewStructure->getJoinStructure()->genareteJoinQuery() . ';');
+        $this->up = $viewStructure->getCreateQuery();
 
         $this->down = "DROP VIEW `$this->tableName`;";
-    }
-
-    /**
-     * @param string $text
-     */
-    private function addLine(string $text)
-    {
-        $this->up .= $text . PHP_EOL;
     }
 }
