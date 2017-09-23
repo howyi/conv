@@ -44,7 +44,7 @@ class ViewStructureFactory
         $createQuery = $pdo->query('SHOW CREATE VIEW view_user')->fetch()['Create View'];
         return new ViewRawStructure(
             $viewName,
-            $createQuery
+            "$createQuery;"
         );
     }
 }

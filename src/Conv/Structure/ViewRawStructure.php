@@ -64,4 +64,14 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
             SchemaKey::VIEW_RAW_QUERY => $this->getCreateQuery(),
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getCompareQuery(): string
+    {
+        $definer = ' DEFINER' . explode('DEFINER', $this->createQuery)[1] . 'DEFINER';
+        $compareQuery = str_replace([PHP_EOL, ' ', $definer], '', $this->createQuery);
+        return rtrim($compareQuery, ';');
+    }
 }
