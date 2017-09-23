@@ -110,7 +110,7 @@ class ViewStructureFactory
         $joins = [];
         foreach ($escJoins as $values) {
             foreach ($values as $key => $value) {
-                $attribute = str_replace( ' ', '_', array_flip($sepMask)[$joinSep . $key]);
+                $attribute = str_replace(' ', '_', array_flip($sepMask)[$joinSep . $key]);
                 $joins[] = [
                     $attribute => str_replace(array_keys($escArray), array_values($escArray), $value)
                 ];
