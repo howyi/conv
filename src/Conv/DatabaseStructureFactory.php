@@ -4,6 +4,7 @@ namespace Conv;
 
 use Conv\Util\Config;
 use Conv\Factory\TableStructureFactory;
+use Conv\Factory\ViewStructureFactory;
 use Conv\Structure\ColumnStructure;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\IndexStructure;
@@ -73,8 +74,8 @@ class DatabaseStructureFactory
                     $table = TableStructureFactory::fromTable($pdo, $dbName, $tableName);
                     break;
                 case 'VIEW':
-                    // TODO
-                    continue 2;
+                    $table = ViewStructureFactory::fromView($pdo, $dbName, $tableName);
+                    break;
                 default:
                     continue 2;
             }

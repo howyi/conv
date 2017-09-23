@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Conv\Structure\DatabaseStructure;
+use Conv\Structure\TableStructureType;
+use Conv\Structure\ViewRawStructure;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Operator;
@@ -40,9 +42,17 @@ class SchemaReflector
         $progress = $operator->getProgress(count($database->getTableList()));
         $progress->start();
         $progress->setFormat('debug');
-        foreach ($database->getTableList() as $tableName => $tableStructure) {
-            self::fromTableStructure($path, $tableStructure);
-            $progress->setMessage("Table: $tableName");
+        foreach ($database->getTableList() as $tableName => $structure) {
+            dump($structure->getType());
+            switch ($structure->getType()) {
+                case TableStructureType::TABLE:
+                    self::fromTableStructure($path, $structure);
+                    break;
+                case TableStructureType::VIEW_RAW:
+                    self::fromViewRawStructure($path, $structure);
+                    dump($tableName);
+                    break;
+            }
             $progress->advance();
         }
         $progress->finish();
@@ -50,9 +60,8 @@ class SchemaReflector
     }
 
     /**
-     * @param string $message
-     * @param array  $choices
-     * @return mixed
+     * @param string         $path
+     * @param TableStructure $table
      */
     public static function fromTableStructure(
         string $path,
@@ -65,6 +74,24 @@ class SchemaReflector
                 $table->getTableName()
             ),
             Yaml::dump($table->toArray(), 3, 2)
+        );
+    }
+
+    /**
+     * @param string           $path
+     * @param ViewRawStructure $view
+     */
+    public static function fromViewRawStructure(
+        string $path,
+        ViewRawStructure $view
+    ) {
+        file_put_contents(
+            sprintf(
+                '%s/%s.yml',
+                $path,
+                $view->getViewName()
+            ),
+            Yaml::dump($view->toArray(), 3, 2)
         );
     }
 }
