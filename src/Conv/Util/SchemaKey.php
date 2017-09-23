@@ -68,9 +68,10 @@ class SchemaKey
         self::INDEX_COLUMN,
     ];
 
-    const VIEW_ALIAS  = 'alias';
-    const VIEW_COLUMN = 'column';
-    const VIEW_FROM   = 'from';
+    const VIEW_ALGORITHM = 'algorithm';
+    const VIEW_ALIAS     = 'alias';
+    const VIEW_COLUMN    = 'column';
+    const VIEW_FROM      = 'from';
 
     const VIEW_KEYS = [
         self::VIEW_COLUMN,

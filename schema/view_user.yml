@@ -1,5 +1,5 @@
 type: view
-algorithm: undefined
+algorithm: merge
 alias:
   tbl_user:         tu
   tbl_user_address: tua

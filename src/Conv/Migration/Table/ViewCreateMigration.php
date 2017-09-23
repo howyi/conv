@@ -19,7 +19,12 @@ class ViewCreateMigration extends AbstractTableMigration
         $this->tableName = $viewStructure->getViewName();
         $this->type = MigrationType::CREATE;
 
-        $this->addLine("CREATE VIEW `$this->tableName`");
+        if (is_null($viewStructure->getAlgorithm())) {
+            $this->addLine("CREATE VIEW `$this->tableName`");
+        } else {
+            $algorithm = strtoupper($viewStructure->getAlgorithm());
+            $this->addLine("CREATE ALGORITHM=$algorithm VIEW `$this->tableName`");
+        }
         $this->addLine('AS select');
 
         $bodyList = [];
