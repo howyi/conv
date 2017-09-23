@@ -40,7 +40,14 @@ class CheckViewCommand extends AbstractCommand
 
         $pdo->exec('DROP VIEW IF EXISTS view_user');
         $pdo->exec((new ViewCreateMigration($expectStructure))->getUp());
-        $a = $pdo->query('SHOW CREATE VIEW view_user')->fetch();
-        dump($a['Create View']);
+        $viewQuery = $pdo->query('SHOW CREATE VIEW view_user')->fetch()['Create View'];
+
+        $definer = ' DEFINER' . explode('DEFINER', $viewQuery)[1] . 'DEFINER';
+        $viewQuery = str_replace($definer, '', $viewQuery);
+
+        $up = (new ViewCreateMigration($expectStructure))->getUp();
+        dump($up);
+        dump(rtrim(str_replace([PHP_EOL, ' '], '', $up), ';'));
+        dump(str_replace([PHP_EOL, ' '], '', $viewQuery));
     }
 }

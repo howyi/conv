@@ -92,4 +92,6 @@ class SchemaKey
     const JOIN_JOINS     = 'joins';
     const JOIN_FACTOR    = 'factor';
     const JOIN_ON        = 'on';
+
+    const VIEW_RAW_QUERY = 'query';
 }

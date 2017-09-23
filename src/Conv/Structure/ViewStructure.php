@@ -5,7 +5,7 @@ namespace Conv\Structure;
 use Conv\Util\Config;
 use Conv\Util\SchemaKey;
 
-class ViewStructure implements TableStructureInterface
+class ViewStructure implements ViewStructureInterface, TableStructureInterface
 {
     private $viewName;
     private $algorithm;
