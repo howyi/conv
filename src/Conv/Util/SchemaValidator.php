@@ -15,6 +15,10 @@ class SchemaValidator
      */
     public static function validate(string $name, array $spec)
     {
+        if (isset($spec[SchemaKey::TABLE_TYPE]) and $spec[SchemaKey::TABLE_TYPE] === TableStructureType::VIEW_RAW) {
+            return;
+        }
+
         if (0 !== count(array_diff(SchemaKey::TABLE_REQUIRE_KEYS, array_keys($spec)))) {
             throw new SchemaValidateException(
                 sprintf(
