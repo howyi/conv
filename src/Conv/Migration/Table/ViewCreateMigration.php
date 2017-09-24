@@ -3,7 +3,7 @@
 namespace Conv\Migration\Table;
 
 use Conv\MigrationType;
-use Conv\Structure\ViewStructure;
+use Conv\Structure\ViewStructureInterface;
 
 /**
  * CREATE VIEW
@@ -11,10 +11,10 @@ use Conv\Structure\ViewStructure;
 class ViewCreateMigration extends AbstractTableMigration
 {
     /**
-     * @param ViewStructure $viewStructure
+     * @param ViewStructureInterface $viewStructure
      */
     public function __construct(
-        ViewStructure $viewStructure
+        ViewStructureInterface $viewStructure
     ) {
         $this->tableName = $viewStructure->getViewName();
         $this->type = MigrationType::CREATE;

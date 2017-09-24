@@ -3,6 +3,7 @@
 namespace Conv\Factory;
 
 use Conv\Structure\ViewStructure;
+use Conv\Structure\ViewStructureInterface;
 use Conv\Structure\ViewRawStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Util\SchemaKey;
@@ -15,22 +16,27 @@ class ViewStructureFactory
     /**
      * @param string $viewName
      * @param array  $spec
-     * @return ViewStructure
+     * @return ViewStructureInterface
      */
-    public static function fromSpec(string $viewName, array $spec): ViewStructure
+    public static function fromSpec(string $viewName, array $spec): ViewStructureInterface
     {
-        $properties = array_diff_key($spec, array_flip(SchemaKey::VIEW_KEYS));
-
-        $algorithm = isset($spec[SchemaKey::VIEW_ALGORITHM]) ? $spec[SchemaKey::VIEW_ALGORITHM] : null;
-
-        return new ViewStructure(
-            $viewName,
-            $algorithm,
-            $spec[SchemaKey::VIEW_ALIAS],
-            $spec[SchemaKey::VIEW_COLUMN],
-            $spec[SchemaKey::VIEW_FROM],
-            $properties
-        );
+        if ($spec[SchemaKey::TABLE_TYPE] === 'view') {
+            $properties = array_diff_key($spec, array_flip(SchemaKey::VIEW_KEYS));
+            $algorithm = isset($spec[SchemaKey::VIEW_ALGORITHM]) ? $spec[SchemaKey::VIEW_ALGORITHM] : null;
+            return new ViewStructure(
+                $viewName,
+                $algorithm,
+                $spec[SchemaKey::VIEW_ALIAS],
+                $spec[SchemaKey::VIEW_COLUMN],
+                $spec[SchemaKey::VIEW_FROM],
+                $properties
+            );
+        } else {
+            return new ViewRawStructure(
+                $viewName,
+                $spec[SchemaKey::VIEW_RAW_QUERY]
+            );
+        }
     }
 
     /**
