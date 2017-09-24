@@ -3,10 +3,15 @@
 namespace Conv;
 
 use Conv\Generator\TableAlterMigrationGenerator;
+use Conv\Generator\ViewAlterMigrationGenerator;
 use Conv\Migration\Database\Migration;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Migration\Table\TableCreateMigration;
+use Conv\Migration\Table\ViewCreateMigration;
 use Conv\Migration\Table\TableDropMigration;
+use Conv\Migration\Table\ViewDropMigration;
+use Conv\Migration\Table\ViewAlterMigration;
+use Conv\Migration\Table\ViewRenameMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Operator;
 use Conv\Structure\TableStructureType;
@@ -65,6 +70,45 @@ class MigrationGenerator
             $addedTableNameList = array_diff($addedTableNameList, [$renamedTableName]);
         }
 
+        // 全ての消滅したビュー配列
+        $missingViewList = $beforeDatabase->getDiffViewList($afterDatabase);
+        // 全ての追加したビュー配列
+        $unknownViewList = $afterDatabase->getDiffViewList($beforeDatabase);
+
+        // 削除したビュー名配列
+        $droppedViewNameList = [];
+        // 名称変更したビュー名配列 キー=変更前ビュー名
+        $renamedViewNameList = [];
+        // 追加したビュー名配列
+        $addedViewNameList = array_keys($unknownViewList);
+
+        foreach ($missingViewList as $missingViewName => $missingView) {
+            if (0 === count($addedViewNameList)) {
+                $droppedViewNameList[] = $missingViewName;
+                continue;
+            }
+
+            $answer = $operator->choiceQuestion(
+                sprintf('View %s is missing. Choose an action.', $missingViewName),
+                ['dropped', sprintf('renamed (%s)', implode(', ', $addedViewNameList))]
+            );
+            if ('dropped' === $answer) {
+                $droppedViewNameList[] = $missingViewName;
+                continue;
+            }
+
+            if (1 === count($addedViewNameList)) {
+                $renamedViewName = current($addedViewNameList);
+            } else {
+                $renamedViewName = $operator->choiceQuestion(
+                    'Select a renamed column.',
+                    $addedViewNameList
+                );
+            }
+            $renamedViewNameList[$missingViewName] = $renamedViewName;
+            $addedViewNameList = array_diff($addedViewNameList, [$renamedViewName]);
+        }
+
         $migration = new Migration();
 
         foreach ($droppedTableNameList as $tableName) {
@@ -73,7 +117,14 @@ class MigrationGenerator
             );
         }
 
-        foreach ($beforeDatabase->getTableList([TableStructureType::TABLE]) as $tableName => $beforeTable) {
+        foreach ($droppedViewNameList as $viewName) {
+            $migration->add(
+                new ViewDropMigration($beforeDatabase->getTableList()[$viewName])
+            );
+        }
+
+        $filter = [TableStructureType::TABLE];
+        foreach ($beforeDatabase->getTableList($filter) as $tableName => $beforeTable) {
             if (!array_key_exists($tableName, $afterDatabase->getTableList())) {
                 continue;
             }
@@ -97,9 +148,42 @@ class MigrationGenerator
             $migration->add($tableAlterMigration);
         }
 
+        $filter = [TableStructureType::VIEW, TableStructureType::VIEW_RAW];
+        foreach ($beforeDatabase->getTableList($filter) as $viewName => $beforeView) {
+            if (!array_key_exists($viewName, $afterDatabase->getTableList())) {
+                continue;
+            }
+            $viewAlterMigration = new ViewAlterMigration(
+                $beforeView,
+                $afterDatabase->getTableList()[$viewName]
+            );
+            if (!$viewAlterMigration->isAltered()) {
+                continue;
+            }
+            $migration->add($viewAlterMigration);
+        }
+
+        foreach ($renamedViewNameList as $beforeViewName => $afterViewName) {
+            $beforeView = $beforeDatabase->getTableList()[$beforeViewName];
+            $afterView = $afterDatabase->getTableList()[$afterViewName];
+            $migration->add(new ViewRenameMigration($beforeView, $afterView));
+
+            $viewAlterMigration = new ViewAlterMigration($beforeView, $afterView);
+            if (!$viewAlterMigration->isAltered()) {
+                continue;
+            }
+            $migration->add($viewAlterMigration);
+        }
+
         foreach ($addedTableNameList as $tableName) {
             $migration->add(
                 new TableCreateMigration($afterDatabase->getTableList()[$tableName])
+            );
+        }
+
+        foreach ($addedViewNameList as $viewName) {
+            $migration->add(
+                new ViewCreateMigration($afterDatabase->getTableList()[$viewName])
             );
         }
 
