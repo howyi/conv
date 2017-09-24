@@ -34,6 +34,8 @@ class CheckAlterCommand extends AbstractCommand
         foreach ($alter->getMigrationList() as $migration) {
             $operator->output('<fg=green>実行クエリ</>');
             $operator->output($migration->getUp());
+            $operator->output('<fg=green>------</>');
+            $operator->output($migration->getDown());
             $pdo->exec($migration->getUp());
         }
 
