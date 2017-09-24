@@ -47,7 +47,7 @@ class ViewStructureFactory
      */
     public static function fromView(\PDO $pdo, string $dbName, string $viewName): ViewRawStructure
     {
-        $createQuery = $pdo->query('SHOW CREATE VIEW view_user')->fetch()['Create View'];
+        $createQuery = $pdo->query("SHOW CREATE VIEW $viewName")->fetch()['Create View'];
         return new ViewRawStructure(
             $viewName,
             "$createQuery;"
