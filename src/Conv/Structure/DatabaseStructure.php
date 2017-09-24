@@ -37,9 +37,26 @@ class DatabaseStructure
      */
     public function getDiffTableList(DatabaseStructure $target): array
     {
+        $filter = [TableStructureType::TABLE];
         $removedTableList = [];
-        foreach ($this->getTableList([TableStructureType::TABLE]) as $tableName => $tableStructure) {
-            if (!array_key_exists($tableName, $target->getTableList([TableStructureType::TABLE]))) {
+        foreach ($this->getTableList($filter) as $tableName => $tableStructure) {
+            if (!array_key_exists($tableName, $target->getTableList($filter))) {
+                $removedTableList[$tableName] = $this->getTableList()[$tableName];
+            }
+        }
+        return $removedTableList;
+    }
+
+    /**
+     * @param DatabaseStructure $target
+     * @return array
+     */
+    public function getDiffViewList(DatabaseStructure $target): array
+    {
+        $filter = [TableStructureType::VIEW, TableStructureType::VIEW_RAW];
+        $removedTableList = [];
+        foreach ($this->getTableList($filter) as $tableName => $tableStructure) {
+            if (!array_key_exists($tableName, $target->getTableList($filter))) {
                 $removedTableList[$tableName] = $this->getTableList()[$tableName];
             }
         }
