@@ -43,14 +43,12 @@ class SchemaReflector
         $progress->start();
         $progress->setFormat('debug');
         foreach ($database->getTableList() as $tableName => $structure) {
-            dump($structure->getType());
             switch ($structure->getType()) {
                 case TableStructureType::TABLE:
                     self::fromTableStructure($path, $structure);
                     break;
                 case TableStructureType::VIEW_RAW:
                     self::fromViewRawStructure($path, $structure);
-                    dump($tableName);
                     break;
             }
             $progress->advance();
