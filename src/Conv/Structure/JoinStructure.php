@@ -9,6 +9,17 @@ class JoinStructure
     private $joinArray;
     private $aliasList;
 
+    const MySQL_OPERATOR = [
+      '=',
+      '<=>',
+      '<>',
+      '!=',
+      '<',
+      '<=',
+      '>',
+      '=>',
+    ];
+
     /**
      * @param array $joinArray
      * @param array $aliasList
@@ -71,12 +82,32 @@ class JoinStructure
      */
     private function graveDecorator(string $text): string
     {
+        preg_match_all('/\(.+?\)/', $text, $match);
+        $match = $match[0];
+        if (empty($match)) {
+            return $this->gravePartDecorator($text);
+        } else {
+            foreach ($match as $part) {
+                $originPart = ltrim(rtrim($part, ')'), '(');
+                $part = $this->gravePartDecorator($originPart);
+                $text = preg_replace("/$originPart/", $part, $text, 1);
+            }
+            return $text;
+        }
+    }
+
+    /**
+     * @param string $text
+     * @return string
+     */
+    private function gravePartDecorator(string $text): string
+    {
         $replace = [];
         $replaced = [];
         $id = 100001;
         $sep = 'R_%d_R';
         foreach (explode(' ', trim($text)) as $pieces) {
-            if ('=' === $pieces or ' ' === $pieces) {
+            if (in_array($pieces, self::MySQL_OPERATOR) or ' ' === $pieces or is_numeric($pieces)) {
                 continue;
             }
             foreach (explode('.', trim($pieces)) as $piece) {
