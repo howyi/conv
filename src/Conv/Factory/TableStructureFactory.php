@@ -103,6 +103,20 @@ class TableStructureFactory
             )
         )->fetchAll();
 
+        $rawPartitionList = $pdo->query(
+            sprintf(
+                "SELECT * FROM information_schema.PARTITIONS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY PARTITION_ORDINAL_POSITION ASC",
+                $dbName,
+                $tableName
+            )
+        )->fetchAll();
+
+        if (count($rawPartitionList) !== 1 and !is_null(reset($rawPartitionList)['PARTITION_METHOD'])) {
+            // dump($rawPartitionList);
+            // パーティションが存在する
+        }
+
+
         $columnStructureList = [];
 
         foreach ($rawColumnList as $column) {
