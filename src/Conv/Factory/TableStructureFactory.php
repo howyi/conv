@@ -103,6 +103,31 @@ class TableStructureFactory
             )
         )->fetchAll();
 
+        $rawPartitionList = $pdo->query(
+            sprintf(
+                "SELECT * FROM information_schema.PARTITIONS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY PARTITION_ORDINAL_POSITION ASC",
+                $dbName,
+                $tableName
+            )
+        )->fetchAll();
+
+        if (count($rawPartitionList) !== 1 and !is_null(reset($rawPartitionList)['PARTITION_METHOD'])) {
+            $methods = array_fill_keys(array_column($rawPartitionList, 'PARTITION_METHOD'), []);
+            foreach ($rawPartitionList as $item) {
+                $methods[$item['PARTITION_METHOD']][] = $item;
+            }
+            $groups = [];
+            foreach ($methods as $method => $methodValue) {
+                $expressions = array_fill_keys(array_column($methodValue, 'PARTITION_EXPRESSION'), []);
+                foreach ($methodValue as $value) {
+                    $expressions[$value['PARTITION_EXPRESSION']][] = $value;
+                }
+                $groups[$method] = $expressions;
+            }
+            // dump($groups);
+        }
+
+
         $columnStructureList = [];
 
         foreach ($rawColumnList as $column) {
