@@ -12,6 +12,7 @@ class SchemaKey
     const TABLE_ENGINE          = 'engine';
     const TABLE_DEFAULT_CHARSET = 'default_charset';
     const TABLE_COLLATE         = 'collate';
+    const TABLE_PARTITION       = 'partition';
 
     const TABLE_KEYS = [
         self::TABLE_TYPE,
@@ -22,6 +23,7 @@ class SchemaKey
         self::TABLE_ENGINE,
         self::TABLE_DEFAULT_CHARSET,
         self::TABLE_COLLATE,
+        self::TABLE_PARTITION,
     ];
 
     const TABLE_REQUIRE_KEYS = [
@@ -36,6 +38,7 @@ class SchemaKey
         self::TABLE_ENGINE,
         self::TABLE_DEFAULT_CHARSET,
         self::TABLE_COLLATE,
+        self::TABLE_PARTITION,
     ];
 
     const COLUMN_TYPE      = 'type';
@@ -67,6 +70,15 @@ class SchemaKey
         self::INDEX_TYPE,
         self::INDEX_COLUMN,
     ];
+
+    const PARTITION_BY           = 'by';
+    const PARTITION_VALUE        = 'value';
+    const PARTITION_LIST         = 'list';
+    const PARTITION_LESS_THAN    = 'less_than';
+    const PARTITION_IN           = 'in';
+    const PARTITION_ENGINE       = 'engine';
+    const PARTITION_PART_COMMENT = 'comment';
+    const PARTITION_NUM          = 'num';
 
     const VIEW_ALGORITHM = 'algorithm';
     const VIEW_ALIAS     = 'alias';
