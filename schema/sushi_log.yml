@@ -1,0 +1,29 @@
+comment: 'Sushi log table'
+column:
+  log_id:
+    type: int(11)
+    comment: 'auto_increment ID'
+    attribute: [auto_increment, unsigned]
+  user_id:
+    type: int(11)
+    comment: 'User ID'
+  sushi_id:
+    type: int(11)
+    comment: 'Sushi ID'
+  date:
+    type: datetime
+    comment: 'Eat date'
+primary_key:
+  - log_id
+partition:
+  by: range_columns
+  value: date
+  list:
+    p201701:
+      less_than: '2017-01-01 00:00:00'
+    p201702:
+      less_than: '2017-02-01 00:00:00'
+    p201703:
+      less_than: '2017-03-01 00:00:00'
+    p201704:
+      less_than: '2017-04-01 00:00:00'
