@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv;
+namespace Conv\Util;
 
 class PartitionType
 {
@@ -19,7 +19,7 @@ class PartitionType
       'HASH'          => '',
       'LIST'          => '',
       'LIST COLUMNS'  => '',
-      'RANGE COLUMNS' => '',
+      'RANGE'         => '',
       'RANGE COLUMNS' => '',
     ];
 
@@ -28,7 +28,7 @@ class PartitionType
       'HASH'          => self::SHORT,
       'LIST'          => self::LONG,
       'LIST COLUMNS'  => self::LONG,
-      'RANGE COLUMNS' => self::LONG,
+      'RANGE'         => self::LONG,
       'RANGE COLUMNS' => self::LONG,
     ];
 }
