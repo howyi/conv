@@ -8,23 +8,27 @@ class PartitionPartStructure
     private $operator;
     private $value;
     private $engine;
+    private $comment;
 
     /**
-     * @param string $name
-     * @param string $operator
-     * @param string $value
-     * @param string $engine
+     * @param string      $name
+     * @param string      $operator
+     * @param string      $value
+     * @param string|null $engine
+     * @param string|null $comment
      */
     public function __construct(
         string $name,
         string $operator,
         string $value,
-        string $engine
+        $engine,
+        $comment
     ) {
         $this->name = $name;
         $this->operator = $operator;
         $this->value = $value;
         $this->engine = $engine;
+        $this->comment = $comment;
     }
 
     /**
@@ -32,12 +36,21 @@ class PartitionPartStructure
      */
     public function getQuery(): string
     {
-        return sprintf(
-            'PARTITION %s VALUES %s (%s) ENGINE = %s',
+        $query = sprintf(
+            'PARTITION %s VALUES %s (%s)',
             $this->name,
             $this->operator,
-            $this->value,
-            $this->engine
+            $this->value
         );
+
+        if (false === is_null($this->engine)) {
+            $query .= " ENGINE = {$this->engine}";
+        }
+
+        if (false === is_null($this->comment)) {
+            $query .= " COMMENT = '{$this->comment}'";
+        }
+
+        return $query;
     }
 }
