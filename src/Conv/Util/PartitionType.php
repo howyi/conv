@@ -37,4 +37,11 @@ class PartitionType
       'RANGE'         => self::LONG,
       'RANGE COLUMNS' => self::LONG,
     ];
+
+    const METHOD_OPERATOR = [
+      'LIST'          => 'IN',
+      'LIST COLUMNS'  => 'IN',
+      'RANGE'         => 'LESS THAN',
+      'RANGE COLUMNS' => 'LESS THAN',
+    ];
 }
