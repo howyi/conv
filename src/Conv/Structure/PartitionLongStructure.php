@@ -30,11 +30,11 @@ class PartitionLongStructure
     {
         $query = "PARTITION BY {$this->type}({$this->value}) (" . PHP_EOL;
         $partsLineList = [];
-        foreach ($parts as $part) {
-            $partsLineList = $part->getQuery();
+        foreach ($this->parts as $part) {
+            $partsLineList[] = $part->getQuery();
         }
-        $query .= "  ".join(',' . PHP_EOL . '  ', $partsLineList);
-        $query .= ')'
+        $query .= '  ' . join(',' . PHP_EOL . '  ', $partsLineList) . PHP_EOL;
+        $query .= ')';
         return $query;
     }
 }
