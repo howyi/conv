@@ -2,15 +2,19 @@
 
 namespace Conv\Factory;
 
+use Conv\Structure\Attribute;
 use Conv\Structure\ColumnStructure;
 use Conv\Structure\IndexStructure;
-use Conv\Structure\Attribute;
+use Conv\Structure\PartitionLongStructure;
+use Conv\Structure\PartitionPartStructure;
+use Conv\Structure\PartitionShortStructure;
 use Conv\Structure\TableStructure;
-use Symfony\Component\Yaml\Yaml;
-use Conv\Util\SchemaKey;
-use Conv\Util\Evaluator;
 use Conv\Util\Config;
+use Conv\Util\Evaluator;
+use Conv\Util\PartitionType;
+use Conv\Util\SchemaKey;
 use Conv\Util\SchemaValidator;
+use Symfony\Component\Yaml\Yaml;
 
 class TableStructureFactory
 {
@@ -95,6 +99,7 @@ class TableStructureFactory
     public static function fromTable(\PDO $pdo, string $dbName, string $tableName): TableStructure
     {
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
+
         $rawColumnList = $pdo->query(
             sprintf(
                 "SELECT * FROM information_schema.COLUMNS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY ORDINAL_POSITION ASC",
@@ -111,22 +116,58 @@ class TableStructureFactory
             )
         )->fetchAll();
 
+        $groups = [];
         if (count($rawPartitionList) !== 1 and !is_null(reset($rawPartitionList)['PARTITION_METHOD'])) {
             $methods = array_fill_keys(array_column($rawPartitionList, 'PARTITION_METHOD'), []);
             foreach ($rawPartitionList as $item) {
                 $methods[$item['PARTITION_METHOD']][] = $item;
             }
-            $groups = [];
             foreach ($methods as $method => $methodValue) {
                 $expressions = array_fill_keys(array_column($methodValue, 'PARTITION_EXPRESSION'), []);
                 foreach ($methodValue as $value) {
-                    $expressions[$value['PARTITION_EXPRESSION']][] = $value;
+                    $expressions[$value['PARTITION_EXPRESSION']][$value['PARTITION_ORDINAL_POSITION']] = [
+                        'PARTITION_NAME' => $value['PARTITION_NAME'],
+                        'PARTITION_DESCRIPTION' => $value['PARTITION_DESCRIPTION'],
+                        'PARTITION_COMMENT' => $value['PARTITION_COMMENT'],
+                    ];
                 }
                 $groups[$method] = $expressions;
             }
-            // dump($groups);
         }
 
+        $partition = null;
+        foreach ($groups as $method => $group) {
+            $type = PartitionType::METHOD_TYPE[$method];
+            switch ($type) {
+              case PartitionType::SHORT:
+                  foreach ($group as $value => $raw) {
+                      $partition = new PartitionShortStructure(
+                          $method,
+                          $value,
+                          count($raw)
+                      );
+                  }
+                  break;
+              case PartitionType::LONG:
+                  foreach ($group as $value => $raw) {
+                      $parts = [];
+                      foreach ($raw as $order => $array) {
+                        $parts[$order] = new PartitionPartStructure(
+                            $array['PARTITION_NAME'],
+                            PartitionType::METHOD_OPERATOR[$method],
+                            $array['PARTITION_DESCRIPTION'],
+                            $array['PARTITION_COMMENT']
+                        );
+                      }
+                      $partition = new PartitionLongStructure(
+                          $method,
+                          $value,
+                          $parts
+                      );
+                  }
+                  break;
+            }
+        }
 
         $columnStructureList = [];
 
