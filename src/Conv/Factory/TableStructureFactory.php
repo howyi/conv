@@ -139,33 +139,33 @@ class TableStructureFactory
         foreach ($groups as $method => $group) {
             $type = PartitionType::METHOD_TYPE[$method];
             switch ($type) {
-              case PartitionType::SHORT:
-                  foreach ($group as $value => $raw) {
-                      $partition = new PartitionShortStructure(
-                          $method,
-                          $value,
-                          count($raw)
-                      );
-                  }
-                  break;
-              case PartitionType::LONG:
-                  foreach ($group as $value => $raw) {
-                      $parts = [];
-                      foreach ($raw as $order => $array) {
-                        $parts[$order] = new PartitionPartStructure(
-                            $array['PARTITION_NAME'],
-                            PartitionType::METHOD_OPERATOR[$method],
-                            $array['PARTITION_DESCRIPTION'],
-                            $array['PARTITION_COMMENT']
+                case PartitionType::SHORT:
+                    foreach ($group as $value => $raw) {
+                        $partition = new PartitionShortStructure(
+                            $method,
+                            $value,
+                            count($raw)
                         );
-                      }
-                      $partition = new PartitionLongStructure(
-                          $method,
-                          $value,
-                          $parts
-                      );
-                  }
-                  break;
+                    }
+                    break;
+                case PartitionType::LONG:
+                    foreach ($group as $value => $raw) {
+                        $parts = [];
+                        foreach ($raw as $order => $array) {
+                            $parts[$order] = new PartitionPartStructure(
+                                $array['PARTITION_NAME'],
+                                PartitionType::METHOD_OPERATOR[$method],
+                                $array['PARTITION_DESCRIPTION'],
+                                $array['PARTITION_COMMENT']
+                            );
+                        }
+                        $partition = new PartitionLongStructure(
+                            $method,
+                            $value,
+                            $parts
+                        );
+                    }
+                    break;
             }
         }
 
