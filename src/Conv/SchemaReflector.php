@@ -71,7 +71,7 @@ class SchemaReflector
                 $path,
                 $table->getTableName()
             ),
-            Yaml::dump($table->toArray(), 3, 2)
+            Yaml::dump($table->toArray(), 4, 2)
         );
     }
 

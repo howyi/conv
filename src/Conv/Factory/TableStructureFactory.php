@@ -75,6 +75,43 @@ class TableStructureFactory
             $collate = Config::default('collate');
         }
 
+        $partition = null;
+        if (array_key_exists(SchemaKey::TABLE_PARTITION, $spec)) {
+            $partitionSpec = $spec[SchemaKey::TABLE_PARTITION];
+            $by = $partitionSpec['by'];
+            $method = array_flip(PartitionType::METHOD)[$by];
+            $type = PartitionType::METHOD_TYPE[$method];
+            $value = $partitionSpec['value'];
+            switch ($type) {
+                case PartitionType::SHORT:
+                    $partition = new PartitionShortStructure(
+                        $method,
+                        $value,
+                        $partitionSpec['num']
+                    );
+                    break;
+                case PartitionType::LONG:
+                    $parts = [];
+                    $i = 1;
+                    foreach ($partitionSpec['list'] as $name => $array) {
+                        $operator = PartitionType::METHOD_OPERATOR[$method];
+                        $parts[$i] = new PartitionPartStructure(
+                            $name,
+                            $operator,
+                            $array[strtolower($operator)],
+                            isset($array['comment']) ? $array['comment'] : ''
+                        );
+                        $i++;
+                    }
+                    $partition = new PartitionLongStructure(
+                        $method,
+                        $value,
+                        $parts
+                    );
+                    break;
+            }
+        }
+
         $properties = array_diff_key($spec, array_flip(SchemaKey::TABLE_KEYS));
 
         $tableStructure = new TableStructure(
@@ -85,6 +122,7 @@ class TableStructureFactory
             $collate,
             $columnStructureList,
             $indexStructureList,
+            $partition,
             $properties
         );
         return $tableStructure;
@@ -116,7 +154,7 @@ class TableStructureFactory
             )
         )->fetchAll();
 
-        $groups = [];
+        $partitionGroups = [];
         if (count($rawPartitionList) !== 1 and !is_null(reset($rawPartitionList)['PARTITION_METHOD'])) {
             $methods = array_fill_keys(array_column($rawPartitionList, 'PARTITION_METHOD'), []);
             foreach ($rawPartitionList as $item) {
@@ -131,16 +169,17 @@ class TableStructureFactory
                         'PARTITION_COMMENT' => $value['PARTITION_COMMENT'],
                     ];
                 }
-                $groups[$method] = $expressions;
+                $partitionGroups[$method] = $expressions;
             }
         }
 
         $partition = null;
-        foreach ($groups as $method => $group) {
+        foreach ($partitionGroups as $method => $group) {
             $type = PartitionType::METHOD_TYPE[$method];
             switch ($type) {
                 case PartitionType::SHORT:
                     foreach ($group as $value => $raw) {
+                        dump($raw);
                         $partition = new PartitionShortStructure(
                             $method,
                             $value,
@@ -223,6 +262,7 @@ class TableStructureFactory
             $rawStatus['Collation'],
             $columnStructureList,
             $indexStructureList,
+            $partition,
             []
         );
 

@@ -29,11 +29,19 @@ class TableCreateMigration extends AbstractTableMigration
         foreach ($tableStructure->indexStructureList as $indexStructure) {
             $createQueryLineList[] = $indexStructure->generateCreateQuery();
         }
-        $createQueryFooter = ") ENGINE=$tableStructure->engine DEFAULT CHARSET=$tableStructure->defaultCharset COLLATE=$tableStructure->collate COMMENT='$tableStructure->comment';";
+        $createQueryFooter = ")";
+        $createQueryFooter .= "  ENGINE=$tableStructure->engine";
+        $createQueryFooter .= "  DEFAULT CHARSET=$tableStructure->defaultCharset";
+        $createQueryFooter .= "  COLLATE=$tableStructure->collate";
+        $createQueryFooter .= "  COMMENT='$tableStructure->comment'";
+        if (!is_null($tableStructure->getPartition())) {
+            $partitionQuery = $tableStructure->getPartition()->getQuery();
+            $partitionQuery = sprintf("/*!50100 %s  */", $partitionQuery);
+            $createQueryFooter .= PHP_EOL . $partitionQuery;
+        }
+        $createQueryFooter .= ';';
         $createQueryBody = "  ".join(',' . PHP_EOL . '  ', $createQueryLineList);
         $this->up = $createQueryHeader . PHP_EOL . $createQueryBody . PHP_EOL . $createQueryFooter;
-
-        // TODO PARTITION
 
         $this->down = "DROP TABLE `$this->tableName`;";
     }
