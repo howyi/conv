@@ -1,4 +1,4 @@
-comment: 'Sushi log table'
+comment: 'Unagi log table'
 column:
   log_id:
     type: int(11)
@@ -11,25 +11,13 @@ column:
     comment: 'User ID'
   sushi_id:
     type: int(11)
-    comment: 'Sushi ID'
+    comment: 'Unagi ID'
   date:
     type: datetime
     comment: 'Eat date'
 primary_key:
   - log_id
 partition:
-  by: list
-  value: log_id
-  list:
-    p0:
-      in: '0'
-    p1:
-      in: '1'
-    p2:
-      in: '2'
-    p3:
-      in: '3'
-    p4:
-      in: '4,6'
-    p5:
-      in: '5'
+  by: key
+  value: '`log_id`'
+  num: 6

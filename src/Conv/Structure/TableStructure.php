@@ -14,17 +14,19 @@ class TableStructure implements TableStructureInterface
     public  $collate;
     public  $columnStructureList;
     public  $indexStructureList;
+    private $partition;
     private $properties;
 
     /**
-     * @param string $tableName
-     * @param string $comment
-     * @param string $engine
-     * @param string $defaultCharset
-     * @param string $collate
-     * @param array  $columnStructureList
-     * @param array  $indexStructureList
-     * @param array  $properties
+     * @param string                           $tableName
+     * @param string                           $comment
+     * @param string                           $engine
+     * @param string                           $defaultCharset
+     * @param string                           $collate
+     * @param array                            $columnStructureList
+     * @param array                            $indexStructureList
+     * @param PartitionStructureInterface|null $partition
+     * @param array                            $properties
      */
     public function __construct(
         string $tableName,
@@ -34,6 +36,7 @@ class TableStructure implements TableStructureInterface
         string $collate,
         array $columnStructureList,
         array $indexStructureList,
+        $partition,
         array $properties
     ) {
         $this->tableName = $tableName;
@@ -43,6 +46,7 @@ class TableStructure implements TableStructureInterface
         $this->collate = $collate;
         $this->columnStructureList = $columnStructureList;
         $this->indexStructureList = $indexStructureList;
+        $this->partition = $partition;
         $this->properties = $properties;
     }
 
@@ -239,6 +243,9 @@ class TableStructure implements TableStructureInterface
         if (Config::default('collate') !== $this->getCollate()) {
             $array[SchemaKey::TABLE_COLLATE] = $this->getCollate();
         }
+        if (!is_null($this->getPartition())) {
+            $array[SchemaKey::TABLE_PARTITION] = $this->getPartition()->toArray();
+        }
         return $array;
     }
 
@@ -256,5 +263,13 @@ class TableStructure implements TableStructureInterface
     public function getName(): string
     {
         return $this->tableName;
+    }
+
+    /**
+     * @return PartitionStructureInterface|null
+     */
+    public function getPartition()
+    {
+        return $this->partition;
     }
 }

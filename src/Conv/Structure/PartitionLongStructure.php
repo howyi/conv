@@ -2,7 +2,7 @@
 
 namespace Conv\Structure;
 
-class PartitionLongStructure
+class PartitionLongStructure implements PartitionStructureInterface
 {
     private $type;
     private $value;
@@ -21,6 +21,7 @@ class PartitionLongStructure
         $this->type = $type;
         $this->value = $value;
         $this->parts = $parts;
+        ksort($this->parts);
     }
 
     /**
@@ -33,8 +34,28 @@ class PartitionLongStructure
         foreach ($this->parts as $part) {
             $partsLineList[] = $part->getQuery();
         }
-        $query .= '  ' . join(',' . PHP_EOL . '  ', $partsLineList) . PHP_EOL;
+        $query .= '  ' . join(',' . PHP_EOL . '  ', $partsLineList);
         $query .= ')';
         return $query;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $list = [];
+        foreach ($this->parts as $part) {
+            $partList[strtolower($part->getOperator())] = $part->getValue();
+            if (!empty($part->getComment())) {
+                $partList['comment'] = $part->getComment();
+            }
+            $list[$part->getName()] = $partList;
+        }
+        return [
+            'by'    => strtolower($this->type),
+            'value' => $this->value,
+            'list'  => $list,
+        ];
     }
 }

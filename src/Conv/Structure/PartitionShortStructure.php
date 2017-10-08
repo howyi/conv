@@ -2,7 +2,7 @@
 
 namespace Conv\Structure;
 
-class PartitionShortStructure
+class PartitionShortStructure implements PartitionStructureInterface
 {
     private $type;
     private $value;
@@ -31,5 +31,17 @@ class PartitionShortStructure
         $query = "PARTITION BY {$this->type}({$this->value})" . PHP_EOL;
         $query .= "PARTITIONS {$this->num}";
         return $query;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'by'    => strtolower($this->type),
+            'value' => $this->value,
+            'num'   => $this->num,
+        ];
     }
 }
