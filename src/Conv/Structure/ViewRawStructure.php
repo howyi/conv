@@ -9,17 +9,21 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
 {
     private $viewName;
     private $createQuery;
+    private $properties;
 
     /**
      * @param string $viewName
      * @param string $createQuery
+     * @param array  $properties
      */
     public function __construct(
         string $viewName,
-        string $createQuery
+        string $createQuery,
+        array $properties
     ) {
         $this->viewName = $viewName;
         $this->createQuery = $createQuery;
+        $this->properties = $properties;
     }
 
     /**
@@ -73,5 +77,13 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
         $definer = ' DEFINER' . explode('DEFINER', $this->createQuery)[1] . 'DEFINER';
         $compareQuery = str_replace([$definer, PHP_EOL, ' '], '', $this->createQuery);
         return rtrim($compareQuery, ';');
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 }
