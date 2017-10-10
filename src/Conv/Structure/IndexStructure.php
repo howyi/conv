@@ -97,8 +97,7 @@ class IndexStructure
     {
         $list = [];
         foreach ($this->columnNameList as $name) {
-            preg_match_all('/\(.+?\)/', $name, $match);
-            $match = $match[0];
+            preg_match('/\(.+?\)/', $name, $match);
             if (!empty($match)) {
                 $subPart = $match[0];
                 $actualName = str_replace($subPart, '', $name);

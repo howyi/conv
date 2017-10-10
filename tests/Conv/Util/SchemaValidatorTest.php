@@ -68,43 +68,6 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
                     SchemaKey::TABLE_COMMENT => 'Music management table',
                     SchemaKey::TABLE_COLUMN => [
                         'music_id' => [
-                            SchemaKey::COLUMN_COMMENT=> 'Unique music ID',
-                        ],
-                        'name' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Music name',
-                        ],
-                    ],
-                    SchemaKey::TABLE_PRIMARY_KEY => [
-                        'music_id'
-                    ]
-                ]
-            ],
-            [
-                [
-                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT => 'Music management table',
-                    SchemaKey::TABLE_COLUMN => [
-                        'music_id' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Unique music ID',
-                        ],
-                        'name' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Music name',
-                        ],
-                    ],
-                    SchemaKey::TABLE_PRIMARY_KEY => [
-                        'hello'
-                    ]
-                ]
-            ],
-            [
-                [
-                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT => 'Music management table',
-                    SchemaKey::TABLE_COLUMN => [
-                        'music_id' => [
                             SchemaKey::COLUMN_TYPE   => 'int(10)',
                             SchemaKey::COLUMN_COMMENT => 'Unique music ID',
                         ],
@@ -137,55 +100,6 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase
                         'music_id' => [
                             SchemaKey::INDEX_COLUMN => [
                                 'music_id'
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            [
-                [
-                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT => 'Music management table',
-                    SchemaKey::TABLE_COLUMN => [
-                        'music_id' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Unique music ID',
-                        ],
-                        'name' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Music name',
-                        ],
-                    ],
-                    SchemaKey::TABLE_INDEX => [
-                        'music_id' => [
-                            SchemaKey::INDEX_TYPE => true,
-                            SchemaKey::INDEX_COLUMN => [
-                                'music_id',
-                                'music_id',
-                            ]
-                        ]
-                    ]
-                ]
-            ],
-            [
-                [
-                    SchemaKey::TABLE_TYPE => TableStructureType::TABLE,
-                    SchemaKey::TABLE_COMMENT => 'Music management table',
-                    SchemaKey::TABLE_COLUMN => [
-                        'music_id' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Unique music ID',
-                        ],
-                        'name' => [
-                            SchemaKey::COLUMN_TYPE   => 'int(10)',
-                            SchemaKey::COLUMN_COMMENT => 'Music name',
-                        ],
-                    ],
-                    SchemaKey::TABLE_INDEX => [
-                        'music_id' => [
-                            SchemaKey::INDEX_TYPE => true,
-                            SchemaKey::INDEX_COLUMN => [
-                                'hello',
                             ]
                         ]
                     ]
