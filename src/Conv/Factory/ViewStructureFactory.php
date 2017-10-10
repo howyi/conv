@@ -34,7 +34,8 @@ class ViewStructureFactory
         } else {
             return new ViewRawStructure(
                 $viewName,
-                $spec[SchemaKey::VIEW_RAW_QUERY]
+                $spec[SchemaKey::VIEW_RAW_QUERY],
+                array_diff_key($spec, [SchemaKey::VIEW_RAW_QUERY])
             );
         }
     }
@@ -50,7 +51,8 @@ class ViewStructureFactory
         $createQuery = $pdo->query("SHOW CREATE VIEW $viewName")->fetch()['Create View'];
         return new ViewRawStructure(
             $viewName,
-            "$createQuery;"
+            "$createQuery;",
+            []
         );
     }
 }
