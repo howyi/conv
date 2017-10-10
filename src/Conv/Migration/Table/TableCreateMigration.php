@@ -30,10 +30,10 @@ class TableCreateMigration extends AbstractTableMigration
             $createQueryLineList[] = $indexStructure->generateCreateQuery();
         }
         $createQueryFooter = ")";
-        $createQueryFooter .= "  ENGINE=$tableStructure->engine";
-        $createQueryFooter .= "  DEFAULT CHARSET=$tableStructure->defaultCharset";
-        $createQueryFooter .= "  COLLATE=$tableStructure->collate";
-        $createQueryFooter .= "  COMMENT='$tableStructure->comment'";
+        $createQueryFooter .= " ENGINE=$tableStructure->engine";
+        $createQueryFooter .= " DEFAULT CHARSET=$tableStructure->defaultCharset";
+        $createQueryFooter .= " COLLATE=$tableStructure->collate";
+        $createQueryFooter .= " COMMENT='$tableStructure->comment'";
         if (!is_null($tableStructure->getPartition())) {
             $partitionQuery = $tableStructure->getPartition()->getQuery();
             $partitionQuery = sprintf("/*!50100 %s  */", $partitionQuery);
