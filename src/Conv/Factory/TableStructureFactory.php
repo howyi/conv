@@ -179,7 +179,6 @@ class TableStructureFactory
             switch ($type) {
                 case PartitionType::SHORT:
                     foreach ($group as $value => $raw) {
-                        dump($raw);
                         $partition = new PartitionShortStructure(
                             $method,
                             $value,
