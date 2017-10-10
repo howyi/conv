@@ -72,18 +72,6 @@ class SchemaValidator
         if (array_key_exists(SchemaKey::TABLE_PRIMARY_KEY, $spec)) {
             $pkList = $spec[SchemaKey::TABLE_PRIMARY_KEY];
 
-            if (0 !== count(array_diff($pkList, array_keys($spec[SchemaKey::TABLE_COLUMN])))) {
-                throw new SchemaValidateException(
-                    sprintf(
-                        $name . PHP_EOL .'Primary key (%s) is not column',
-                        implode(
-                            ', ',
-                            array_diff($pkList, array_keys($spec[SchemaKey::TABLE_COLUMN]))
-                        )
-                    )
-                );
-            }
-
             if (count($pkList) !== count(array_unique($pkList))) {
                 throw new SchemaValidateException(
                     sprintf(
@@ -114,19 +102,6 @@ class SchemaValidator
                         sprintf(
                             $name . PHP_EOL .'Duplicate index (%s)',
                             implode(', ', $value[SchemaKey::INDEX_COLUMN])
-                        )
-                    );
-                }
-
-                if (0 !== count(array_diff($value[SchemaKey::INDEX_COLUMN], array_keys($spec[SchemaKey::TABLE_COLUMN])))) {
-                    throw new SchemaValidateException(
-                        sprintf(
-                            $name . PHP_EOL .'Index %s (%s) is not column',
-                            $key,
-                            implode(
-                                ', ',
-                                array_diff($value[SchemaKey::INDEX_COLUMN], array_keys($spec[SchemaKey::TABLE_COLUMN]))
-                            )
                         )
                     );
                 }
