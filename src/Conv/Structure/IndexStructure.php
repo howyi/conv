@@ -84,7 +84,30 @@ class IndexStructure
      */
     private function generateIndexText(): string
     {
-        return '(`'.join('`, `', $this->columnNameList).'`)';
+        return sprintf(
+            '(%s)',
+            implode(', ', $this->getQueryNameList())
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getQueryNameList(): array
+    {
+        $list = [];
+        foreach ($this->columnNameList as $name) {
+            preg_match_all('/\(.+?\)/', $name, $match);
+            $match = $match[0];
+            if (!empty($match)) {
+                $subPart = $match[0];
+                $actualName = str_replace($subPart, '', $name);
+                $list[] = "`$actualName`$subPart";
+            } else {
+                $list[] = "`$name`";
+            }
+        }
+        return $list;
     }
 
     /**

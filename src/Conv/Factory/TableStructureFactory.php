@@ -233,7 +233,15 @@ class TableStructureFactory
         $rawIndexList = $pdo->query("SHOW INDEX FROM $tableName")->fetchAll();
         $keyList = [];
         foreach ($rawIndexList as $index) {
-            $keyList[$index['Key_name']][] = $index;
+            $columnName = $index['Column_name'];
+            if (!is_null($index['Sub_part'])) {
+                $subPart = $index['Sub_part'];
+                $columnName = "$columnName($subPart)";
+            }
+            $keyList[$index['Key_name']][] = [
+                'Non_unique' => $index['Non_unique'],
+                'Column_name' => $columnName,
+            ];
         }
         $indexStructureList = [];
         foreach ($keyList as $keyName => $indexList) {
