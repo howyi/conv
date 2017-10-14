@@ -2,6 +2,7 @@
 
 namespace Conv;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,5 +38,7 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
         $message = 'message';
         $output->writeln($message)->shouldBeCalledTimes(1);
         $operator->output($message);
+        $output->isDecorated()->shouldBeCalledTimes(1);
+        $this->assertInstanceOf(ProgressBar::class, $operator->getProgress(1));
     }
 }
