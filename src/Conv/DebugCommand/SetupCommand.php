@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Command;
+namespace Conv\DebugCommand;
 
 use Conv\DatabaseStructureFactory;
 use Conv\Migration\Table\TableCreateMigration;
@@ -27,7 +27,7 @@ class SetupCommand extends AbstractCommand
         $pdo->exec('DROP DATABASE IF EXISTS conv');
         $pdo->exec('CREATE DATABASE conv');
 
-        $databaseStructure = DatabaseStructureFactory::fromDir('schema');
+        $databaseStructure = DatabaseStructureFactory::fromDir('tests/Retort/check_schema');
         $empty = new DatabaseStructure([]);
         $alter = MigrationGenerator::generate(
             $empty,

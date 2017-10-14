@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Command;
+namespace Conv\DebugCommand;
 
 use Conv\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
@@ -35,6 +35,6 @@ class ReflectCommand extends AbstractCommand
             $this->getPDO('conv'),
             'conv'
         );
-        SchemaReflector::fromDatabaseStructure('schema', $structure, $this->getOperator($input, $output));
+        SchemaReflector::fromDatabaseStructure('tests/Retort/check_schema', $structure, $this->getOperator($input, $output));
     }
 }

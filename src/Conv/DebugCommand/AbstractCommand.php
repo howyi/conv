@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Command;
+namespace Conv\DebugCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Conv\Operator;

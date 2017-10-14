@@ -14,7 +14,7 @@ $app = new Application();
 
 $s = DIRECTORY_SEPARATOR;
 $iterator = new \RecursiveIteratorIterator(
-    new \RecursiveDirectoryIterator("$dir$name{$s}Command")
+    new \RecursiveDirectoryIterator("$dir$name{$s}DebugCommand")
 );
 
 foreach ($iterator as $fileinfo) {

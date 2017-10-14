@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Command;
+namespace Conv\DebugCommand;
 
 use Conv\Util\Config;
 use Conv\Factory\ViewStructureFactory;
@@ -33,7 +33,7 @@ class CheckViewCommand extends AbstractCommand
         // dump($actualStructure);
         $pdo = $this->getPDO('conv');
 
-        $spec = Evi::parse('schema/view_user.yml', Config::option('eval'));
+        $spec = Evi::parse('tests/Retort/check_schema/view_user.yml', Config::option('eval'));
         $expectStructure = ViewStructureFactory::fromSpec('view_user', $spec);
         // dump($expectStructure);
         dump((new ViewCreateMigration($expectStructure))->getUp());

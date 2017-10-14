@@ -16,15 +16,22 @@ use Prophecy\Argument as arg;
 
 class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 {
+    const DBNAME = 'conv_test';
+
+    private $pdo;
     private $prophet;
 
     protected function setup()
     {
+        $this->pdo = new \PDO('mysql:host=localhost;charset=utf8;', 'root', '');
+        $this->pdo->exec('DROP DATABASE IF EXISTS ' . self::DBNAME);
+        $this->pdo->exec('CREATE DATABASE ' . self::DBNAME);
         $this->prophet = new \Prophecy\Prophet;
     }
 
     protected function tearDown()
     {
+        $this->pdo->exec('DROP DATABASE IF EXISTS ' . self::DBNAME);
         $this->prophet->checkPredictions();
     }
 
@@ -44,7 +51,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                DatabaseStructureFactory::fromDir('tests/schema/'),
+                DatabaseStructureFactory::fromDir('tests/Retort/test_schema/'),
                 new DatabaseStructure([]),
                 [
                     TableDropMigration::class,
@@ -53,7 +60,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 new DatabaseStructure([]),
-                DatabaseStructureFactory::fromDir('tests/schema/'),
+                DatabaseStructureFactory::fromDir('tests/Retort/test_schema/'),
                 [
                     TableCreateMigration::class,
                     TableCreateMigration::class,
@@ -67,17 +74,17 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user'  => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_user.yml', Config::option('eval'))
             ),
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -90,13 +97,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
@@ -115,13 +122,13 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $before = new DatabaseStructure([
             'tbl_user' => TableStructureFactory::fromSpec(
                 'tbl_user',
-                Evi::parse('tests/schema/tbl_user.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_user.yml', Config::option('eval'))
             ),
         ]);
         $after = new DatabaseStructure([
             'tbl_music' => TableStructureFactory::fromSpec(
                 'tbl_music',
-                Evi::parse('tests/schema/tbl_music.yml', Config::option('eval'))
+                Evi::parse('tests/Retort/test_schema/tbl_music.yml', Config::option('eval'))
             ),
         ]);
         $operator = $this->prophet->prophesize(Operator::class);
