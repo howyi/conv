@@ -1,6 +1,6 @@
 <?php
 
-namespace Conv\Command;
+namespace Conv\DebugCommand;
 
 use Conv\DatabaseStructureFactory;
 use Conv\Factory\TableStructureFactory;
@@ -23,7 +23,7 @@ class CheckAlterCommand extends AbstractCommand
         $operator = $this->getOperator($input, $output);
 
         $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'), 'conv');
-        $expectStructure = DatabaseStructureFactory::fromDir('schema');
+        $expectStructure = DatabaseStructureFactory::fromDir('tests/Retort/check_schema');
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,
