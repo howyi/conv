@@ -12,6 +12,7 @@ use Conv\Structure\ViewRawStructure;
 use Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
 use Conv\Operator;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class SchemaReflector
 {
@@ -24,7 +25,7 @@ class SchemaReflector
     public static function fromDatabaseStructure(
         string $path,
         DatabaseStructure $database,
-        Operator $operator
+        Operator $operator = null
     ) {
         if (file_exists($path)) {
             $iterator = new \RecursiveIteratorIterator(
@@ -38,10 +39,13 @@ class SchemaReflector
         } else {
             mkdir($path, 0777, true);
         }
-        $operator->output("\nGenerate schemas to '$path' directory");
-        $progress = $operator->getProgress(count($database->getTableList()));
-        $progress->start();
-        $progress->setFormat('debug');
+        $progress = null;
+        if (!is_null($operator)) {
+            $operator->output("\nGenerate schemas to '$path' directory");
+            $progress = $operator->getProgress(count($database->getTableList()));
+            $progress->start();
+            $progress->setFormat('debug');
+        }
         foreach ($database->getTableList() as $tableName => $structure) {
             switch ($structure->getType()) {
                 case TableStructureType::TABLE:
@@ -51,10 +55,14 @@ class SchemaReflector
                     self::fromViewRawStructure($path, $structure);
                     break;
             }
-            $progress->advance();
+            if (!is_null($operator)) {
+                $progress->advance();
+            }
         }
-        $progress->finish();
-        $operator->output("\nFinish");
+        if (!is_null($operator)) {
+            $progress->finish();
+            $operator->output("\nFinish");
+        }
     }
 
     /**
