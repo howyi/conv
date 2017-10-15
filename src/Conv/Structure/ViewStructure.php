@@ -136,6 +136,7 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
     {
         $createQuery = $this->getCreateQuery();
         $compareQuery = str_replace([PHP_EOL, ' '], '', $createQuery);
+        $compareQuery = str_replace("`$this->viewName`", 'TABLENAME', $compareQuery);
         return rtrim($compareQuery, ';');
     }
 }
