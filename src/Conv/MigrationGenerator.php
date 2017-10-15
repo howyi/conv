@@ -62,7 +62,7 @@ class MigrationGenerator
                 $renamedTableName = current($addedTableNameList);
             } else {
                 $renamedTableName = $operator->choiceQuestion(
-                    'Select a renamed column.',
+                    'Select a renamed table.',
                     $addedTableNameList
                 );
             }
@@ -101,7 +101,7 @@ class MigrationGenerator
                 $renamedViewName = current($addedViewNameList);
             } else {
                 $renamedViewName = $operator->choiceQuestion(
-                    'Select a renamed column.',
+                    'Select a renamed view.',
                     $addedViewNameList
                 );
             }

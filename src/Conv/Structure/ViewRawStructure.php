@@ -76,6 +76,7 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
     {
         $definer = ' DEFINER' . explode('DEFINER', $this->createQuery)[1] . 'DEFINER';
         $compareQuery = str_replace([$definer, PHP_EOL, ' '], '', $this->createQuery);
+        $compareQuery = str_replace("`$this->viewName`", 'TABLENAME', $compareQuery);
         return rtrim($compareQuery, ';');
     }
 
