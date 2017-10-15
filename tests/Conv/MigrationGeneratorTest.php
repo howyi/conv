@@ -37,14 +37,24 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider generateProvider
      */
-    public function testGenerate($dir, $expected)
+    public function testGenerate($dir, $calls, $expected)
     {
         $expectStructure = DatabaseStructureFactory::fromDir($dir);
         $actualStructure = DatabaseStructureFactory::fromPDO($this->pdo, 'conv_test');
+        $operator = $this->prophet->prophesize(Operator::class);
+
+        foreach ($calls as $value) {
+            $operator->choiceQuestion(
+                $value['message'],
+                $value['choices']
+            )->willReturn($value['return'])
+            ->shouldBeCalledTimes(1);
+        }
+
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,
-            $this->prophet->prophesize(Operator::class)->reveal()
+            $operator->reveal()
         );
         for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
             $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
@@ -65,6 +75,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 'tests/Retort/test_schema/000',
+                [],
                 [
                     TableCreateMigration::class,
                     TableCreateMigration::class,
@@ -79,12 +90,14 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'tests/Retort/test_schema/001',
+                [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
                 'tests/Retort/test_schema/002',
+                [],
                 [
                     TableDropMigration::class,
                     ViewDropMigration::class,
@@ -92,6 +105,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 'tests/Retort/test_schema/003',
+                [],
                 [
                     ViewAlterMigration::class,
                 ]
