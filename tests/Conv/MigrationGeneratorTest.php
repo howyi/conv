@@ -11,6 +11,7 @@ use Conv\Migration\Table\TableDropMigration;
 use Conv\Migration\Table\ViewDropMigration;
 use Conv\Migration\Table\ViewAlterMigration;
 use Conv\Migration\Table\ViewCreateMigration;
+use Conv\Migration\Table\ViewRenameMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
 use Conv\Operator;
@@ -46,10 +47,11 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         foreach ($calls as $value) {
             $operator->choiceQuestion(
                 $value['message'],
-                $value['choices']
+                arg::type('array')
             )->willReturn($value['return'])
             ->shouldBeCalledTimes(1);
         }
+        $operator->output(\Prophecy\Argument::any())->willReturn(null);
 
         $alter = MigrationGenerator::generate(
             $actualStructure,
@@ -108,6 +110,40 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 [],
                 [
                     ViewAlterMigration::class,
+                ]
+            ],
+            [
+                'tests/Retort/test_schema/004',
+                [
+                    [
+                        'message' => 'Table tbl_country is missing. Choose an action.',
+                        'return'  => 'renamed (tbl_country2, tbl_country3)',
+                    ],
+                    [
+                        'message' => 'Select a renamed table.',
+                        'return'  => 'tbl_country2',
+                    ]
+                ],
+                [
+                    TableAlterMigration::class,
+                    TableCreateMigration::class,
+                ]
+            ],
+            [
+                'tests/Retort/test_schema/005',
+                [
+                    [
+                        'message' => 'View view_user2 is missing. Choose an action.',
+                        'return'  => 'renamed (view_user, view_user3)',
+                    ],
+                    [
+                        'message' => 'Select a renamed view.',
+                        'return'  => 'view_user',
+                    ]
+                ],
+                [
+                    ViewRenameMigration::class,
+                    ViewCreateMigration::class,
                 ]
             ],
         ];
