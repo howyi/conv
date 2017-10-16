@@ -146,6 +146,22 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                     ViewCreateMigration::class,
                 ]
             ],
+            [
+                'tests/Retort/test_schema/006',
+                [
+                    [
+                        'message' => 'Column tbl_music.name is missing. Choose an action.',
+                        'return'  => 'renamed (music_name, description)',
+                    ],
+                    [
+                        'message' => 'Select a renamed column.',
+                        'return'  => 'music_name',
+                    ]
+                ],
+                [
+                    TableAlterMigration::class,
+                ]
+            ],
         ];
     }
 
