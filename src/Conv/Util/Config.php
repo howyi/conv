@@ -26,7 +26,7 @@ class Config
     {
         static $config;
         if (is_null($config)) {
-            $path = getcwd() . DIRECTORY_SEPARATOR . 'conv.yml';
+            $path = getcwd() . '/' . 'conv.yml';
             if (file_exists($path)) {
                 $config = Evi::parse($path, true);
             } else {
