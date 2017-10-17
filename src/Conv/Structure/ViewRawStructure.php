@@ -39,6 +39,41 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
      */
     public function getCreateQuery(): string
     {
+        $query = $this->createQuery;
+        $definer = ' DEFINER' . explode('DEFINER', $query)[1] . 'DEFINER';
+        $query = str_replace(
+          $definer,
+          '',
+          $query
+        );
+        $query = str_replace(
+          'AS select ',
+          PHP_EOL . 'AS select' . PHP_EOL . '  ',
+          $query
+        );
+        $query = str_replace(
+          ',',
+          ',' . PHP_EOL . '  ',
+          $query
+        );
+        $query = str_replace(
+          ' from ',
+          ' ' . PHP_EOL . 'from' . PHP_EOL . '  ',
+          $query
+        );
+        $query = str_replace(
+          ' where ',
+          ' ' . PHP_EOL . 'where' . PHP_EOL . '  ',
+          $query
+        );
+        return $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawQuery(): string
+    {
         return $this->createQuery;
     }
 
@@ -65,7 +100,7 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
     {
         return [
             SchemaKey::TABLE_TYPE => $this->getType(),
-            SchemaKey::VIEW_RAW_QUERY => $this->getCreateQuery(),
+            SchemaKey::VIEW_RAW_QUERY => $this->getRawQuery(),
         ];
     }
 
