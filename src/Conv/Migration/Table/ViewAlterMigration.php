@@ -21,7 +21,7 @@ class ViewAlterMigration extends AbstractTableMigration
         ViewStructureInterface $beforeView,
         ViewStructureInterface $afterView
     ) {
-        $this->tableName = $beforeView->getViewName();
+        $this->tableName = $afterView->getViewName();
         $this->type = MigrationType::CREATE_OR_REPLACE;
 
         $this->isAltered = ($beforeView->getCompareQuery() !== $afterView->getCompareQuery());
