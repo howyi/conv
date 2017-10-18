@@ -17,7 +17,7 @@ class ViewDropMigration extends AbstractTableMigration
         ViewStructureInterface $viewStructure
     ) {
         $this->tableName = $viewStructure->getViewName();
-        $this->type = MigrationType::DROP;
+        $this->type = MigrationType::VIEW_DROP;
 
         $viewCreateMigration = new ViewCreateMigration($viewStructure);
         $this->up = $viewCreateMigration->getDown();
