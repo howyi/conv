@@ -17,7 +17,7 @@ class ViewCreateMigration extends AbstractTableMigration
         ViewStructureInterface $viewStructure
     ) {
         $this->tableName = $viewStructure->getViewName();
-        $this->type = MigrationType::CREATE;
+        $this->type = MigrationType::VIEW_CREATE;
 
         $this->up = $viewStructure->getCreateQuery();
 
