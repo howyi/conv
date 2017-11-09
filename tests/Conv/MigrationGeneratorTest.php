@@ -8,9 +8,11 @@ use Conv\Factory\TableStructureFactory;
 use Conv\Migration\Table\TableAlterMigration;
 use Conv\Migration\Table\TableCreateMigration;
 use Conv\Migration\Table\TableDropMigration;
-use Conv\Migration\Table\ViewDropMigration;
 use Conv\Migration\Table\ViewAlterMigration;
+use Conv\Migration\Table\ViewAlterOnlyDownMigration;
+use Conv\Migration\Table\ViewAlterOnlyUpMigration;
 use Conv\Migration\Table\ViewCreateMigration;
+use Conv\Migration\Table\ViewDropMigration;
 use Conv\Migration\Table\ViewRenameMigration;
 use Conv\Structure\DatabaseStructure;
 use Conv\Structure\TableStructure;
@@ -25,7 +27,12 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 
     protected function setup()
     {
-        $this->pdo = new \PDO("mysql:host=localhost;dbname=conv_test;charset=utf8;", 'root', '');
+        $this->pdo = new \PDO(
+          "mysql:host=localhost;dbname=conv_test;charset=utf8;",
+          'root',
+          '',
+          [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+        );
         $this->prophet = new \Prophecy\Prophet;
     }
 
@@ -58,9 +65,6 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             $expectStructure,
             $operator->reveal()
         );
-        for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
-            $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
-        }
         foreach ($alter->getMigrationList() as $migration) {
             $this->pdo->exec($migration->getUp());
         }
@@ -69,6 +73,9 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         }
         foreach ($alter->getMigrationList() as $migration) {
             $this->pdo->exec($migration->getUp());
+        }
+        for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
+            $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
         }
     }
 
@@ -162,6 +169,22 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                     TableAlterMigration::class,
                 ]
             ],
+            // [
+            //     'tests/Retort/test_schema/007',
+            //     [
+            //         [
+            //             'message' => 'Column tbl_user.name is missing. Choose an action.',
+            //             'return'  => 'renamed (user_name)',
+            //         ]
+            //     ],
+            //     [
+            //         ViewAlterOnlyDownMigration::class,
+            //         ViewAlterOnlyDownMigration::class,
+            //         TableAlterMigration::class,
+            //         ViewAlterOnlyUpMigration::class,
+            //         ViewAlterOnlyUpMigration::class,
+            //     ]
+            // ],
         ];
     }
 

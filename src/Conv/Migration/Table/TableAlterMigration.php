@@ -10,19 +10,23 @@ use Conv\MigrationType;
 class TableAlterMigration extends AbstractTableMigration
 {
     private $isAltered = false;
+    private $renamedNameList;
 
     /**
      * @param string          $beforeTableName
      * @param string          $afterTableName
      * @param MigrationLineList $migrationLineList
+     * @param array           $renamedNameList
      */
     public function __construct(
         string $beforeTableName,
         string $afterTableName,
-        MigrationLineList $migrationLineList
+        MigrationLineList $migrationLineList,
+        array $renamedNameList
     ) {
         $this->tableName = $beforeTableName;
         $this->type = MigrationType::ALTER;
+        $this->renamedNameList = $renamedNameList;
 
         $this->isAltered = $migrationLineList->isMigratable();
 
@@ -47,5 +51,13 @@ class TableAlterMigration extends AbstractTableMigration
     public function isAltered(): bool
     {
         return $this->isAltered;
+    }
+
+    /**
+     * @return array
+     */
+    public function renamedNameList(): array
+    {
+        return $this->renamedNameList;
     }
 }

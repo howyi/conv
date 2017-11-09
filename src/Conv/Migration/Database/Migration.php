@@ -3,6 +3,7 @@
 namespace Conv\Migration\Database;
 
 use Conv\Migration\Table\TableMigrationInterface;
+use Conv\Migration\Table\ViewAlterMigration;
 
 class Migration
 {
@@ -13,7 +14,16 @@ class Migration
      */
     public function add(TableMigrationInterface $migration)
     {
-        return $this->migrationList[] = $migration;
+        $this->migrationList[] = $migration;
+    }
+
+    /**
+     * @param ViewAlterMigration $migration
+     */
+    public function addSplit(ViewAlterMigration $migration)
+    {
+        // array_unshift($this->migrationList,  new ViewAlterOnlyDownMigration($migration));
+        // $this->migrationList[] = new ViewAlterOnlyUpMigration($migration);
     }
 
     /**

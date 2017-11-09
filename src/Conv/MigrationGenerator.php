@@ -31,6 +31,9 @@ class MigrationGenerator
     ): Migration {
         // DROP → MODIFY → ADD の順でマイグレーションを生成する
 
+        // テーブル、もしくはカラムの変更後配列
+        $allRenamedNameList = [];
+
         // 全ての消滅したテーブル配列
         $missingTableList = $beforeDatabase->getDiffTableList($afterDatabase);
         // 全ての追加したテーブル配列
@@ -67,6 +70,7 @@ class MigrationGenerator
                 );
             }
             $renamedTableNameList[$missingTableName] = $renamedTableName;
+            $allRenamedNameList[] = [$renamedTableName];
             $addedTableNameList = array_diff($addedTableNameList, [$renamedTableName]);
         }
 
@@ -133,6 +137,7 @@ class MigrationGenerator
                 $afterDatabase->getTableList()[$tableName],
                 $operator
             );
+            $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
             if (!$tableAlterMigration->isAltered()) {
                 continue;
             }
@@ -145,6 +150,7 @@ class MigrationGenerator
                 $afterDatabase->getTableList()[$afterTableName],
                 $operator
             );
+            $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
             $migration->add($tableAlterMigration);
         }
 
@@ -155,11 +161,17 @@ class MigrationGenerator
             }
             $viewAlterMigration = new ViewAlterMigration(
                 $beforeView,
-                $afterDatabase->getTableList()[$viewName]
+                $afterDatabase->getTableList()[$viewName],
+                $allRenamedNameList
             );
             if (!$viewAlterMigration->isAltered()) {
                 continue;
             }
+            // if ($viewAlterMigration->isSplit()) {
+            //     $migration->addSplit($viewAlterMigration);
+            // } else {
+            //     $migration->add($viewAlterMigration);
+            // }
             $migration->add($viewAlterMigration);
         }
 
@@ -168,10 +180,15 @@ class MigrationGenerator
             $afterView = $afterDatabase->getTableList()[$afterViewName];
             $migration->add(new ViewRenameMigration($beforeView, $afterView));
 
-            $viewAlterMigration = new ViewAlterMigration($beforeView, $afterView);
+            $viewAlterMigration = new ViewAlterMigration($beforeView, $afterView, $allRenamedNameList);
             if (!$viewAlterMigration->isAltered()) {
                 continue;
             }
+            // if ($viewAlterMigration->isSplit()) {
+            //     $migration->addSplit($viewAlterMigration);
+            // } else {
+            //     $migration->add($viewAlterMigration);
+            // }
             $migration->add($viewAlterMigration);
         }
 

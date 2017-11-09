@@ -34,6 +34,9 @@ class TableAlterMigrationGenerator
     ): TableAlterMigration {
         // DROP-INDEX → DROP → MODIFY → ADD → ADD-INDEX の順でマイグレーションを生成する
 
+        // カラムの変更後配列
+        $renamedNameList = [];
+
         // 全ての消滅したカラム配列
         $missingColumnList = $beforeTable->getDiffColumnList($afterTable);
         // 全ての追加したカラム配列
@@ -70,6 +73,7 @@ class TableAlterMigrationGenerator
                 );
             }
             $renamedFieldList[$missingField] = $renamedField;
+            $renamedNameList[] = [$beforeTable->tableName, $renamedField];
             $addedFieldList = array_diff($addedFieldList, [$renamedField]);
         }
         $droppedModifiedColumnList = $beforeTable->getModifiedColumnList($droppedFieldList);
@@ -162,7 +166,7 @@ class TableAlterMigrationGenerator
             );
         }
 
-        $tableAlterMigration = new TableAlterMigration($beforeTable->getTableName(), $afterTable->getTableName(), $migrationLineList);
+        $tableAlterMigration = new TableAlterMigration($beforeTable->getTableName(), $afterTable->getTableName(), $migrationLineList, $renamedNameList);
 
         if ($tableAlterMigration->isAltered()) {
             // Display
