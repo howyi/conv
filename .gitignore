@@ -1,4 +1,6 @@
 /vendor/
+/node_modules/
+/_book/
 /build/
 composer.lock
 Retort
