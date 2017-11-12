@@ -7,7 +7,7 @@ MySQL migration query auto generate from schema
 composer require howyi/conv --dev
 ```
 
-- wiki: https://github.com/howyi/conv/wiki
+- document: https://howyi.gitbooks.io/conv/content/ja/
 
 ### 概要
 指定したPDOのテーブルとYAMLのスキーマ差分からMySQLのクエリを生成する
