@@ -49,6 +49,8 @@ class TableAlterMigrationGenerator
         // 追加したカラム名配列
         $addedFieldList = array_keys($unknownColumnList);
 
+        // Generate Migrations
+
         foreach ($missingColumnList as $missingField => $missingColumn) {
             if (0 === count($addedFieldList)) {
                 $droppedFieldList[] = $missingField;
@@ -107,12 +109,17 @@ class TableAlterMigrationGenerator
             $downModifiedColumn->setModifiedAfter($fieldOrder->getPreviousAfterField());
         }
 
-        // Generate Migrations
-
         $indexAllMigration = IndexMigrationGenerator::generate(
             $beforeTable->getIndexList(),
             $afterTable->getIndexList()
         );
+
+        $partitionMigration = PartitionMigrationGenerator::generate(
+            $beforeTable->getPartition(),
+            $afterTable->getPartition()
+        );
+
+        // Set Migrations
 
         $migrationLineList = new MigrationLineList();
         if ($beforeTable->getTableName() !== $afterTable->getTableName()) {
@@ -164,6 +171,10 @@ class TableAlterMigrationGenerator
             $migrationLineList->add(
                 $indexAllMigration->getLast()
             );
+        }
+
+        if (!is_null($partitionMigration)) {
+            $migrationLineList->add($partitionMigration);
         }
 
         $tableAlterMigration = new TableAlterMigration($beforeTable->getTableName(), $afterTable->getTableName(), $migrationLineList, $renamedNameList);
