@@ -28,10 +28,10 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     protected function setup()
     {
         $this->pdo = new \PDO(
-          "mysql:host=127.0.0.1;dbname=conv_test;charset=utf8;",
-          'root',
-          '',
-          [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            "mysql:host=127.0.0.1;dbname=conv_test;charset=utf8;",
+            'root',
+            '',
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
         );
         $this->prophet = new \Prophecy\Prophet;
     }
@@ -169,22 +169,20 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                     TableAlterMigration::class,
                 ]
             ],
-            // [
-            //     'tests/Retort/test_schema/007',
-            //     [
-            //         [
-            //             'message' => 'Column tbl_user.name is missing. Choose an action.',
-            //             'return'  => 'renamed (user_name)',
-            //         ]
-            //     ],
-            //     [
-            //         ViewAlterOnlyDownMigration::class,
-            //         ViewAlterOnlyDownMigration::class,
-            //         TableAlterMigration::class,
-            //         ViewAlterOnlyUpMigration::class,
-            //         ViewAlterOnlyUpMigration::class,
-            //     ]
-            // ],
+            [
+                'tests/Retort/test_schema/007',
+                [],
+                [
+                    TableAlterMigration::class,
+                ]
+            ],
+            [
+                'tests/Retort/test_schema/008',
+                [],
+                [
+                    TableAlterMigration::class,
+                ]
+            ],
         ];
     }
 
