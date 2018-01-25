@@ -7,7 +7,7 @@ use Conv\Structure\PartitionStructureInterface;
 /**
  * PARTITION BY ~
  */
-class PartitionResetMigrationLine extends AbstractMigrationLine
+class PartitionResetMigration extends PartitionMigration
 {
     /**
     * @param PartitionStructureInterface|null $before
@@ -17,7 +17,7 @@ class PartitionResetMigrationLine extends AbstractMigrationLine
         ?PartitionStructureInterface $before,
         PartitionStructureInterface $after
     ) {
-        $this->upLineList = [$after->getQuery()];
-        $this->downLineList = is_null($before) ? ['REMOVE PARTITIONING'] : [$before->getQuery()];
+        $this->up = $after->getQuery();
+        $this->down = is_null($before) ? 'REMOVE PARTITIONING' : $before->getQuery();
     }
 }

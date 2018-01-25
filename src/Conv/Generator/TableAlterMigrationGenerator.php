@@ -173,11 +173,13 @@ class TableAlterMigrationGenerator
             );
         }
 
-        if (!is_null($partitionMigration)) {
-            $migrationLineList->add($partitionMigration);
-        }
-
-        $tableAlterMigration = new TableAlterMigration($beforeTable->getTableName(), $afterTable->getTableName(), $migrationLineList, $renamedNameList);
+        $tableAlterMigration = new TableAlterMigration(
+            $beforeTable->getTableName(),
+            $afterTable->getTableName(),
+            $migrationLineList,
+            $renamedNameList,
+            $partitionMigration
+        );
 
         if ($tableAlterMigration->isAltered()) {
             // Display
