@@ -8,14 +8,14 @@ use Conv\Structure\PartitionStructureInterface;
 /**
  * REMOVE PARTITIONING
  */
-class PartitionRemoveMigrationLine extends AbstractMigrationLine
+class PartitionRemoveMigration extends PartitionMigration
 {
     /**
-    * @param IndexStructure[] $indexList
+    * @param PartitionStructureInterface $before
     */
     public function __construct(PartitionStructureInterface $before)
     {
-        $this->upLineList = ['REMOVE PARTITIONING'];
-        $this->downLineList = [$before->getQuery()];
+        $this->up = 'REMOVE PARTITIONING';
+        $this->down = $before->getQuery();
     }
 }

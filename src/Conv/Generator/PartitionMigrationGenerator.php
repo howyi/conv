@@ -2,9 +2,9 @@
 
 namespace Conv\Generator;
 
-use Conv\Migration\Line\AbstractMigrationLine;
-use Conv\Migration\Line\PartitionRemoveMigrationLine;
-use Conv\Migration\Line\PartitionResetMigrationLine;
+use Conv\Migration\Line\PartitionMigration;
+use Conv\Migration\Line\PartitionRemoveMigration;
+use Conv\Migration\Line\PartitionResetMigration;
 use Conv\Structure\PartitionStructureInterface;
 
 class PartitionMigrationGenerator
@@ -12,26 +12,26 @@ class PartitionMigrationGenerator
     /**
      * @param PartitionStructureInterface|null $beforePartition
      * @param PartitionStructureInterface|null $afterPartition
-     * @return AbstractMigrationLine|null
+     * @return PartitionMigration|null
      */
     public static function generate(
         ?PartitionStructureInterface $beforePartition,
         ?PartitionStructureInterface $afterPartition
-    ): ?AbstractMigrationLine {
+    ): ?PartitionMigration {
         if (is_null($afterPartition)) {
             if (is_null($beforePartition)) {
                 return null;
             } else {
-                return new PartitionRemoveMigrationLine($beforePartition);
+                return new PartitionRemoveMigration($beforePartition);
             }
         }
 
         if (is_null($beforePartition)) {
-            return new PartitionResetMigrationLine(null, $afterPartition);
+            return new PartitionResetMigration(null, $afterPartition);
         }
 
         if ($beforePartition->getQuery() !== $afterPartition->getQuery()) {
-            return new PartitionResetMigrationLine($beforePartition, $afterPartition);
+            return new PartitionResetMigration($beforePartition, $afterPartition);
         }
 
         return null;

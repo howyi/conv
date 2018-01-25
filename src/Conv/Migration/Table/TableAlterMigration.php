@@ -2,6 +2,7 @@
 
 namespace Conv\Migration\Table;
 
+use Conv\Migration\Line\PartitionMigration;
 use Conv\MigrationType;
 
 /**
@@ -13,22 +14,24 @@ class TableAlterMigration extends AbstractTableMigration
     private $renamedNameList;
 
     /**
-     * @param string          $beforeTableName
-     * @param string          $afterTableName
-     * @param MigrationLineList $migrationLineList
-     * @param array           $renamedNameList
+     * @param string                  $beforeTableName
+     * @param string                  $afterTableName
+     * @param MigrationLineList       $migrationLineList
+     * @param array                   $renamedNameList
+     * @param PartitionMigration|null $partitionMigration
      */
     public function __construct(
         string $beforeTableName,
         string $afterTableName,
         MigrationLineList $migrationLineList,
-        array $renamedNameList
+        array $renamedNameList,
+		?PartitionMigration $partitionMigration
     ) {
         $this->tableName = $beforeTableName;
         $this->type = MigrationType::ALTER;
         $this->renamedNameList = $renamedNameList;
 
-        $this->isAltered = $migrationLineList->isMigratable();
+        $this->isAltered = ($migrationLineList->isMigratable() or !is_null($partitionMigration));
 
         if (!$this->isAltered()) {
             return;
@@ -36,13 +39,23 @@ class TableAlterMigration extends AbstractTableMigration
 
         $queryHeaderTemplate = "ALTER TABLE `%s`";
 
-        $upBody = $migrationLineList->getUp();
-        $this->up = sprintf($queryHeaderTemplate, $beforeTableName) . PHP_EOL . $upBody . ';';
+        $this->up = sprintf($queryHeaderTemplate, $beforeTableName);
+        $this->down = sprintf($queryHeaderTemplate, $afterTableName);
 
-        $downBody = $migrationLineList->getDown();
-        $this->down = sprintf($queryHeaderTemplate, $afterTableName) . PHP_EOL . $downBody . ';';
+        if ($migrationLineList->isMigratable()) {
+	        $upBody = $migrationLineList->getUp();
+	        $this->up .= PHP_EOL . $upBody;
 
-        // TODO PARTITION
+	        $downBody = $migrationLineList->getDown();
+	        $this->down .= PHP_EOL . $downBody;
+        }
+
+        if (!is_null($partitionMigration)) {
+	        $this->up .= PHP_EOL . $partitionMigration->getUp();
+	        $this->down .= PHP_EOL . $partitionMigration->getDown();
+        }
+        $this->up .= ';';
+        $this->down .= ';';
     }
 
     /**
