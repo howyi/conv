@@ -57,7 +57,7 @@ class CreateQueryReflector
 	    $progress = null;
 
 	    if (!is_null($operator)) {
-		    $operator->output("\nGenerate sql to '$path' directory");
+		    $operator->output("\nSave generated queries to '$path'");
 		    $progress = $operator->getProgress(count($tables));
 		    $progress->start();
 		    $progress->setFormat('debug');

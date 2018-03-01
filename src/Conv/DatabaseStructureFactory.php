@@ -98,7 +98,7 @@ class DatabaseStructureFactory
 		Operator $operator,
 		callable $filter = null
 	): DatabaseStructure {
-		$operator->output('<comment>Genarate Temporary DB</>');
+		$operator->output('<comment>Genarate temporary database</>');
 		$pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
 		$pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
 		$pdo->exec('USE ' . self::TMP_DBNAME);
