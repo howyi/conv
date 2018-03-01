@@ -16,6 +16,8 @@ use Howyi\Evi;
 
 class DatabaseStructureFactory
 {
+	private const TMP_DBNAME = 'conv_tmp';
+
     /**
      * @param string $path
      */
@@ -82,4 +84,51 @@ class DatabaseStructureFactory
         }
         return new DatabaseStructure($tableList);
     }
+
+	/**
+	 * @param \PDO          $pdo      Creatable DB
+	 * @param string        $path
+	 * @param Operator      $operator
+	 * @param callable|null $filter
+	 * @return DatabaseStructure
+	 */
+	public static function fromSqlDir(
+		\PDO $pdo,
+		string $path,
+		Operator $operator,
+		callable $filter = null
+	): DatabaseStructure {
+		$operator->output('<comment>Genarate Temporary DB</>');
+		$pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
+		$pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
+		$pdo->exec('USE ' . self::TMP_DBNAME);
+		$viewQueryList = [];
+		$progress = $operator->getProgress(count(glob("$path/*.sql")));
+		$progress->start();
+		foreach (new \DirectoryIterator($path) as $fileInfo) {
+			if (!$fileInfo->isFile()) {
+				continue;
+			}
+			if ('sql' !== strtolower($fileInfo->getExtension())) {
+				continue;
+			}
+			$query = file_get_contents($fileInfo->getRealPath());
+
+			if (false === strpos($query, 'CREATE ALGORITHM')) {
+				$pdo->exec($query);
+				$progress->advance();
+			} else {
+				$viewQueryList[] = $query;
+			}
+		}
+		foreach ($viewQueryList as $query) {
+			$pdo->exec($query);
+			$progress->advance();
+		}
+		$progress->finish();
+		$databaseStructure = self::fromPDO($pdo, self::TMP_DBNAME, $filter);
+		$pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
+
+		return $databaseStructure;
+	}
 }
