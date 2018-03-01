@@ -54,6 +54,8 @@ class CreateQueryReflector
 		    "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$dbName'"
 	    )->fetchAll();
 
+	    $progress = null;
+
 	    if (!is_null($operator)) {
 		    $operator->output("\nGenerate sql to '$path' directory");
 		    $progress = $operator->getProgress(count($tables));
