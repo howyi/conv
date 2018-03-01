@@ -136,6 +136,7 @@ class TableStructureFactory
      */
     public static function fromTable(\PDO $pdo, string $dbName, string $tableName): TableStructure
     {
+	    $pdo->exec('USE ' . $dbName);
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
 
         $rawColumnList = $pdo->query(
