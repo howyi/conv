@@ -10,6 +10,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 
 $app = new Symfony\Component\Console\Application;
 
-$app->add(new Conv\Command\DiffCommand);
+$app->add(new Conv\Command\ReflectCommand());
+$app->add(new Conv\Command\DiffDb2DbCommand);
 
 $app->run();
