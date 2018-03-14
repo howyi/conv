@@ -4,13 +4,11 @@ namespace Conv\Command;
 
 use Conv\DatabaseStructureFactory;
 use Conv\MigrationGenerator;
-use Conv\Operator;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DiffCommand extends Command
+class DiffCommand extends AbstractConvCommand
 {
     protected function configure()
     {
@@ -41,16 +39,16 @@ class DiffCommand extends Command
     {
         [$dbName1, $dbName2] = explode(':', $input->getArgument('dbNames'));
 
-        $pdo1 = $this->convertPdo($input->getOption('server1'), $dbName1);
-        $pdo2 = $this->convertPdo($input->getOption('server2'), $dbName2);
-
+        $pdo1 = $this->convertToPdo($input->getOption('server1'), $dbName1);
         $db1Structure = DatabaseStructureFactory::fromPDO($pdo1, $dbName1);
+
+        $pdo2 = $this->convertToPdo($input->getOption('server2'), $dbName2);
         $db2Structure = DatabaseStructureFactory::fromPDO($pdo2, $dbName2);
 
         $alterMigrations = MigrationGenerator::generate(
             $db1Structure,
             $db2Structure,
-            $operator = new Operator($this->getHelper('question'), $input, $output)
+            $operator = $this->getOperator($input, $output)
         );
 
         $operator->output("\n\n\n\n");
@@ -62,25 +60,5 @@ class DiffCommand extends Command
             $operator->output('<fg=yellow>-------- DOWN --------</>');
             $operator->output("<fg=magenta>{$migration->getDown()}</>\n\n");
         }
-    }
-
-    private function convertPdo(string $server, string $dbName): \PDO
-    {
-        [$user, $address] = explode('@', $server);
-
-        $explodedUser = explode(':', $user);
-        $explodedAddress = explode(':', $address);
-
-        return new \PDO(
-            sprintf(
-                'mysql:host=%s;port=%s;dbname=%s',
-                $explodedAddress[0],
-                ($explodedAddress[1] ?? '3306'),
-                $dbName
-            ),
-            $explodedUser[0],
-            $explodedUser[1] ?? '',
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
     }
 }
