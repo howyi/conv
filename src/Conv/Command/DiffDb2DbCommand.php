@@ -25,7 +25,7 @@ class DiffDb2DbCommand extends AbstractConvCommand
             ->addOption(
                 'server2',
                 null,
-	            InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'user:pass@host:port',
                 'root@localhost'
             )
@@ -47,19 +47,11 @@ class DiffDb2DbCommand extends AbstractConvCommand
         $db2Structure = DatabaseStructureFactory::fromPDO($pdo2, $dbName2);
 
         $alterMigrations = MigrationGenerator::generate(
-            $db1Structure,
             $db2Structure,
+            $db1Structure,
             $operator = $this->getOperator($input, $output)
         );
 
-        $operator->output("\n\n\n\n");
-
-        foreach ($alterMigrations->getMigrationList() as $migration) {
-            $operator->output("<fg=green>### TABLE NAME: {$migration->getTableName()}</>");
-            $operator->output('<fg=yellow>--------- UP ---------</>');
-            $operator->output("<fg=blue>{$migration->getUp()}</>");
-            $operator->output('<fg=yellow>-------- DOWN --------</>');
-            $operator->output("<fg=magenta>{$migration->getDown()}</>\n\n");
-        }
+        $this->displayAlterMigration($alterMigrations, $operator);
     }
 }

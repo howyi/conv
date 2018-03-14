@@ -2,20 +2,19 @@
 
 namespace Conv\Command;
 
-use Conv\CreateQueryReflector;
 use Conv\DatabaseStructureFactory;
-use Conv\SchemaReflector;
+use Conv\MigrationGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReflectCommand extends AbstractConvCommand
+class DiffSchema2DbCommand extends AbstractConvCommand
 {
     protected function configure()
     {
         $this
-            ->setName('reflect')
+            ->setName('diff:schema2db')
             ->addArgument(
                 'server',
                 InputArgument::REQUIRED,
@@ -38,38 +37,48 @@ class ReflectCommand extends AbstractConvCommand
                 InputOption::VALUE_OPTIONAL,
                 'Reflect file type(sql or yaml)',
                 'sql'
+            )
+            ->addOption(
+                'root',
+                'r',
+                InputOption::VALUE_OPTIONAL,
+                'root server (user:pass@host:port)',
+                null
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $pdo = $this->convertToPdo(
-            $input->getArgument('server'),
-            $dbName = $input->getArgument('dbName')
-        );
-
         $type = strtolower($input->getOption('type'));
 
         switch ($type) {
             case 'sql':
-                CreateQueryReflector::fromPDO(
+                $pdo = $this->convertToPdo($input->getOption('root') ?? $input->getArgument('server'));
+                $dbSchemaStructure = DatabaseStructureFactory::fromSqlDir(
                     $pdo,
-                    $dbName,
                     $input->getOption('dir'),
                     $this->getOperator($input, $output)
                 );
                 break;
             case 'yaml':
-                $dbStructure = DatabaseStructureFactory::fromPDO($pdo, $dbName);
-                SchemaReflector::fromDatabaseStructure(
-                    $input->getOption('dir'),
-                    $dbStructure,
-                    $this->getOperator($input, $output)
-                );
+                $dbSchemaStructure = DatabaseStructureFactory::fromDir($input->getOption('dir'));
                 break;
             default:
                 throw new \Exception('Unexpected file type (sql or yaml)');
         }
 
+        $pdo = $this->convertToPdo(
+            $input->getArgument('server'),
+            $dbName = $input->getArgument('dbName')
+        );
+        $dbStructure = DatabaseStructureFactory::fromPDO($pdo, $dbName);
+
+        $alterMigrations = MigrationGenerator::generate(
+            $dbStructure,
+            $dbSchemaStructure,
+            $operator = $this->getOperator($input, $output)
+        );
+
+        $this->displayAlterMigration($alterMigrations, $operator);
     }
 }
