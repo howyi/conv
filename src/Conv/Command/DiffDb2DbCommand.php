@@ -6,25 +6,26 @@ use Conv\DatabaseStructureFactory;
 use Conv\MigrationGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DiffCommand extends AbstractConvCommand
+class DiffDb2DbCommand extends AbstractConvCommand
 {
     protected function configure()
     {
         $this
-            ->setName('diff')
+            ->setName('diff:db2db')
             ->addOption(
                 'server1',
                 null,
-                InputArgument::OPTIONAL,
+                InputOption::VALUE_OPTIONAL,
                 'user:pass@host:port',
                 'root@localhost'
             )
             ->addOption(
                 'server2',
                 null,
-                InputArgument::OPTIONAL,
+	            InputOption::VALUE_OPTIONAL,
                 'user:pass@host:port',
                 'root@localhost'
             )
