@@ -57,9 +57,9 @@ class DiffCommand extends Command
 
         foreach ($alterMigrations->getMigrationList() as $migration) {
             $operator->output("<fg=green>### TABLE NAME: {$migration->getTableName()}</>");
-            $operator->output('<fg=yellow>------ UP ------</>');
+            $operator->output('<fg=yellow>--------- UP ---------</>');
             $operator->output("<fg=blue>{$migration->getUp()}</>");
-            $operator->output('<fg=yellow>------ DOWN ----</>');
+            $operator->output('<fg=yellow>-------- DOWN --------</>');
             $operator->output("<fg=magenta>{$migration->getDown()}</>\n\n");
         }
     }
