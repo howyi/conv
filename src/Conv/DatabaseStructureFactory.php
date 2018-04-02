@@ -126,6 +126,7 @@ class DatabaseStructureFactory
 			$progress->advance();
 		}
 		$progress->finish();
+		$operator->output('');
 		$databaseStructure = self::fromPDO($pdo, self::TMP_DBNAME, $filter);
 		$pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
 
