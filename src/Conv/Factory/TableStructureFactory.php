@@ -248,7 +248,7 @@ class TableStructureFactory
         foreach ($keyList as $keyName => $indexList) {
             $indexStructureList[] = new IndexStructure(
                 $keyName,
-                '0' === $indexList[0]['Non_unique'],
+                '0' == $indexList[0]['Non_unique'],
                 array_column($indexList, 'Column_name')
             );
         }
