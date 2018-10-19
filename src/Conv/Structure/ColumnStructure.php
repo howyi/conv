@@ -114,6 +114,8 @@ class ColumnStructure
     {
         if (is_numeric($this->default)) {
             return $this->default;
+        } elseif (strtoupper($this->type) === 'TIMESTAMP' and $this->default = 'CURRENT_TIMESTAMP') {
+            return $this->default;
         } else {
             return "'$this->default'";
         }
