@@ -103,6 +103,7 @@ class DatabaseStructureFactory
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
         $pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
         $pdo->exec('USE ' . self::TMP_DBNAME);
+        $pdo->exec('SET sql_mode = \'\'');
         $views = [];
         $progress = $operator->getProgress(count(glob("$path/*.sql")));
         $progress->start();
