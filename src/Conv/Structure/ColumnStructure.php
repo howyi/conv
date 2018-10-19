@@ -67,12 +67,16 @@ class ColumnStructure
         if ($this->isNullable() === false) {
             $query[] = 'NOT NULL';
         }
-        if (!is_null($this->default)) {
-            $query[] = 'DEFAULT';
-            $query[] = $this->getDefault();
-        } elseif ($this->isAutoIncrement() === true) {
+
+        if ($this->isAutoIncrement() === true) {
             $query[] = 'AUTO_INCREMENT';
-        }
+        } elseif ($this->default !== null) {
+			$query[] = 'DEFAULT';
+			$query[] = $this->getDefault();
+		} elseif ($this->isNullable() === true) {
+			$query[] = 'DEFAULT NULL';
+		}
+
         $query[] = 'COMMENT';
         $query[] = "'$this->comment'";
         return implode(' ', $query);
