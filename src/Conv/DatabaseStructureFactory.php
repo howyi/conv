@@ -177,6 +177,7 @@ class DatabaseStructureFactory
         foreach ($ddls as $name => $ddl) {
             if ($ddl->isView()) {
                 $views[] = $ddl;
+                continue;
             }
             self::createTableRecursive($ddls, $name);
         }
