@@ -22,13 +22,13 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                ['id' => new IndexStructure('id', false, ['id'])],
-                ['id' => new IndexStructure('id', false, ['id'])],
+                ['id' => new IndexStructure('id', false, 'BTREE', ['id'])],
+                ['id' => new IndexStructure('id', false, 'BTREE', ['id'])],
                 new IndexAllMigrationLine(),
             ],
             [
-                $before = ['id' => new IndexStructure('id', false, ['id'])],
-                $after = ['id' => new IndexStructure('id', true, ['id'])],
+                $before = ['id' => new IndexStructure('id', false, 'BTREE', ['id'])],
+                $after = ['id' => new IndexStructure('id', true, 'BTREE', ['id'])],
                 new IndexAllMigrationLine(
                     new IndexDropMigrationLine($before),
                     new IndexAddMigrationLine($after)
@@ -37,8 +37,8 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             [
                 [],
                 $after = [
-                    'id'  => new IndexStructure('id', true, ['id']),
-                    'age' => new IndexStructure('age', false, ['age'])
+                    'id'  => new IndexStructure('id', true, 'BTREE', ['id']),
+                    'age' => new IndexStructure('age', false, 'BTREE', ['age'])
                 ],
                 new IndexAllMigrationLine(
                     null,
@@ -47,8 +47,8 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             ],
             [
                 $before = [
-                    'id'  => new IndexStructure('id', true, ['id']),
-                    'age' => new IndexStructure('age', false, ['age'])
+                    'id'  => new IndexStructure('id', true, 'BTREE', ['id']),
+                    'age' => new IndexStructure('age', false, 'BTREE', ['age'])
                 ],
                 [],
                 new IndexAllMigrationLine(
