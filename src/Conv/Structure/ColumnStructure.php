@@ -11,6 +11,8 @@ class ColumnStructure
     public $default;
     public $comment;
     public $attribute;
+	public $collationName;
+	public $generationExpression;
     private $properties;
 
     /**
@@ -27,6 +29,8 @@ class ColumnStructure
         $default,
         string $comment,
         array $attribute,
+        ?string $collationName,
+		?string $generationExpression,
         array $properties
     ) {
         $this->field = $field;
@@ -34,6 +38,8 @@ class ColumnStructure
         $this->default = $default;
         $this->comment = $comment;
         $this->attribute = $attribute;
+        $this->collationName = $collationName;
+        $this->generationExpression = $generationExpression;
         $this->properties = $properties;
     }
 
@@ -64,17 +70,34 @@ class ColumnStructure
         if ($this->isUnsigned() === true) {
             $query[] = 'UNSIGNED';
         }
-        if ($this->isNullable() === false) {
-            $query[] = 'NOT NULL';
+
+        if ($this->collationName !== null) {
+            $query[] = 'COLLATE';
+            $query[] = $this->collationName;
         }
 
-        if ($this->isAutoIncrement() === true) {
-            $query[] = 'AUTO_INCREMENT';
-        } elseif ($this->default !== null) {
-			$query[] = 'DEFAULT';
-			$query[] = $this->getDefault();
-		} elseif ($this->isNullable() === true) {
-			$query[] = 'DEFAULT NULL';
+        if ($this->generationExpression !== null) {
+            $query[] = 'AS';
+            $query[] = "($this->generationExpression)";
+        }
+
+		if ($this->isStored() === true) {
+			$query[] = 'STORED';
+		}
+
+		if ($this->isNullable() === false) {
+			$query[] = 'NOT NULL';
+		}
+
+		if ($this->generationExpression === null) {
+			if ($this->isAutoIncrement() === true) {
+				$query[] = 'AUTO_INCREMENT';
+			} elseif ($this->default !== null) {
+				$query[] = 'DEFAULT';
+				$query[] = $this->getDefault();
+			} elseif ($this->isNullable() === true) {
+				$query[] = 'DEFAULT NULL';
+			}
 		}
 
         $query[] = 'COMMENT';
@@ -101,7 +124,10 @@ class ColumnStructure
             $this->isNullable() === $target->isNullable() and
             $this->isUnsigned() === $target->isUnsigned() and
             $this->default === $target->default and
-            $this->isAutoIncrement() === $target->isAutoIncrement()) {
+            $this->isAutoIncrement() === $target->isAutoIncrement() and
+			$this->collationName === $this->collationName and
+			$this->generationExpression === $this->generationExpression and
+			$this->isStored() === $this->isStored()) {
             return false;
         }
         return true;
@@ -169,5 +195,13 @@ class ColumnStructure
     public function isAutoIncrement(): bool
     {
         return in_array(Attribute::AUTO_INCREMENT, $this->attribute, true);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStored(): bool
+    {
+        return in_array(Attribute::STORED, $this->attribute, true);
     }
 }
