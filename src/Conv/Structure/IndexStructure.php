@@ -8,23 +8,30 @@ class IndexStructure
 {
     public $keyName;
     public $isUnique;
+	public $indexType;
     public $columnNameList;
     public $isPrimary;
+    public $isBtree;
 
-    /**
-     * @param string   $keyName
-     * @param bool     $isUnique
-     * @param string[] $columnNameList
-     */
+	/**
+	 * IndexStructure constructor.
+	 * @param string $keyName
+	 * @param bool   $isUnique
+	 * @param string $indexType
+	 * @param array  $columnNameList
+	 */
     public function __construct(
         string $keyName,
         bool $isUnique,
+		string $indexType,
         array $columnNameList
     ) {
         $this->keyName = $keyName;
         $this->isUnique = $isUnique;
+        $this->indexType = $indexType;
         $this->columnNameList = $columnNameList;
         $this->isPrimary = 'PRIMARY' === $this->keyName;
+        $this->isBtree = 'BTREE' === strtoupper($this->indexType);
     }
 
     /**
@@ -39,8 +46,11 @@ class IndexStructure
         } else {
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
-            }
-            $query[] = 'KEY';
+            } elseif ($this->isBtree === false) {
+				$query[] = strtoupper($this->indexType);
+			}
+			$query[] = 'KEY';
+
             $query[] = "`$this->keyName`";
         }
         $query[] = $this->generateIndexText();
@@ -59,7 +69,9 @@ class IndexStructure
         } else {
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
-            } else {
+            } elseif ($this->isBtree === false) {
+				$query[] = strtoupper($this->indexType);
+			} else {
                 $query[] = 'INDEX';
             }
             $query[] = "`$this->keyName`";
@@ -116,7 +128,8 @@ class IndexStructure
     public function isChanged(IndexStructure $after): bool
     {
         if ($this->columnNameList === $after->columnNameList and
-                $this->isUnique === $after->isUnique) {
+                $this->isUnique === $after->isUnique and
+				$this->indexType === $after->indexType) {
             return false;
         }
         return true;
