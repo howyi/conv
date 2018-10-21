@@ -45,6 +45,7 @@ class TableStructureFactory
             $indexStructureList[] = new IndexStructure(
                 'PRIMARY',
                 true,
+				'BTREE',
                 $spec[SchemaKey::TABLE_PRIMARY_KEY]
             );
         }
@@ -54,6 +55,7 @@ class TableStructureFactory
                 $indexStructureList[] = new IndexStructure(
                     $keyName,
                     $value[SchemaKey::INDEX_TYPE],
+					'BTREE',
                     $value[SchemaKey::INDEX_COLUMN]
                 );
             }
