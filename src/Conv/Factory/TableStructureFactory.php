@@ -34,6 +34,8 @@ class TableStructureFactory
                 array_key_exists(SchemaKey::COLUMN_DEFAULT, $column) ? $column[SchemaKey::COLUMN_DEFAULT] : null,
                 $column[SchemaKey::COLUMN_COMMENT],
                 array_key_exists(SchemaKey::COLUMN_ATTRIBUTE, $column) ? $column[SchemaKey::COLUMN_ATTRIBUTE] : [],
+                null,
+                null,
                 $properties
             );
         }
@@ -221,12 +223,21 @@ class TableStructureFactory
             if ((bool) preg_match('/unsigned/', $column['COLUMN_TYPE'])) {
                 $attribute[] = Attribute::UNSIGNED;
             }
-            $columnStructureList[] = new ColumnStructure(
+            if ((bool) preg_match('/STORED/', $column['EXTRA'])) {
+                $attribute[] = Attribute::STORED;
+            }
+
+			$collationName = $column['COLLATION_NAME'];
+			$generationExpression = empty($column['GENERATION_EXPRESSION']) ? null : $column['GENERATION_EXPRESSION'];
+
+			$columnStructureList[] = new ColumnStructure(
                 $column['COLUMN_NAME'],
                 str_replace(' unsigned', '', $column['COLUMN_TYPE']),
                 $column['COLUMN_DEFAULT'],
                 $column['COLUMN_COMMENT'],
                 $attribute,
+				$collationName,
+				$generationExpression,
                 []
             );
         }
@@ -242,6 +253,7 @@ class TableStructureFactory
             $keyList[$index['Key_name']][] = [
                 'Non_unique' => $index['Non_unique'],
                 'Column_name' => $columnName,
+				'Index_type' => $index['Index_type']
             ];
         }
         $indexStructureList = [];
@@ -249,6 +261,7 @@ class TableStructureFactory
             $indexStructureList[] = new IndexStructure(
                 $keyName,
                 '0' == $indexList[0]['Non_unique'],
+				$indexList[0]['Index_type'],
                 array_column($indexList, 'Column_name')
             );
         }
