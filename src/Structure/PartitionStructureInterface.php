@@ -1,0 +1,16 @@
+<?php
+
+namespace Laminaria\Conv\Structure;
+
+interface PartitionStructureInterface
+{
+    /**
+     * @return string
+     */
+    public function getQuery(): string;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
+}
