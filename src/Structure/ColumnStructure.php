@@ -87,6 +87,8 @@ class ColumnStructure
 
         if ($this->isNullable() === false) {
             $query[] = 'NOT NULL';
+        } elseif ($this->isForceNull()) {
+            $query[] = 'NULL';
         }
 
         if ($this->generationExpression === null) {
@@ -131,6 +133,11 @@ class ColumnStructure
             return false;
         }
         return true;
+    }
+
+    public function isForceNull(): bool
+    {
+        return strtoupper($this->type) === 'TIMESTAMP';
     }
 
     /**
