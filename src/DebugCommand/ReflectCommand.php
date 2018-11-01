@@ -4,15 +4,9 @@ namespace Laminaria\Conv\DebugCommand;
 
 use Laminaria\Conv\CreateQueryReflector;
 use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\Factory\TableStructureFactory;
-use Laminaria\Conv\MigrationGenerator;
-use Laminaria\Conv\Generator\TableAlterMigrationGenerator;
-use Laminaria\Conv\Operator;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Laminaria\Conv\Structure\TableStructureInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Laminaria\Conv\SchemaReflector;
+use Laminaria\Conv\Operator\DropOnlySilentOperator;
 
 class ReflectCommand extends AbstractCommand
 {
@@ -36,7 +30,7 @@ class ReflectCommand extends AbstractCommand
             $this->getPDO('conv'),
             'conv'
         );
-		CreateQueryReflector::fromPDO($this->getPDO('conv'), 'conv', 'database');
+        CreateQueryReflector::fromPDO($this->getPDO('conv'), 'conv', 'database', new DropOnlySilentOperator());
         // SchemaReflector::fromDatabaseStructure('tests/Retort/check_schema', $structure, $this->getOperator($input, $output));
     }
 }

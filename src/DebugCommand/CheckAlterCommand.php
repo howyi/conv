@@ -6,7 +6,7 @@ use Laminaria\Conv\DatabaseStructureFactory;
 use Laminaria\Conv\Factory\TableStructureFactory;
 use Laminaria\Conv\MigrationGenerator;
 use Laminaria\Conv\Generator\TableAlterMigrationGenerator;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\DropOnlySilentOperator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,7 +23,7 @@ class CheckAlterCommand extends AbstractCommand
         $operator = $this->getOperator($input, $output);
 
         $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'), 'conv');
-        $expectStructure = DatabaseStructureFactory::fromDir('tests/Retort/check_schema');
+        $expectStructure = DatabaseStructureFactory::fromSqlDir($this->getPDO(),'tests/Retort/check_schema', new DropOnlySilentOperator());
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,

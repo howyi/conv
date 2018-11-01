@@ -17,9 +17,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 class SchemaReflector
 {
     /**
-     * @param string                 $path
-     * @param DatabaseStructure      $database
-     * @param OperatorInterface|null $operator
+     * @param string            $path
+     * @param DatabaseStructure $database
+     * @param OperatorInterface $operator
      */
     public static function fromDatabaseStructure(
         string $path,
@@ -38,7 +38,6 @@ class SchemaReflector
         } else {
             mkdir($path, 0777, true);
         }
-        $progress = null;
         $operator->output("\nGenerate schemas to '$path' directory");
         $operator->startProgress(count($database->getTableList()));
         $operator->setProgressFormat('debug');

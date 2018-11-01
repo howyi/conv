@@ -19,120 +19,6 @@ use Symfony\Component\Yaml\Yaml;
 class TableStructureFactory
 {
     /**
-     * @param string $tableName
-     * @param array  $spec
-     * @return TableStructure
-     */
-    public static function fromSpec(string $tableName, array $spec): TableStructure
-    {
-        $columnStructureList = [];
-        foreach ($spec[SchemaKey::TABLE_COLUMN] as $field => $column) {
-            $properties = array_diff_key($column, array_flip(SchemaKey::COLUMN_KEYS));
-            $columnStructureList[] = new ColumnStructure(
-                $field,
-                $column[SchemaKey::COLUMN_TYPE],
-                array_key_exists(SchemaKey::COLUMN_DEFAULT, $column) ? $column[SchemaKey::COLUMN_DEFAULT] : null,
-                $column[SchemaKey::COLUMN_COMMENT],
-                array_key_exists(SchemaKey::COLUMN_ATTRIBUTE, $column) ? $column[SchemaKey::COLUMN_ATTRIBUTE] : [],
-                null,
-                null,
-                $properties
-            );
-        }
-
-        $indexStructureList = [];
-        if (true === array_key_exists(SchemaKey::TABLE_PRIMARY_KEY, $spec)) {
-            $indexStructureList[] = new IndexStructure(
-                'PRIMARY',
-                true,
-				'BTREE',
-                $spec[SchemaKey::TABLE_PRIMARY_KEY]
-            );
-        }
-
-        if (true === array_key_exists(SchemaKey::TABLE_INDEX, $spec)) {
-            foreach ($spec[SchemaKey::TABLE_INDEX] as $keyName => $value) {
-                $indexStructureList[] = new IndexStructure(
-                    $keyName,
-                    $value[SchemaKey::INDEX_TYPE],
-					'BTREE',
-                    $value[SchemaKey::INDEX_COLUMN]
-                );
-            }
-        }
-
-        if (array_key_exists(SchemaKey::TABLE_ENGINE, $spec)) {
-            $engine = $spec[SchemaKey::TABLE_ENGINE];
-        } else {
-            $engine = Config::default('engine');
-        }
-
-        if (array_key_exists(SchemaKey::TABLE_DEFAULT_CHARSET, $spec)) {
-            $defaultCharset = $spec[SchemaKey::TABLE_DEFAULT_CHARSET];
-        } else {
-            $defaultCharset = Config::default('charset');
-        }
-
-        if (array_key_exists(SchemaKey::TABLE_COLLATE, $spec)) {
-            $collate = $spec[SchemaKey::TABLE_COLLATE];
-        } else {
-            $collate = Config::default('collate');
-        }
-
-        $partition = null;
-        if (array_key_exists(SchemaKey::TABLE_PARTITION, $spec)) {
-            $partitionSpec = $spec[SchemaKey::TABLE_PARTITION];
-            $by = $partitionSpec['by'];
-            $method = array_flip(PartitionType::METHOD)[$by];
-            $type = PartitionType::METHOD_TYPE[$method];
-            $value = $partitionSpec['value'];
-            switch ($type) {
-                case PartitionType::SHORT:
-                    $partition = new PartitionShortStructure(
-                        $method,
-                        $value,
-                        $partitionSpec['num']
-                    );
-                    break;
-                case PartitionType::LONG:
-                    $parts = [];
-                    $i = 1;
-                    foreach ($partitionSpec['list'] as $name => $array) {
-                        $operator = PartitionType::METHOD_OPERATOR[$method];
-                        $parts[$i] = new PartitionPartStructure(
-                            $name,
-                            $operator,
-                            $array[strtolower($operator)],
-                            isset($array['comment']) ? $array['comment'] : ''
-                        );
-                        $i++;
-                    }
-                    $partition = new PartitionLongStructure(
-                        $method,
-                        $value,
-                        $parts
-                    );
-                    break;
-            }
-        }
-
-        $properties = array_diff_key($spec, array_flip(SchemaKey::TABLE_KEYS));
-
-        $tableStructure = new TableStructure(
-            $tableName,
-            $spec[SchemaKey::TABLE_COMMENT],
-            $engine,
-            $defaultCharset,
-            $collate,
-            $columnStructureList,
-            $indexStructureList,
-            $partition,
-            $properties
-        );
-        return $tableStructure;
-    }
-
-    /**
      * @param \PDO   $pdo
      * @param string $dbName
      * @param string $tableName
@@ -140,7 +26,7 @@ class TableStructureFactory
      */
     public static function fromTable(\PDO $pdo, string $dbName, string $tableName): TableStructure
     {
-	    $pdo->exec('USE ' . $dbName);
+        $pdo->exec('USE ' . $dbName);
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
 
         $rawColumnList = $pdo->query(
@@ -229,17 +115,17 @@ class TableStructureFactory
                 $attribute[] = Attribute::STORED;
             }
 
-			$collationName = $column['COLLATION_NAME'];
-			$generationExpression = empty($column['GENERATION_EXPRESSION']) ? null : $column['GENERATION_EXPRESSION'];
+            $collationName = $column['COLLATION_NAME'];
+            $generationExpression = empty($column['GENERATION_EXPRESSION']) ? null : $column['GENERATION_EXPRESSION'];
 
-			$columnStructureList[] = new ColumnStructure(
+            $columnStructureList[] = new ColumnStructure(
                 $column['COLUMN_NAME'],
                 str_replace(' unsigned', '', $column['COLUMN_TYPE']),
                 $column['COLUMN_DEFAULT'],
                 $column['COLUMN_COMMENT'],
                 $attribute,
-				$collationName,
-				$generationExpression,
+                $collationName,
+                $generationExpression,
                 []
             );
         }
@@ -255,7 +141,7 @@ class TableStructureFactory
             $keyList[$index['Key_name']][] = [
                 'Non_unique' => $index['Non_unique'],
                 'Column_name' => $columnName,
-				'Index_type' => $index['Index_type']
+                'Index_type' => $index['Index_type']
             ];
         }
         $indexStructureList = [];
@@ -263,7 +149,7 @@ class TableStructureFactory
             $indexStructureList[] = new IndexStructure(
                 $keyName,
                 '0' == $indexList[0]['Non_unique'],
-				$indexList[0]['Index_type'],
+                $indexList[0]['Index_type'],
                 array_column($indexList, 'Column_name')
             );
         }
