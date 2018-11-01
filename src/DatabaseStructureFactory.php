@@ -101,14 +101,14 @@ class DatabaseStructureFactory
         OperatorInterface $operator,
         callable $filter = null
     ): DatabaseStructure {
-		$operator->output('<comment>Genarate temporary database</>');
+        $operator->output('<comment>Genarate temporary database</>');
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
         $pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
         $pdo->exec('USE ' . self::TMP_DBNAME);
         $pdo->exec('SET sql_mode = \'\'');
         $views = [];
 
-		$operator->startProgress(count(glob("$path/*.sql")));
+        $operator->startProgress(count(glob("$path/*.sql")));
         $ddls = [];
         foreach (new \DirectoryIterator($path) as $fileInfo) {
             if (!$fileInfo->isFile()) {
@@ -170,7 +170,7 @@ class DatabaseStructureFactory
                 public function create(): void
                 {
                     $this->pdo->exec($this->query);
-					$this->operator->advanceProgress();
+                    $this->operator->advanceProgress();
                     $this->hasCreated = true;
                 }
             };
@@ -188,8 +188,7 @@ class DatabaseStructureFactory
         foreach ($views as $view) {
             $view->create();
         }
-        $operator->finishProgress();
-		$operator->output('');
+        $operator->finishProgress('');
         $databaseStructure = self::fromPDO($pdo, self::TMP_DBNAME, $filter);
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
 

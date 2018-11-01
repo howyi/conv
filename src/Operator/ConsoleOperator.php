@@ -10,24 +10,24 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class ConsoleOperator implements OperatorInterface
 {
-	/**
-	 * @var QuestionHelper
-	 */
+    /**
+     * @var QuestionHelper
+     */
     protected $helper;
 
-	/**
-	 * @var InputInterface
-	 */
+    /**
+     * @var InputInterface
+     */
     protected $input;
 
-	/**
-	 * @var OutputInterface
-	 */
+    /**
+     * @var OutputInterface
+     */
     protected $output;
 
-	/**
-	 * @var ProgressBar|null
-	 */
+    /**
+     * @var ProgressBar|null
+     */
     protected $progress;
 
     /**
@@ -64,30 +64,31 @@ class ConsoleOperator implements OperatorInterface
        $this->output->writeln($message);
     }
 
-	/**
-	 * @param int $max
-	 */
+    /**
+     * @param int $max
+     */
     public function startProgress(int $max): void
-	{
-		$this->progress = new ProgressBar($this->output, $max);
-		$this->progress->start();
-	}
+    {
+        $this->progress = new ProgressBar($this->output, $max);
+        $this->progress->start();
+    }
 
-	/**
-	 * @param int $step
-	 */
-	public function advanceProgress(int $step = 1): void
-	{
-		$this->progress->advance($step);
-	}
+    /**
+     * @param int $step
+     */
+    public function advanceProgress(int $step = 1): void
+    {
+        $this->progress->advance($step);
+    }
 
-	public function setProgressFormat(string $format): void
-	{
-		$this->progress->setFormat($format);
-	}
+    public function setProgressFormat(string $format): void
+    {
+        $this->progress->setFormat($format);
+    }
 
-	public function finishProgress(): void
-	{
-		$this->progress->finish();
-	}
+    public function finishProgress(string $message): void
+    {
+        $this->progress->finish();
+		$this->output->writeln($message);
+    }
 }
