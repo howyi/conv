@@ -1,15 +1,17 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Laminaria\Conv\Operator;
 
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class OperatorTest extends \PHPUnit\Framework\TestCase
+class ConsoleOperatorTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var \Prophecy\Prophet
+     */
     private $prophet;
 
     protected function setup()
@@ -27,7 +29,7 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
         $helper = $this->prophet->prophesize(QuestionHelper::class);
         $input = $this->prophet->prophesize(InputInterface::class);
         $output = $this->prophet->prophesize(OutputInterface::class);
-        $operator = new Operator($helper->reveal(), $input->reveal(), $output->reveal());
+        $operator = new ConsoleOperator($helper->reveal(), $input->reveal(), $output->reveal());
 
         $answer = 'answer';
         $helper->ask($input, $output, \Prophecy\Argument::type(ChoiceQuestion::class))
@@ -38,7 +40,5 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
         $message = 'message';
         $output->writeln($message)->shouldBeCalledTimes(1);
         $operator->output($message);
-        $output->isDecorated()->shouldBeCalledTimes(1);
-        $this->assertInstanceOf(ProgressBar::class, $operator->getProgress(1));
     }
 }
