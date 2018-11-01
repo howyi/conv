@@ -7,7 +7,7 @@ script:
   - vendor/bin/phpunit --coverage-clover=build/log/clover.xml
   - vendor/bin/phpstan analyse -l 7 src
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - travis_retry php vendor/bin/php-coveralls -v
 notifications:
   slack:
     secure: YnDFdn2JQIgz9XNrmhmM3drDNUpJ+H1rWdtnC+1+2JP1Ahv4XhBcYBCBQVZbBJtYICaqR4xwbWEgqRpwumVRfBJsxNPfndYHEQ9F6ZaZBoVPcp+peOdXHv7mparkH4Z8RLQSsdsXeL1CIkaWs+blKtWmZ7utSbqpNkhgDoJxUZKLGyhmpNj1anfXAYzxomv0Mx7Vrhu6tokWk8l1Mde3vd2ZT/Bd46sXAknk7KariwqGHAVpoFczYdtXd+e7EiNxSAw6freU6DQ+cOShqAxTqKL0X/h1xW6utQZXvLBHxh0mNRd/w3HTgbc1e7HqEPi2q5sBJRXtIFdCEdjvkPnW9aHLXuvnHjrXGfFA88RdJMf4YzG/9Pnr5jXwpP/M5LovMJ6X2N0pKAjFTWK1++baIXRJ5cHe5wJSVk/aKK85J9nFZsXeB1cUTxqFzyXfozAIAbNlXp9kpwzbjREfFuK7Dz4TUMi7DgrW18Jc8W9Ms9fjtYvcxgvf/D3CEenfSNGzWMniOKWdcop5AalzwEurEDGF41Lq7hEef3VE2CG0QLO9LEhhPYWs09Uzho0qYB/maiAwY8J+J5hxHwD8G47XGRwwPwc08PLfzI1NfKW2SMjfkkIFBDCwVeVj5rJkN+PR9vAFSf/kN/gC6pdawzZz09OpR/rY29aVI+ptLiN3eqE=
