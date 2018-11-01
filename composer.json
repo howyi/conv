@@ -9,6 +9,12 @@
             "email": "qrbys@outlook.com"
         }
     ],
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse -l 7 src",
+        "cs": "phpcs --standard=PSR12 src tests",
+        "cbf": "phpcbf --standard=PSR12 src tests"
+    },
     "repositories": [
         {
             "type": "vcs",
