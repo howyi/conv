@@ -1,18 +1,34 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Laminaria\Conv\Operator;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Helper\ProgressBar;
 
-class Operator
+class ConsoleOperator implements OperatorInterface
 {
-    private $helper;
-    private $input;
-    private $output;
+	/**
+	 * @var QuestionHelper
+	 */
+    protected $helper;
+
+	/**
+	 * @var InputInterface
+	 */
+    protected $input;
+
+	/**
+	 * @var OutputInterface
+	 */
+    protected $output;
+
+	/**
+	 * @var ProgressBar|null
+	 */
+    protected $progress;
 
     /**
      * @param QuestionHelper  $helper
@@ -43,16 +59,35 @@ class Operator
     /**
      * @param string $message
      */
-    public function output(string $message)
+    public function output(string $message): void
     {
-        return $this->output->writeln($message);
+       $this->output->writeln($message);
     }
-    /**
-     * @param int $max
-     * @return ProgressBar
-     */
-    public function getProgress(int $max): ProgressBar
-    {
-        return new ProgressBar($this->output, $max);
-    }
+
+	/**
+	 * @param int $max
+	 */
+    public function startProgress(int $max): void
+	{
+		$this->progress = new ProgressBar($this->output, $max);
+		$this->progress->start();
+	}
+
+	/**
+	 * @param int $step
+	 */
+	public function advanceProgress(int $step = 1): void
+	{
+		$this->progress->advance($step);
+	}
+
+	public function setProgressFormat(string $format): void
+	{
+		$this->progress->setFormat($format);
+	}
+
+	public function finishProgress(): void
+	{
+		$this->progress->finish();
+	}
 }

@@ -11,21 +11,20 @@ use Laminaria\Conv\Structure\TableStructureType;
 use Laminaria\Conv\Structure\ViewRawStructure;
 use Laminaria\Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\OperatorInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class SchemaReflector
 {
     /**
-     * @param QuestionHelper  $helper
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param Operator        $operator
+     * @param string                 $path
+     * @param DatabaseStructure      $database
+     * @param OperatorInterface|null $operator
      */
     public static function fromDatabaseStructure(
         string $path,
         DatabaseStructure $database,
-        Operator $operator = null
+        OperatorInterface $operator
     ) {
         if (file_exists($path)) {
             $iterator = new \RecursiveIteratorIterator(
@@ -40,12 +39,9 @@ class SchemaReflector
             mkdir($path, 0777, true);
         }
         $progress = null;
-        if (!is_null($operator)) {
-            $operator->output("\nGenerate schemas to '$path' directory");
-            $progress = $operator->getProgress(count($database->getTableList()));
-            $progress->start();
-            $progress->setFormat('debug');
-        }
+        $operator->output("\nGenerate schemas to '$path' directory");
+        $operator->startProgress(count($database->getTableList()));
+        $operator->setProgressFormat('debug');
         foreach ($database->getTableList() as $tableName => $structure) {
             switch ($structure->getType()) {
                 case TableStructureType::TABLE:
@@ -55,14 +51,10 @@ class SchemaReflector
                     self::fromViewRawStructure($path, $structure);
                     break;
             }
-            if (!is_null($operator)) {
-                $progress->advance();
-            }
+            $operator->advanceProgress();
         }
-        if (!is_null($operator)) {
-            $progress->finish();
-            $operator->output("\nFinish");
-        }
+        $operator->finishProgress();
+        $operator->output("\nFinish");
     }
 
     /**

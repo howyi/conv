@@ -3,7 +3,7 @@
 namespace Laminaria\Conv\DebugCommand;
 
 use Symfony\Component\Console\Command\Command;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\ConsoleOperator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,9 +20,9 @@ abstract class AbstractCommand extends Command
         return $pdo;
     }
 
-    public function getOperator(InputInterface $input, OutputInterface $output): Operator
+    public function getOperator(InputInterface $input, OutputInterface $output): ConsoleOperator
     {
-        return new Operator(
+        return new ConsoleOperator(
             $this->getHelper('question'),
             $input,
             $output

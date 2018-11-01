@@ -17,20 +17,20 @@ use Laminaria\Conv\Structure\TableStructure;
 use Laminaria\Conv\Structure\ModifiedColumnStructure;
 use Laminaria\Conv\Structure\ModifiedColumnStructureSet;
 use Laminaria\Conv\Util\FieldOrder;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\OperatorInterface;
 
 class TableAlterMigrationGenerator
 {
     /**
-     * @param TableStructure  $beforeTable
-     * @param TableStructure  $afterTable
-     * @param Operator        $operator
+     * @param TableStructure    $beforeTable
+     * @param TableStructure    $afterTable
+     * @param OperatorInterface $operator
      * @return TableMigration
      */
     public static function generate(
         TableStructure $beforeTable,
         TableStructure $afterTable,
-        Operator $operator
+        OperatorInterface $operator
     ): TableAlterMigration {
         // DROP-INDEX → DROP → MODIFY → ADD → ADD-INDEX の順でマイグレーションを生成する
 

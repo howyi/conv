@@ -4,6 +4,8 @@ namespace Laminaria\Conv;
 
 use Laminaria\Conv\Factory\TableStructureFactory;
 use Laminaria\Conv\Factory\ViewStructureFactory;
+use Laminaria\Conv\Operator\Operator;
+use Laminaria\Conv\Operator\OperatorInterface;
 use Laminaria\Conv\Structure\ColumnStructure;
 use Laminaria\Conv\Structure\DatabaseStructure;
 use Laminaria\Conv\Structure\IndexStructure;
@@ -87,26 +89,26 @@ class DatabaseStructureFactory
     }
 
     /**
-     * @param \PDO          $pdo      Creatable DB
-     * @param string        $path
-     * @param Operator      $operator
+     * @param \PDO              $pdo      Creatable DB
+     * @param string            $path
+     * @param OperatorInterface $operator
      * @param callable|null $filter
      * @return DatabaseStructure
      */
     public static function fromSqlDir(
         \PDO $pdo,
         string $path,
-        Operator $operator,
+        OperatorInterface $operator,
         callable $filter = null
     ): DatabaseStructure {
-        $operator->output('<comment>Genarate temporary database</>');
+		$operator->output('<comment>Genarate temporary database</>');
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
         $pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
         $pdo->exec('USE ' . self::TMP_DBNAME);
         $pdo->exec('SET sql_mode = \'\'');
         $views = [];
-        $progress = $operator->getProgress(count(glob("$path/*.sql")));
-        $progress->start();
+
+		$operator->startProgress(count(glob("$path/*.sql")));
         $ddls = [];
         foreach (new \DirectoryIterator($path) as $fileInfo) {
             if (!$fileInfo->isFile()) {
@@ -116,20 +118,20 @@ class DatabaseStructureFactory
                 continue;
             }
             $query = file_get_contents($fileInfo->getRealPath());
-            $ddl = new class($query, $pdo, $progress) {
+            $ddl = new class($query, $pdo, $operator) {
                 private $query;
                 private $isView;
                 private $hasCreated = false;
                 private $references = [];
                 private $pdo;
-                private $progress;
+                private $operator;
 
                 /**
-                 * @param string      $query
-                 * @param \PDO        $pdo
-                 * @param ProgressBar $progress
+                 * @param string            $query
+                 * @param \PDO              $pdo
+                 * @param OperatorInterface $operator
                  */
-                public function __construct(string $query, \PDO $pdo, ProgressBar $progress)
+                public function __construct(string $query, \PDO $pdo, OperatorInterface $operator)
                 {
                     $this->query = $query;
                     $this->isView =  false !== strpos($query, 'CREATE ALGORITHM');
@@ -138,7 +140,7 @@ class DatabaseStructureFactory
                         $this->references = $matches[1];
                     }
                     $this->pdo = $pdo;
-                    $this->progress = $progress;
+                    $this->operator = $operator;
                 }
 
                 /**
@@ -168,7 +170,7 @@ class DatabaseStructureFactory
                 public function create(): void
                 {
                     $this->pdo->exec($this->query);
-                    $this->progress->advance();
+					$this->operator->advanceProgress();
                     $this->hasCreated = true;
                 }
             };
@@ -186,8 +188,8 @@ class DatabaseStructureFactory
         foreach ($views as $view) {
             $view->create();
         }
-        $progress->finish();
-        $operator->output('');
+        $operator->finishProgress();
+		$operator->output('');
         $databaseStructure = self::fromPDO($pdo, self::TMP_DBNAME, $filter);
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
 
