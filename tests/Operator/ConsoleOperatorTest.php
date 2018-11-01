@@ -14,16 +14,25 @@ class ConsoleOperatorTest extends \PHPUnit\Framework\TestCase
      */
     private $prophet;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setup()
     {
         $this->prophet = new \Prophecy\Prophet;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         $this->prophet->checkPredictions();
     }
 
+    /**
+     * test constructor
+     */
     public function testConstruct()
     {
         $helper = $this->prophet->prophesize(QuestionHelper::class);
