@@ -40,7 +40,7 @@ class TableCreateMigration extends AbstractTableMigration
             $createQueryFooter .= PHP_EOL . $partitionQuery;
         }
         $createQueryFooter .= ';';
-        $createQueryBody = "  ".join(',' . PHP_EOL . '  ', $createQueryLineList);
+        $createQueryBody = "  " . join(',' . PHP_EOL . '  ', $createQueryLineList);
         $this->up = $createQueryHeader . PHP_EOL . $createQueryBody . PHP_EOL . $createQueryFooter;
 
         $this->down = "DROP TABLE `$this->tableName`;";

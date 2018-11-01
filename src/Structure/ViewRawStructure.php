@@ -42,29 +42,29 @@ class ViewRawStructure implements ViewStructureInterface, TableStructureInterfac
         $query = $this->createQuery;
         $definer = ' DEFINER' . explode('DEFINER', $query)[1] . 'DEFINER';
         $query = str_replace(
-          $definer,
-          '',
-          $query
+            $definer,
+            '',
+            $query
         );
         $query = str_replace(
-          'AS select ',
-          PHP_EOL . 'AS select' . PHP_EOL . '  ',
-          $query
+            'AS select ',
+            PHP_EOL . 'AS select' . PHP_EOL . '  ',
+            $query
         );
         $query = str_replace(
-          ',',
-          ',' . PHP_EOL . '  ',
-          $query
+            ',',
+            ',' . PHP_EOL . '  ',
+            $query
         );
         $query = str_replace(
-          ' from ',
-          ' ' . PHP_EOL . 'from' . PHP_EOL . '  ',
-          $query
+            ' from ',
+            ' ' . PHP_EOL . 'from' . PHP_EOL . '  ',
+            $query
         );
         $query = str_replace(
-          ' where ',
-          ' ' . PHP_EOL . 'where' . PHP_EOL . '  ',
-          $query
+            ' where ',
+            ' ' . PHP_EOL . 'where' . PHP_EOL . '  ',
+            $query
         );
         return $query;
     }

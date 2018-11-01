@@ -23,7 +23,11 @@ class CheckAlterCommand extends AbstractCommand
         $operator = $this->getOperator($input, $output);
 
         $actualStructure = DatabaseStructureFactory::fromPDO($this->getPDO('conv'), 'conv');
-        $expectStructure = DatabaseStructureFactory::fromSqlDir($this->getPDO(),'tests/Retort/check_schema', new DropOnlySilentOperator());
+        $expectStructure = DatabaseStructureFactory::fromSqlDir(
+            $this->getPDO(),
+            'tests/Retort/check_schema',
+            new DropOnlySilentOperator()
+        );
         $alter = MigrationGenerator::generate(
             $actualStructure,
             $expectStructure,

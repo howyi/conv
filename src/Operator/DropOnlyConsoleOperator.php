@@ -11,9 +11,8 @@ class DropOnlyConsoleOperator extends ConsoleOperator
      */
     public function choiceQuestion(string $message, array $choices)
     {
-		$this->output($message);
-        if (in_array('dropped', $choices, true))
-        {
+        $this->output($message);
+        if (in_array('dropped', $choices, true)) {
             $this->output('<fg=red>-> dropped</>');
             return 'dropped';
         }

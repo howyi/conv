@@ -9,7 +9,7 @@ class JoinStructure
     private $joinArray;
     private $aliasList;
 
-    const MySQL_OPERATOR = [
+    const MYSQL_OPERATOR = [
       '=',
       '<=>',
       '<>',
@@ -107,7 +107,7 @@ class JoinStructure
         $id = 100001;
         $sep = 'R_%d_R';
         foreach (explode(' ', trim($text)) as $pieces) {
-            if (in_array($pieces, self::MySQL_OPERATOR) or ' ' === $pieces or is_numeric($pieces)) {
+            if (in_array($pieces, self::MYSQL_OPERATOR) or ' ' === $pieces or is_numeric($pieces)) {
                 continue;
             }
             foreach (explode('.', trim($pieces)) as $piece) {

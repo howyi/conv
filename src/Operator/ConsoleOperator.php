@@ -61,7 +61,7 @@ class ConsoleOperator implements OperatorInterface
      */
     public function output(string $message): void
     {
-       $this->output->writeln($message);
+        $this->output->writeln($message);
     }
 
     /**

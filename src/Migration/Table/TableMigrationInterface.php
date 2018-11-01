@@ -5,15 +5,15 @@ namespace Laminaria\Conv\Migration\Table;
 interface TableMigrationInterface
 {
 
-	/**
-	 * @return string
-	 */
-	public function getTableName(): string;
+    /**
+     * @return string
+     */
+    public function getTableName(): string;
 
-	/**
-	 * @return int
-	 */
-	public function getType(): int;
+    /**
+     * @return int
+     */
+    public function getType(): int;
 
     /**
      * @return string

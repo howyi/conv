@@ -19,7 +19,7 @@ class ConsoleOperatorTest extends \PHPUnit\Framework\TestCase
      */
     protected function setup()
     {
-        $this->prophet = new \Prophecy\Prophet;
+        $this->prophet = new \Prophecy\Prophet();
     }
 
     /**

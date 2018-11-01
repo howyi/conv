@@ -139,7 +139,10 @@ class TableAlterMigrationGenerator
         }
         if ($beforeTable->getDefaultCharset() !== $afterTable->getDefaultCharset()) {
             $migrationLineList->add(
-                new TableDefaultCharsetMigrationLine($beforeTable->getDefaultCharset(), $afterTable->getDefaultCharset())
+                new TableDefaultCharsetMigrationLine(
+                    $beforeTable->getDefaultCharset(),
+                    $afterTable->getDefaultCharset()
+                )
             );
         }
         if ($beforeTable->getCollate() !== $afterTable->getCollate()) {
@@ -192,7 +195,13 @@ class TableAlterMigrationGenerator
             $operator->output(sprintf('<info>TableName</> : %s', $displayTableName));
 
             if ($beforeTable->getComment() !== $afterTable->getComment()) {
-                $operator->output(sprintf('    <fg=cyan>Comment</> : %s -> %s', $beforeTable->getComment(), $afterTable->getComment()));
+                $operator->output(
+                    sprintf(
+                        '    <fg=cyan>Comment</> : %s -> %s',
+                        $beforeTable->getComment(),
+                        $afterTable->getComment()
+                    )
+                );
             }
 
             foreach ($droppedModifiedColumnList as $modifiedColumn) {
@@ -202,7 +211,11 @@ class TableAlterMigrationGenerator
             foreach ($modifiedColumnSetList as $modifiedColumnSet) {
                 $modifiedColumn = $modifiedColumnSet->getUpColumn();
                 if ($modifiedColumn->isRenamed()) {
-                    $displayColumn = sprintf('%s -> %s', $modifiedColumn->getBeforeField(), $modifiedColumn->getField());
+                    $displayColumn = sprintf(
+                        '%s -> %s',
+                        $modifiedColumn->getBeforeField(),
+                        $modifiedColumn->getField()
+                    );
                 } else {
                     $displayColumn = $modifiedColumn->getField();
                 }

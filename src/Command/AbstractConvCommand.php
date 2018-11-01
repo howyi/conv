@@ -57,7 +57,6 @@ abstract class AbstractConvCommand extends Command
         $operator->output("\n");
 
         if (0 !== count($alterMigrations->getMigrationList())) {
-
             foreach ($alterMigrations->getMigrationList() as $migration) {
                 $operator->output("<fg=green>### TABLE NAME: {$migration->getTableName()}</>");
                 $operator->output('<fg=yellow>--------- UP ---------</>');

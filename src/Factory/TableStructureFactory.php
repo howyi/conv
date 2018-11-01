@@ -29,17 +29,31 @@ class TableStructureFactory
         $pdo->exec('USE ' . $dbName);
         $rawStatus = $pdo->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
 
+        $format = <<<EOT
+SELECT * 
+FROM information_schema.COLUMNS 
+WHERE table_schema = '%s' AND  table_name = '%s' 
+ORDER BY ORDINAL_POSITION ASC
+EOT;
+
         $rawColumnList = $pdo->query(
             sprintf(
-                "SELECT * FROM information_schema.COLUMNS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY ORDINAL_POSITION ASC",
+                $format,
                 $dbName,
                 $tableName
             )
         )->fetchAll();
 
+        $format = <<<EOT
+SELECT * 
+FROM information_schema.PARTITIONS 
+WHERE table_schema = '%s' AND  table_name = '%s' 
+ORDER BY PARTITION_ORDINAL_POSITION ASC
+EOT;
+
         $rawPartitionList = $pdo->query(
             sprintf(
-                "SELECT * FROM information_schema.PARTITIONS WHERE table_schema = '%s' AND  table_name = '%s' ORDER BY PARTITION_ORDINAL_POSITION ASC",
+                $format,
                 $dbName,
                 $tableName
             )

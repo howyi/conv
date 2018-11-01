@@ -33,7 +33,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             '',
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
         );
-        $this->prophet = new \Prophecy\Prophet;
+        $this->prophet = new \Prophecy\Prophet();
     }
 
     protected function tearDown()
@@ -48,7 +48,11 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     public function testGenerate($dir, $calls, $expected)
     {
         $operator = $this->prophet->prophesize(ConsoleOperator::class);
-        $expectStructure = DatabaseStructureFactory::fromSqlDir($this->pdo, $dir, new Operator\DropOnlySilentOperator());
+        $expectStructure = DatabaseStructureFactory::fromSqlDir(
+            $this->pdo,
+            $dir,
+            new Operator\DropOnlySilentOperator()
+        );
         $this->pdo->exec('USE conv_test');
         $actualStructure = DatabaseStructureFactory::fromPDO($this->pdo, 'conv_test');
 
