@@ -19,7 +19,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseStructureFactory
 {
-    private const TMP_DBNAME = 'conv_tmp';
+    public const TMP_DBNAME = 'conv_tmp';
 
     /**
      * @param \PDO          $pdo
@@ -56,17 +56,19 @@ class DatabaseStructureFactory
     }
 
     /**
-     * @param \PDO              $pdo      Creatable DB
+     * @param \PDO              $pdo
      * @param string            $path
      * @param OperatorInterface $operator
-     * @param callable|null $filter
+     * @param callable|null     $filter
+     * @param bool              $drop
      * @return DatabaseStructure
      */
     public static function fromSqlDir(
         \PDO $pdo,
         string $path,
         OperatorInterface $operator,
-        callable $filter = null
+        callable $filter = null,
+        $drop = true
     ): DatabaseStructure {
         $operator->output('<comment>Genarate temporary database</>');
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
@@ -157,7 +159,9 @@ class DatabaseStructureFactory
         }
         $operator->finishProgress('');
         $databaseStructure = self::fromPDO($pdo, self::TMP_DBNAME, $filter);
-        $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
+        if ($drop) {
+            $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
+        }
 
         return $databaseStructure;
     }

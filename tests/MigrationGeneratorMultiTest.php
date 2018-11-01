@@ -2,25 +2,17 @@
 
 namespace Laminaria\Conv;
 
-use Laminaria\Conv\Util\Config;
-use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\Factory\TableStructureFactory;
 use Laminaria\Conv\Migration\Table\TableAlterMigration;
 use Laminaria\Conv\Migration\Table\TableCreateMigration;
 use Laminaria\Conv\Migration\Table\TableDropMigration;
 use Laminaria\Conv\Migration\Table\ViewAlterMigration;
-use Laminaria\Conv\Migration\Table\ViewAlterOnlyDownMigration;
-use Laminaria\Conv\Migration\Table\ViewAlterOnlyUpMigration;
 use Laminaria\Conv\Migration\Table\ViewCreateMigration;
 use Laminaria\Conv\Migration\Table\ViewDropMigration;
 use Laminaria\Conv\Migration\Table\ViewRenameMigration;
-use Laminaria\Conv\Structure\DatabaseStructure;
-use Laminaria\Conv\Structure\TableStructure;
 use Laminaria\Conv\Operator\ConsoleOperator;
-use Howyi\Evi;
 use Prophecy\Argument as arg;
 
-class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
+class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
 {
     private $pdo;
     private $prophet;
