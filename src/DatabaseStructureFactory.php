@@ -22,39 +22,6 @@ class DatabaseStructureFactory
     private const TMP_DBNAME = 'conv_tmp';
 
     /**
-     * @param string $path
-     */
-    public static function fromDir(
-        string $path
-    ): DatabaseStructure {
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path)
-        );
-        $tableList = [];
-        $specList = [];
-        foreach ($iterator as $fileinfo) {
-            if ($fileinfo->isFile()) {
-                $name = pathinfo($fileinfo->getPathName(), PATHINFO_FILENAME);
-                $specList[$name] = Evi::parse($fileinfo->getPathName(), Config::option('eval'));
-            }
-        }
-
-        foreach ($specList as $name => $spec) {
-            if (!isset($spec[SchemaKey::TABLE_TYPE])) {
-                $spec[SchemaKey::TABLE_TYPE] = TableStructureType::TABLE;
-            }
-            SchemaValidator::validate($name, $spec);
-            if ($spec[SchemaKey::TABLE_TYPE] === TableStructureType::TABLE) {
-                $table = TableStructureFactory::fromSpec($name, $spec);
-            } else {
-                $table = ViewStructureFactory::fromSpec($name, $spec);
-            }
-            $tableList[$table->getName()] = $table;
-        }
-        return new DatabaseStructure($tableList);
-    }
-
-    /**
      * @param \PDO          $pdo
      * @param string        $dbName
      * @param callable|null $filter

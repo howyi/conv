@@ -44,8 +44,8 @@ class ReflectCommand extends AbstractConvCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $pdo = $this->convertToPdo(
-            $input->getArgument('server'),
-            $dbName = $input->getArgument('dbName')
+            (string) $input->getArgument('server'),
+            $dbName = (string) $input->getArgument('dbName')
         );
 
         $type = strtolower($input->getOption('type'));
@@ -55,14 +55,14 @@ class ReflectCommand extends AbstractConvCommand
                 CreateQueryReflector::fromPDO(
                     $pdo,
                     $dbName,
-                    $input->getOption('dir'),
+					(string) $input->getOption('dir'),
                     $this->getOperator($input, $output)
                 );
                 break;
             case 'yaml':
                 $dbStructure = DatabaseStructureFactory::fromPDO($pdo, $dbName);
                 SchemaReflector::fromDatabaseStructure(
-                    $input->getOption('dir'),
+					(string) $input->getOption('dir'),
                     $dbStructure,
                     $this->getOperator($input, $output)
                 );

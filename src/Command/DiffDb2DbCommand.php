@@ -40,10 +40,10 @@ class DiffDb2DbCommand extends AbstractConvCommand
     {
         [$dbName1, $dbName2] = explode(':', $input->getArgument('dbNames'));
 
-        $pdo1 = $this->convertToPdo($input->getOption('server1'), $dbName1);
+        $pdo1 = $this->convertToPdo((string) $input->getOption('server1'), $dbName1);
         $db1Structure = DatabaseStructureFactory::fromPDO($pdo1, $dbName1);
 
-        $pdo2 = $this->convertToPdo($input->getOption('server2'), $dbName2);
+        $pdo2 = $this->convertToPdo((string) $input->getOption('server2'), $dbName2);
         $db2Structure = DatabaseStructureFactory::fromPDO($pdo2, $dbName2);
 
         $alterMigrations = MigrationGenerator::generate(

@@ -78,17 +78,23 @@ class ConsoleOperator implements OperatorInterface
      */
     public function advanceProgress(int $step = 1): void
     {
-        $this->progress->advance($step);
+        if (!is_null($this->progress)) {
+            $this->progress->advance($step);
+        }
     }
 
     public function setProgressFormat(string $format): void
     {
-        $this->progress->setFormat($format);
+        if (!is_null($this->progress)) {
+            $this->progress->setFormat($format);
+        }
     }
 
     public function finishProgress(string $message): void
     {
-        $this->progress->finish();
-		$this->output->writeln($message);
+        if (!is_null($this->progress)) {
+            $this->progress->finish();
+        }
+        $this->output->writeln($message);
     }
 }

@@ -52,22 +52,22 @@ abstract class AbstractConvCommand extends Command
         );
     }
 
-	public function displayAlterMigration(Migration $alterMigrations, ConsoleOperator $operator): void
-	{
-		$operator->output("\n");
+    public function displayAlterMigration(Migration $alterMigrations, ConsoleOperator $operator): void
+    {
+        $operator->output("\n");
 
-		if (0 !== count($alterMigrations->getMigrationList())) {
+        if (0 !== count($alterMigrations->getMigrationList())) {
 
-			foreach ($alterMigrations->getMigrationList() as $migration) {
-				$operator->output("<fg=green>### TABLE NAME: {$migration->getTableName()}</>");
-				$operator->output('<fg=yellow>--------- UP ---------</>');
-				$operator->output("<fg=blue>{$migration->getUp()}</>");
-				$operator->output('<fg=yellow>-------- DOWN --------</>');
-				$operator->output("<fg=magenta>{$migration->getDown()}</>\n\n");
-			}
-		}
+            foreach ($alterMigrations->getMigrationList() as $migration) {
+                $operator->output("<fg=green>### TABLE NAME: {$migration->getTableName()}</>");
+                $operator->output('<fg=yellow>--------- UP ---------</>');
+                $operator->output("<fg=blue>{$migration->getUp()}</>");
+                $operator->output('<fg=yellow>-------- DOWN --------</>');
+                $operator->output("<fg=magenta>{$migration->getDown()}</>\n\n");
+            }
+        }
 
-		$count = count($alterMigrations->getMigrationList());
-		$operator->output("<fg=green>Generated $count migrations</>");
-	}
+        $count = count($alterMigrations->getMigrationList());
+        $operator->output("<fg=green>Generated $count migrations</>");
+    }
 }
