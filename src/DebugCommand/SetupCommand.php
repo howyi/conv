@@ -2,6 +2,7 @@
 
 namespace Laminaria\Conv\DebugCommand;
 
+use Laminaria\Conv\CreateQueryReflector;
 use Laminaria\Conv\DatabaseStructureFactory;
 use Laminaria\Conv\Migration\Table\TableCreateMigration;
 use Laminaria\Conv\Migration\Table\ViewCreateMigration;
@@ -27,7 +28,7 @@ class SetupCommand extends AbstractCommand
         $pdo->exec('DROP DATABASE IF EXISTS conv');
         $pdo->exec('CREATE DATABASE conv');
 
-        $databaseStructure = DatabaseStructureFactory::fromDir('tests/Retort/check_schema');
+        $databaseStructure = DatabaseStructureFactory::fromDir('tests/Retort/test_schema/008');
         $empty = new DatabaseStructure([]);
         $alter = MigrationGenerator::generate(
             $empty,
@@ -41,6 +42,12 @@ class SetupCommand extends AbstractCommand
             $operator->output($migration->getUp());
             $pdo->exec($migration->getUp());
         }
+        CreateQueryReflector::fromPDO(
+        	$pdo,
+			'conv',
+			'tests/Retort/test_schema_sql/008',
+			$operator
+		);
         $output->writeln('<fg=cyan>setup success</>');
     }
 }

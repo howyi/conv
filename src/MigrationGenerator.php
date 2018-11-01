@@ -13,21 +13,21 @@ use Laminaria\Conv\Migration\Table\ViewDropMigration;
 use Laminaria\Conv\Migration\Table\ViewAlterMigration;
 use Laminaria\Conv\Migration\Table\ViewRenameMigration;
 use Laminaria\Conv\Structure\DatabaseStructure;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\OperatorInterface;
 use Laminaria\Conv\Structure\TableStructureType;
 
 class MigrationGenerator
 {
     /**
-     * @param DatabaseStructure  $beforeDatabase
-     * @param DatabaseStructure  $afterDatabase
-     * @param Operator           $operator
+     * @param DatabaseStructure $beforeDatabase
+     * @param DatabaseStructure $afterDatabase
+     * @param OperatorInterface $operator
      * @return Migration
      */
     public static function generate(
         DatabaseStructure $beforeDatabase,
         DatabaseStructure $afterDatabase,
-        Operator $operator
+        OperatorInterface $operator
     ): Migration {
         // DROP → MODIFY → ADD の順でマイグレーションを生成する
 

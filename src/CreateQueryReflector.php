@@ -11,23 +11,23 @@ use Laminaria\Conv\Structure\TableStructureType;
 use Laminaria\Conv\Structure\ViewRawStructure;
 use Laminaria\Conv\Structure\TableStructure;
 use Symfony\Component\Yaml\Yaml;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\OperatorInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 class CreateQueryReflector
 {
     /**
-     * @param \PDO          $pdo
-     * @param string        $dbName
-     * @param string        $path
-     * @param Operator      $operator
+     * @param \PDO              $pdo
+     * @param string            $dbName
+     * @param string            $path
+     * @param OperatorInterface $operator
      * @param callable|null $filter
      */
     public static function fromPDO(
         \PDO $pdo,
         string $dbName,
         string $path,
-        Operator $operator = null,
+        OperatorInterface $operator,
         callable $filter = null
     ) {
     	$dbs = DatabaseStructureFactory::fromPDO(
@@ -56,12 +56,9 @@ class CreateQueryReflector
 
 	    $progress = null;
 
-	    if (!is_null($operator)) {
-		    $operator->output("\nSave generated queries to '$path'");
-		    $progress = $operator->getProgress(count($tables));
-		    $progress->start();
-		    $progress->setFormat('debug');
-	    }
+		$operator->output("\nSave generated queries to '$path'");
+		$operator->startProgress(count($tables));
+		$operator->setProgressFormat('debug');
 
 	    $queries = [];
 	    foreach ($dbs->getTableList() as $table) {
@@ -79,9 +76,7 @@ class CreateQueryReflector
 		    }
 		    $query .= "\n";
 
-		    if (!is_null($operator)) {
-			    $progress->advance();
-		    }
+			$operator->advanceProgress();
 
 		    $queries[$name] = $query;
 	    }
@@ -94,9 +89,7 @@ class CreateQueryReflector
 		    );
 	    }
 
-        if (!is_null($operator)) {
-            $progress->finish();
-            $operator->output("\nFinish");
-        }
+		$operator->finishProgress();
+		$operator->output("\nFinish");
     }
 }
