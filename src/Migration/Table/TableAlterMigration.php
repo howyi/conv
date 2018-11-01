@@ -25,7 +25,7 @@ class TableAlterMigration extends AbstractTableMigration
         string $afterTableName,
         MigrationLineList $migrationLineList,
         array $renamedNameList,
-		?PartitionMigration $partitionMigration
+        ?PartitionMigration $partitionMigration
     ) {
         $this->tableName = $beforeTableName;
         $this->type = MigrationType::ALTER;
@@ -43,16 +43,16 @@ class TableAlterMigration extends AbstractTableMigration
         $this->down = sprintf($queryHeaderTemplate, $afterTableName);
 
         if ($migrationLineList->isMigratable()) {
-	        $upBody = $migrationLineList->getUp();
-	        $this->up .= PHP_EOL . $upBody;
+            $upBody = $migrationLineList->getUp();
+            $this->up .= PHP_EOL . $upBody;
 
-	        $downBody = $migrationLineList->getDown();
-	        $this->down .= PHP_EOL . $downBody;
+            $downBody = $migrationLineList->getDown();
+            $this->down .= PHP_EOL . $downBody;
         }
 
         if (!is_null($partitionMigration)) {
-	        $this->up .= PHP_EOL . $partitionMigration->getUp();
-	        $this->down .= PHP_EOL . $partitionMigration->getDown();
+            $this->up .= PHP_EOL . $partitionMigration->getUp();
+            $this->down .= PHP_EOL . $partitionMigration->getDown();
         }
         $this->up .= ';';
         $this->down .= ';';

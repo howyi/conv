@@ -11,8 +11,8 @@ class ColumnStructure
     public $default;
     public $comment;
     public $attribute;
-	public $collationName;
-	public $generationExpression;
+    public $collationName;
+    public $generationExpression;
     private $properties;
 
     /**
@@ -30,7 +30,7 @@ class ColumnStructure
         string $comment,
         array $attribute,
         ?string $collationName,
-		?string $generationExpression,
+        ?string $generationExpression,
         array $properties
     ) {
         $this->field = $field;
@@ -81,24 +81,24 @@ class ColumnStructure
             $query[] = "($this->generationExpression)";
         }
 
-		if ($this->isStored() === true) {
-			$query[] = 'STORED';
-		}
+        if ($this->isStored() === true) {
+            $query[] = 'STORED';
+        }
 
-		if ($this->isNullable() === false) {
-			$query[] = 'NOT NULL';
-		}
+        if ($this->isNullable() === false) {
+            $query[] = 'NOT NULL';
+        }
 
-		if ($this->generationExpression === null) {
-			if ($this->isAutoIncrement() === true) {
-				$query[] = 'AUTO_INCREMENT';
-			} elseif ($this->default !== null) {
-				$query[] = 'DEFAULT';
-				$query[] = $this->getDefault();
-			} elseif ($this->isNullable() === true) {
-				$query[] = 'DEFAULT NULL';
-			}
-		}
+        if ($this->generationExpression === null) {
+            if ($this->isAutoIncrement() === true) {
+                $query[] = 'AUTO_INCREMENT';
+            } elseif ($this->default !== null) {
+                $query[] = 'DEFAULT';
+                $query[] = $this->getDefault();
+            } elseif ($this->isNullable() === true) {
+                $query[] = 'DEFAULT NULL';
+            }
+        }
 
         $query[] = 'COMMENT';
         $query[] = "'$this->comment'";
@@ -125,9 +125,9 @@ class ColumnStructure
             $this->isUnsigned() === $target->isUnsigned() and
             $this->default === $target->default and
             $this->isAutoIncrement() === $target->isAutoIncrement() and
-			$this->collationName === $this->collationName and
-			$this->generationExpression === $this->generationExpression and
-			$this->isStored() === $this->isStored()) {
+            $this->collationName === $this->collationName and
+            $this->generationExpression === $this->generationExpression and
+            $this->isStored() === $this->isStored()) {
             return false;
         }
         return true;

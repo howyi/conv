@@ -7,13 +7,13 @@ use Laminaria\Conv\Util\SchemaKey;
 
 class TableStructure implements TableStructureInterface
 {
-    public  $tableName;
-    public  $comment;
-    public  $engine;
-    public  $defaultCharset;
-    public  $collate;
-    public  $columnStructureList;
-    public  $indexStructureList;
+    public $tableName;
+    public $comment;
+    public $engine;
+    public $defaultCharset;
+    public $collate;
+    public $columnStructureList;
+    public $indexStructureList;
     private $partition;
     private $properties;
 

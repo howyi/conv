@@ -55,14 +55,14 @@ class ReflectCommand extends AbstractConvCommand
                 CreateQueryReflector::fromPDO(
                     $pdo,
                     $dbName,
-					(string) $input->getOption('dir'),
+                    (string) $input->getOption('dir'),
                     $this->getOperator($input, $output)
                 );
                 break;
             case 'yaml':
                 $dbStructure = DatabaseStructureFactory::fromPDO($pdo, $dbName);
                 SchemaReflector::fromDatabaseStructure(
-					(string) $input->getOption('dir'),
+                    (string) $input->getOption('dir'),
                     $dbStructure,
                     $this->getOperator($input, $output)
                 );
@@ -70,6 +70,5 @@ class ReflectCommand extends AbstractConvCommand
             default:
                 throw new \Exception('Unexpected file type (sql or yaml)');
         }
-
     }
 }

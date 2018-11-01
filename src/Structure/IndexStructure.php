@@ -8,22 +8,22 @@ class IndexStructure
 {
     public $keyName;
     public $isUnique;
-	public $indexType;
+    public $indexType;
     public $columnNameList;
     public $isPrimary;
     public $isBtree;
 
-	/**
-	 * IndexStructure constructor.
-	 * @param string $keyName
-	 * @param bool   $isUnique
-	 * @param string $indexType
-	 * @param array  $columnNameList
-	 */
+    /**
+     * IndexStructure constructor.
+     * @param string $keyName
+     * @param bool   $isUnique
+     * @param string $indexType
+     * @param array  $columnNameList
+     */
     public function __construct(
         string $keyName,
         bool $isUnique,
-		string $indexType,
+        string $indexType,
         array $columnNameList
     ) {
         $this->keyName = $keyName;
@@ -47,9 +47,9 @@ class IndexStructure
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
             } elseif ($this->isBtree === false) {
-				$query[] = strtoupper($this->indexType);
-			}
-			$query[] = 'KEY';
+                $query[] = strtoupper($this->indexType);
+            }
+            $query[] = 'KEY';
 
             $query[] = "`$this->keyName`";
         }
@@ -70,8 +70,8 @@ class IndexStructure
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
             } elseif ($this->isBtree === false) {
-				$query[] = strtoupper($this->indexType);
-			} else {
+                $query[] = strtoupper($this->indexType);
+            } else {
                 $query[] = 'INDEX';
             }
             $query[] = "`$this->keyName`";
@@ -129,7 +129,7 @@ class IndexStructure
     {
         if ($this->columnNameList === $after->columnNameList and
                 $this->isUnique === $after->isUnique and
-				$this->indexType === $after->indexType) {
+                $this->indexType === $after->indexType) {
             return false;
         }
         return true;

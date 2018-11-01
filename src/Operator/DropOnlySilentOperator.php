@@ -11,8 +11,7 @@ class DropOnlySilentOperator implements OperatorInterface
      */
     public function choiceQuestion(string $message, array $choices)
     {
-        if (in_array('dropped', $choices, true))
-        {
+        if (in_array('dropped', $choices, true)) {
             return 'dropped';
         }
         throw new \RuntimeException('"dropped" answer not exist.');

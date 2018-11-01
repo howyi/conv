@@ -109,10 +109,10 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
     {
         $createQuery = '';
         if (is_null($this->getAlgorithm())) {
-            $createQuery = "CREATE VIEW `$this->viewName`". PHP_EOL;
+            $createQuery = "CREATE VIEW `$this->viewName`" . PHP_EOL;
         } else {
             $algorithm = strtoupper($this->getAlgorithm());
-            $createQuery = "CREATE ALGORITHM=$algorithm VIEW `$this->viewName`". PHP_EOL;
+            $createQuery = "CREATE ALGORITHM=$algorithm VIEW `$this->viewName`" . PHP_EOL;
         }
         $createQuery .= 'AS select' . PHP_EOL;
 
@@ -122,7 +122,7 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
             $targetColumn = ltrim(strstr($value, '.', false), '.');
             $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
         }
-        $createQuery .= "  ".join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
+        $createQuery .= "  " . join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
         $createQuery .= 'from' . PHP_EOL;
         $createQuery .= '  ' . $this->getJoinStructure()->genareteJoinQuery() . ';' . PHP_EOL;
 

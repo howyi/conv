@@ -34,7 +34,7 @@ class MigrationLineList
         foreach ($this->migrationLineList as $migrationLine) {
             $upLineList = array_merge($upLineList, $migrationLine->getUp());
         }
-        return '  '.join(',' . PHP_EOL . '  ', $upLineList);
+        return '  ' . join(',' . PHP_EOL . '  ', $upLineList);
     }
 
     /**
@@ -46,6 +46,6 @@ class MigrationLineList
         foreach (array_reverse($this->migrationLineList) as $migrationLine) {
             $downLineList = array_merge($downLineList, $migrationLine->getDown());
         }
-        return '  '.join(',' . PHP_EOL . '  ', $downLineList);
+        return '  ' . join(',' . PHP_EOL . '  ', $downLineList);
     }
 }
