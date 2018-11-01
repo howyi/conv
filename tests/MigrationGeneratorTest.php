@@ -16,7 +16,7 @@ use Laminaria\Conv\Migration\Table\ViewDropMigration;
 use Laminaria\Conv\Migration\Table\ViewRenameMigration;
 use Laminaria\Conv\Structure\DatabaseStructure;
 use Laminaria\Conv\Structure\TableStructure;
-use Laminaria\Conv\Operator;
+use Laminaria\Conv\Operator\ConsoleOperator;
 use Howyi\Evi;
 use Prophecy\Argument as arg;
 
@@ -47,9 +47,10 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     public function testGenerate($dir, $calls, $expected)
     {
-        $expectStructure = DatabaseStructureFactory::fromDir($dir);
+        $operator = $this->prophet->prophesize(ConsoleOperator::class);
+        $expectStructure = DatabaseStructureFactory::fromSqlDir($this->pdo, $dir, new Operator\DropOnlySilentOperator());
+        $this->pdo->exec('USE conv_test');
         $actualStructure = DatabaseStructureFactory::fromPDO($this->pdo, 'conv_test');
-        $operator = $this->prophet->prophesize(Operator::class);
 
         foreach ($calls as $value) {
             $operator->choiceQuestion(
@@ -58,7 +59,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
             )->willReturn($value['return'])
             ->shouldBeCalledTimes(1);
         }
-        $operator->output(\Prophecy\Argument::any())->willReturn(null);
+        $operator->output(\Prophecy\Argument::any());
 
         $alter = MigrationGenerator::generate(
             $actualStructure,
@@ -83,7 +84,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                'tests/Retort/test_schema/000',
+                'vendor/laminaria/conv-test-suite/cases/unit/000',
                 [],
                 [
                     TableCreateMigration::class,
@@ -98,14 +99,14 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'tests/Retort/test_schema/001',
+                'vendor/laminaria/conv-test-suite/cases/unit/001',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'tests/Retort/test_schema/002',
+                'vendor/laminaria/conv-test-suite/cases/unit/002',
                 [],
                 [
                     TableDropMigration::class,
@@ -113,14 +114,14 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'tests/Retort/test_schema/003',
+                'vendor/laminaria/conv-test-suite/cases/unit/003',
                 [],
                 [
                     ViewAlterMigration::class,
                 ]
             ],
             [
-                'tests/Retort/test_schema/004',
+                'vendor/laminaria/conv-test-suite/cases/unit/004',
                 [
                     [
                         'message' => 'Table tbl_country is missing. Choose an action.',
@@ -133,11 +134,12 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 ],
                 [
                     TableAlterMigration::class,
+                    ViewAlterMigration::class,
                     TableCreateMigration::class,
                 ]
             ],
             [
-                'tests/Retort/test_schema/005',
+                'vendor/laminaria/conv-test-suite/cases/unit/005',
                 [
                     [
                         'message' => 'View view_user2 is missing. Choose an action.',
@@ -154,7 +156,7 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'tests/Retort/test_schema/006',
+                'vendor/laminaria/conv-test-suite/cases/unit/006',
                 [
                     [
                         'message' => 'Column tbl_music.name is missing. Choose an action.',
@@ -170,131 +172,19 @@ class MigrationGeneratorTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'tests/Retort/test_schema/007',
+                'vendor/laminaria/conv-test-suite/cases/unit/007',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'tests/Retort/test_schema/008',
+                'vendor/laminaria/conv-test-suite/cases/unit/008',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
         ];
-    }
-
-    /**
-     * @dataProvider generateWhenNoQuestionProvider
-     */
-    public function testGenerateWhenNoQuestion($before, $after, $expected)
-    {
-        $operator = $this->prophet->prophesize(Operator::class);
-        $migration = MigrationGenerator::generate($before, $after, $operator->reveal());
-        for ($i = 0; $i < count($migration->getMigrationList()); $i++) {
-            $this->assertInstanceOf($expected[$i], $migration->getMigrationList()[$i]);
-        }
-    }
-
-    public function generateWhenNoQuestionProvider()
-    {
-        return [
-            [
-                DatabaseStructureFactory::fromDir('tests/Retort/test_schema/draft/'),
-                new DatabaseStructure([]),
-                [
-                    TableDropMigration::class,
-                    TableDropMigration::class,
-                ]
-            ],
-            [
-                new DatabaseStructure([]),
-                DatabaseStructureFactory::fromDir('tests/Retort/test_schema/draft/'),
-                [
-                    TableCreateMigration::class,
-                    TableCreateMigration::class,
-                ]
-            ],
-        ];
-    }
-
-    public function testGenerateWhenNotModify()
-    {
-        $before = new DatabaseStructure([
-            'tbl_user'  => TableStructureFactory::fromSpec(
-                'tbl_user',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_user.yml', Config::option('eval'))
-            ),
-            'tbl_music' => TableStructureFactory::fromSpec(
-                'tbl_music',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_music.yml', Config::option('eval'))
-            ),
-        ]);
-        $after = new DatabaseStructure([
-            TableStructureFactory::fromSpec(
-                'tbl_user',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_user.yml', Config::option('eval'))
-            ),
-        ]);
-        $operator = $this->prophet->prophesize(Operator::class);
-        $migration = MigrationGenerator::generate($before, $after, $operator->reveal());
-        $this->assertInstanceOf(TableDropMigration::class, $migration->getMigrationList()[0]);
-    }
-
-    public function testGenerateWhenDropAndCreate()
-    {
-        $before = new DatabaseStructure([
-            'tbl_user' => TableStructureFactory::fromSpec(
-                'tbl_user',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_user.yml', Config::option('eval'))
-            ),
-        ]);
-        $after = new DatabaseStructure([
-            'tbl_music' => TableStructureFactory::fromSpec(
-                'tbl_music',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_music.yml', Config::option('eval'))
-            ),
-        ]);
-        $operator = $this->prophet->prophesize(Operator::class);
-        $operator->choiceQuestion(
-            \Prophecy\Argument::any(),
-            \Prophecy\Argument::any()
-        )->willReturn('dropped')
-        ->shouldBeCalledTimes(1);
-        $migration = MigrationGenerator::generate($before, $after, $operator->reveal());
-        $this->assertInstanceOf(TableDropMigration::class, $migration->getMigrationList()[0]);
-        $this->assertInstanceOf(TableCreateMigration::class, $migration->getMigrationList()[1]);
-    }
-
-    public function testGenerateWhenRename()
-    {
-        $before = new DatabaseStructure([
-            'tbl_user' => TableStructureFactory::fromSpec(
-                'tbl_user',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_user.yml', Config::option('eval'))
-            ),
-        ]);
-        $after = new DatabaseStructure([
-            'tbl_music' => TableStructureFactory::fromSpec(
-                'tbl_music',
-                Evi::parse('tests/Retort/test_schema/draft/tbl_music.yml', Config::option('eval'))
-            ),
-        ]);
-        $operator = $this->prophet->prophesize(Operator::class);
-        $operator->choiceQuestion(
-            'Table tbl_user is missing. Choose an action.',
-            ['dropped', 'renamed (tbl_music)']
-        )->willReturn('renamed (tbl_music)')
-        ->shouldBeCalledTimes(1);
-        $operator->choiceQuestion(
-            \Prophecy\Argument::any(),
-            \Prophecy\Argument::any()
-        )->willReturn('dropped')
-        ->shouldBeCalledTimes(3);
-        $operator->output(\Prophecy\Argument::any())->shouldBeCalledTimes(7);
-        $migration = MigrationGenerator::generate($before, $after, $operator->reveal());
-        $this->assertInstanceOf(TableAlterMigration::class, $migration->getMigrationList()[0]);
     }
 }
