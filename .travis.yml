@@ -4,7 +4,6 @@ php:
 before_script:
   - composer install --dev
 script:
-  - make heat
   - vendor/bin/phpunit --coverage-clover=build/log/clover.xml
   - vendor/bin/phpstan analyse -l 7 -c phpstan.neon src
 after_success:
