@@ -53,8 +53,7 @@ class SchemaReflector
             }
             $operator->advanceProgress();
         }
-        $operator->finishProgress();
-        $operator->output("\nFinish");
+        $operator->finishProgress("\nFinish");
     }
 
     /**

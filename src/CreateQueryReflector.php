@@ -89,7 +89,6 @@ class CreateQueryReflector
 		    );
 	    }
 
-		$operator->finishProgress();
-		$operator->output("\nFinish");
+		$operator->finishProgress("\nFinish");
     }
 }
