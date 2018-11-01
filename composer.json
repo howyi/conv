@@ -12,7 +12,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:laminaria/conv-test-suite.git",
+            "url": "https://github.com/laminaria/conv-test-suite.git",
             "no-api": true
         }
     ],
