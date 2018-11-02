@@ -25,12 +25,14 @@ class TableAlterMigrationGenerator
      * @param TableStructure  $beforeTable
      * @param TableStructure  $afterTable
      * @param Operator        $operator
+     * @param bool            $forceDrop
      * @return TableMigration
      */
     public static function generate(
         TableStructure $beforeTable,
         TableStructure $afterTable,
-        Operator $operator
+        Operator $operator,
+        bool $forceDrop = false
     ): TableAlterMigration {
         // DROP-INDEX → DROP → MODIFY → ADD → ADD-INDEX の順でマイグレーションを生成する
 
@@ -53,6 +55,11 @@ class TableAlterMigrationGenerator
 
         foreach ($missingColumnList as $missingField => $missingColumn) {
             if (0 === count($addedFieldList)) {
+                $droppedFieldList[] = $missingField;
+                continue;
+            }
+
+            if ($forceDrop) {
                 $droppedFieldList[] = $missingField;
                 continue;
             }

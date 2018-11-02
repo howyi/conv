@@ -65,11 +65,12 @@ default:
 
 2. マイグレーションを生成
 ```php
-// 引数は 変更前, 変更後, Operator の順とする。
+// 引数は 変更前, 変更後, Operator, [強制Dropオプション]の順とする。
 $alter = MigrationGenerator::generate(
     $actualDbs,
     $schemaDbs,
-    new \Conv\Operator($this->getHelper('question'), $input, $output)
+    new \Conv\Operator($this->getHelper('question'), $input, $output),
+    false
 );
 ```
 
@@ -78,6 +79,10 @@ $alter = MigrationGenerator::generate(
 - getUpで変更を行うクエリ
 - getDownで変更をもとに戻すクエリ
 を取得できる。
+
+強制Dropオプション
+- true: カラム名変更時に会話形式選択をせずにDropedを選択する
+- false: Dropedかrenameを会話形式で選択する
 
 ```
 foreach ($alter->getMigrationList() as $migration) {

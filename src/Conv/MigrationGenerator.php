@@ -22,12 +22,14 @@ class MigrationGenerator
      * @param DatabaseStructure  $beforeDatabase
      * @param DatabaseStructure  $afterDatabase
      * @param Operator           $operator
+     * @param bool               $forceDrop
      * @return Migration
      */
     public static function generate(
         DatabaseStructure $beforeDatabase,
         DatabaseStructure $afterDatabase,
-        Operator $operator
+        Operator $operator,
+        bool $forceDrop = false
     ): Migration {
         // DROP → MODIFY → ADD の順でマイグレーションを生成する
 
@@ -51,6 +53,11 @@ class MigrationGenerator
                 $droppedTableNameList[] = $missingTableName;
                 continue;
             }
+
+           if ($forceDrop) {
+               $droppedTableNameList[] = $missingTableName;
+               continue;
+           }
 
             $answer = $operator->choiceQuestion(
                 sprintf('Table %s is missing. Choose an action.', $missingTableName),
@@ -88,6 +95,11 @@ class MigrationGenerator
 
         foreach ($missingViewList as $missingViewName => $missingView) {
             if (0 === count($addedViewNameList)) {
+                $droppedViewNameList[] = $missingViewName;
+                continue;
+            }
+
+            if ($forceDrop) {
                 $droppedViewNameList[] = $missingViewName;
                 continue;
             }
@@ -135,7 +147,8 @@ class MigrationGenerator
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
                 $beforeTable,
                 $afterDatabase->getTableList()[$tableName],
-                $operator
+                $operator,
+                $forceDrop
             );
             $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
             if (!$tableAlterMigration->isAltered()) {
@@ -148,7 +161,8 @@ class MigrationGenerator
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
                 $beforeDatabase->getTableList()[$beforeTableName],
                 $afterDatabase->getTableList()[$afterTableName],
-                $operator
+                $operator,
+                $forceDrop
             );
             $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
             $migration->add($tableAlterMigration);
