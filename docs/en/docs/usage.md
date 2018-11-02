@@ -66,11 +66,12 @@ Generate migration is Before `DatabaseStructure` and After `DatabaseStructure` p
 
 2. Generate migration
 ```php
-// Param: BeforeDBS, AfterDBS, Operator
+// Param: BeforeDBS, AfterDBS, Operator, [bool(forceDrop)]
 $alter = MigrationGenerator::generate(
     $actualDbs,
     $schemaDbs,
-    new \Conv\Operator($this->getHelper('question'), $input, $output)
+    new \Conv\Operator($this->getHelper('question'), $input, $output),
+    false
 );
 ```
 
@@ -79,6 +80,9 @@ Migration have `::getUp()` と `::getDown()`.
 - getUp to convert after database query.
 - getDown to back before database query.
 
+Forced Drop option
+- true: Select Droped without interactive selection when changing column name.
+- false: Choose Droped or rename in a interactive selection.
 
 ```
 foreach ($alter->getMigrationList() as $migration) {
