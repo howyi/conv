@@ -7,7 +7,7 @@ class DatabaseStructure
     private $tableList = [];
 
     /**
-     * @param array  $tableList
+     * @param TableStructureInterface[] $tableList
      */
     public function __construct(
         array $tableList
@@ -16,7 +16,7 @@ class DatabaseStructure
     }
 
     /**
-     * @return array $filter
+     * @param array $filter
      * @return array
      */
     public function getTableList(array $filter = []): array
@@ -32,8 +32,24 @@ class DatabaseStructure
     }
 
     /**
+     * @return TableStructure[]
+     */
+    public function getOnlyTableList(): array
+    {
+        return $this->getTableList([TableStructureType::TABLE]);
+    }
+
+    /**
+     * @return ViewStructure[]
+     */
+    public function getOnlyViewList(): array
+    {
+        return $this->getTableList([TableStructureType::VIEW, TableStructureType::VIEW_RAW]);
+    }
+
+    /**
      * @param DatabaseStructure $target
-     * @return array
+     * @return TableStructure[]
      */
     public function getDiffTableList(DatabaseStructure $target): array
     {
@@ -49,7 +65,7 @@ class DatabaseStructure
 
     /**
      * @param DatabaseStructure $target
-     * @return array
+     * @return ViewStructure[]
      */
     public function getDiffViewList(DatabaseStructure $target): array
     {

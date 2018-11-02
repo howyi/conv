@@ -13,7 +13,17 @@
         "test": "phpunit",
         "stan": "phpstan analyse -l 7 src",
         "cs": "phpcs --standard=PSR12 src tests",
-        "cbf": "phpcbf --standard=PSR12 src tests"
+        "cbf": "phpcbf --standard=PSR12 src tests",
+        "check-fix": [
+            "composer stan",
+            "composer test",
+            "composer cbf"
+        ],
+        "check": [
+            "composer stan",
+            "composer test",
+            "composer cs"
+        ]
     },
     "repositories": [
         {
@@ -39,8 +49,7 @@
         "phpspec/prophecy":            "^1.7",
         "phpstan/phpstan":             "^0.8.0",
         "squizlabs/php_codesniffer":   "^3.0",
-        "laminaria/conv-test-suite":   "dev-master",
-        "howyi/evi": "^1.0"
+        "laminaria/conv-test-suite":   "dev-master"
     },
     "bin": ["bin/conv"]
 }

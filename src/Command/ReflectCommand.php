@@ -4,7 +4,6 @@ namespace Laminaria\Conv\Command;
 
 use Laminaria\Conv\CreateQueryReflector;
 use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\SchemaReflector;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,13 +30,6 @@ class ReflectCommand extends AbstractConvCommand
                 'd',
                 InputOption::VALUE_REQUIRED,
                 'Save directory'
-            )
-            ->addOption(
-                'type',
-                't',
-                InputOption::VALUE_OPTIONAL,
-                'Reflect file type(sql or yaml)',
-                'sql'
             );
     }
 
@@ -48,27 +40,11 @@ class ReflectCommand extends AbstractConvCommand
             $dbName = (string) $input->getArgument('dbName')
         );
 
-        $type = strtolower($input->getOption('type'));
-
-        switch ($type) {
-            case 'sql':
-                CreateQueryReflector::fromPDO(
-                    $pdo,
-                    $dbName,
-                    (string) $input->getOption('dir'),
-                    $this->getOperator($input, $output)
-                );
-                break;
-            case 'yaml':
-                $dbStructure = DatabaseStructureFactory::fromPDO($pdo, $dbName);
-                SchemaReflector::fromDatabaseStructure(
-                    (string) $input->getOption('dir'),
-                    $dbStructure,
-                    $this->getOperator($input, $output)
-                );
-                break;
-            default:
-                throw new \Exception('Unexpected file type (sql or yaml)');
-        }
+        CreateQueryReflector::fromPDO(
+            $pdo,
+            $dbName,
+            (string) $input->getOption('dir'),
+            $this->getOperator($input, $output)
+        );
     }
 }

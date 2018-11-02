@@ -117,24 +117,23 @@ class MigrationGenerator
 
         foreach ($droppedTableNameList as $tableName) {
             $migration->add(
-                new TableDropMigration($beforeDatabase->getTableList()[$tableName])
+                new TableDropMigration($beforeDatabase->getOnlyTableList()[$tableName])
             );
         }
 
         foreach ($droppedViewNameList as $viewName) {
             $migration->add(
-                new ViewDropMigration($beforeDatabase->getTableList()[$viewName])
+                new ViewDropMigration($beforeDatabase->getOnlyViewList()[$viewName])
             );
         }
 
-        $filter = [TableStructureType::TABLE];
-        foreach ($beforeDatabase->getTableList($filter) as $tableName => $beforeTable) {
+        foreach ($beforeDatabase->getOnlyTableList() as $tableName => $beforeTable) {
             if (!array_key_exists($tableName, $afterDatabase->getTableList())) {
                 continue;
             }
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
                 $beforeTable,
-                $afterDatabase->getTableList()[$tableName],
+                $afterDatabase->getOnlyTableList()[$tableName],
                 $operator
             );
             $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
@@ -146,22 +145,21 @@ class MigrationGenerator
 
         foreach ($renamedTableNameList as $beforeTableName => $afterTableName) {
             $tableAlterMigration = TableAlterMigrationGenerator::generate(
-                $beforeDatabase->getTableList()[$beforeTableName],
-                $afterDatabase->getTableList()[$afterTableName],
+                $beforeDatabase->getOnlyTableList()[$beforeTableName],
+                $afterDatabase->getOnlyTableList()[$afterTableName],
                 $operator
             );
             $allRenamedNameList = array_merge($allRenamedNameList, $tableAlterMigration->renamedNameList());
             $migration->add($tableAlterMigration);
         }
 
-        $filter = [TableStructureType::VIEW, TableStructureType::VIEW_RAW];
-        foreach ($beforeDatabase->getTableList($filter) as $viewName => $beforeView) {
+        foreach ($beforeDatabase->getOnlyViewList() as $viewName => $beforeView) {
             if (!array_key_exists($viewName, $afterDatabase->getTableList())) {
                 continue;
             }
             $viewAlterMigration = new ViewAlterMigration(
                 $beforeView,
-                $afterDatabase->getTableList()[$viewName],
+                $afterDatabase->getOnlyViewList()[$viewName],
                 $allRenamedNameList
             );
             if (!$viewAlterMigration->isAltered()) {
@@ -176,8 +174,8 @@ class MigrationGenerator
         }
 
         foreach ($renamedViewNameList as $beforeViewName => $afterViewName) {
-            $beforeView = $beforeDatabase->getTableList()[$beforeViewName];
-            $afterView = $afterDatabase->getTableList()[$afterViewName];
+            $beforeView = $beforeDatabase->getOnlyViewList()[$beforeViewName];
+            $afterView = $afterDatabase->getOnlyViewList()[$afterViewName];
             $migration->add(new ViewRenameMigration($beforeView, $afterView));
 
             $viewAlterMigration = new ViewAlterMigration($beforeView, $afterView, $allRenamedNameList);
@@ -194,13 +192,13 @@ class MigrationGenerator
 
         foreach ($addedTableNameList as $tableName) {
             $migration->add(
-                new TableCreateMigration($afterDatabase->getTableList()[$tableName])
+                new TableCreateMigration($afterDatabase->getOnlyTableList()[$tableName])
             );
         }
 
         foreach ($addedViewNameList as $viewName) {
             $migration->add(
-                new ViewCreateMigration($afterDatabase->getTableList()[$viewName])
+                new ViewCreateMigration($afterDatabase->getOnlyViewList()[$viewName])
             );
         }
 
