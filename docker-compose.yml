@@ -1,0 +1,49 @@
+version: '3'
+services:
+  php-71-56:
+    build: ./
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql-56
+    command: ./wait-for-it.sh mysql-56:3306 -- vendor/bin/phpunit
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mysql-56
+  mysql-56:
+    image: mysql:5.6
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+
+  php-71-57:
+    build: ./
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql-57
+    command: ./wait-for-it.sh mysql-57:3306 -- vendor/bin/phpunit
+    volumes:
+    - .:/usr/src/app
+    depends_on:
+    - mysql-57
+  mysql-57:
+    image: mysql:5.7
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+
+  php-71-80:
+    build: ./
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql-80
+    command: ./wait-for-it.sh mysql-80:3306 -- vendor/bin/phpunit
+    volumes:
+    - .:/usr/src/app
+    depends_on:
+    - mysql-80
+  mysql-80:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
