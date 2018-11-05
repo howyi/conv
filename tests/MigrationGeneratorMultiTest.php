@@ -19,12 +19,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
 
     protected function setup()
     {
-        $this->pdo = new \PDO(
-            "mysql:host=127.0.0.1;dbname=conv_test;charset=utf8;",
-            'root',
-            '',
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
+		$this->pdo = TestUtility::getPdo('conv_test');
         $this->prophet = new \Prophecy\Prophet();
     }
 
