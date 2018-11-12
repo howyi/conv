@@ -19,7 +19,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
 
     protected function setup()
     {
-		$this->pdo = TestUtility::getPdo('conv_test');
+        $this->pdo = TestUtility::getPdo('conv_test');
         $this->prophet = new \Prophecy\Prophet();
     }
 
