@@ -4,18 +4,8 @@ namespace Laminaria\Conv;
 
 use Laminaria\Conv\Factory\TableStructureFactory;
 use Laminaria\Conv\Factory\ViewStructureFactory;
-use Laminaria\Conv\Operator\Operator;
 use Laminaria\Conv\Operator\OperatorInterface;
-use Laminaria\Conv\Structure\ColumnStructure;
 use Laminaria\Conv\Structure\DatabaseStructure;
-use Laminaria\Conv\Structure\IndexStructure;
-use Laminaria\Conv\Structure\TableStructureType;
-use Laminaria\Conv\Util\Config;
-use Laminaria\Conv\Util\Evaluator;
-use Laminaria\Conv\Util\SchemaKey;
-use Laminaria\Conv\Util\SchemaValidator;
-use Howyi\Evi;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class DatabaseStructureFactory
 {
@@ -25,6 +15,7 @@ class DatabaseStructureFactory
      * @param \PDO          $pdo
      * @param string        $dbName
      * @param callable|null $filter
+     * @return DatabaseStructure
      */
     public static function fromPDO(
         \PDO $pdo,
@@ -70,7 +61,7 @@ class DatabaseStructureFactory
         callable $filter = null,
         $drop = true
     ): DatabaseStructure {
-        $operator->output('<comment>Genarate temporary database</>');
+        $operator->output('<comment>Generate temporary database</>');
         $pdo->exec('DROP DATABASE IF EXISTS ' . self::TMP_DBNAME);
         $pdo->exec('CREATE DATABASE ' . self::TMP_DBNAME);
         $pdo->exec('USE ' . self::TMP_DBNAME);
