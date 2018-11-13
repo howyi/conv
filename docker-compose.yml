@@ -5,7 +5,7 @@ services:
     working_dir: /usr/src/app
     environment:
       DB_HOST: mysql-56
-    command: ./wait-for-it.sh mysql-56:3306 -- vendor/bin/phpunit
+    command: ./wait-for-it.sh -t 0 mysql-56:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
     depends_on:
@@ -21,7 +21,7 @@ services:
     working_dir: /usr/src/app
     environment:
       DB_HOST: mysql-57
-    command: ./wait-for-it.sh mysql-57:3306 -- vendor/bin/phpunit
+    command: ./wait-for-it.sh -t 0 mysql-57:3306 -- vendor/bin/phpunit
     volumes:
     - .:/usr/src/app
     depends_on:
@@ -37,13 +37,16 @@ services:
     working_dir: /usr/src/app
     environment:
       DB_HOST: mysql-80
-    command: ./wait-for-it.sh mysql-80:3306 -- vendor/bin/phpunit
+    command: ./wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
     volumes:
     - .:/usr/src/app
     depends_on:
     - mysql-80
   mysql-80:
     image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    security_opt:
+    - seccomp:unconfined
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
