@@ -5,36 +5,24 @@ namespace Laminaria\Conv\Structure;
 use Laminaria\Conv\Util\Config;
 use Laminaria\Conv\Util\SchemaKey;
 
-class ViewStructure implements ViewStructureInterface, TableStructureInterface
+class ViewRawStructure implements ViewStructureInterface, TableStructureInterface
 {
     private $viewName;
-    private $algorithm;
-    private $aliasList;
-    private $columnList;
-    private $joinStructure;
+    private $createQuery;
     private $properties;
 
     /**
-     * @param string      $viewName
-     * @param string|null $algorithm
-     * @param array       $aliasList
-     * @param array       $columnList
-     * @param array       $joinArray
-     * @param array       $properties
+     * @param string $viewName
+     * @param string $createQuery
+     * @param array  $properties
      */
     public function __construct(
         string $viewName,
-        $algorithm,
-        array $aliasList,
-        array $columnList,
-        array $joinArray,
+        string $createQuery,
         array $properties
     ) {
         $this->viewName = $viewName;
-        $this->algorithm = $algorithm;
-        $this->aliasList = $aliasList;
-        $this->columnList = $columnList;
-        $this->joinStructure = new JoinStructure($joinArray, $aliasList);
+        $this->createQuery = $createQuery;
         $this->properties = $properties;
     }
 
@@ -47,43 +35,46 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAlgorithm()
+    public function getCreateQuery(): string
     {
-        return $this->algorithm;
+        $query = $this->createQuery;
+        $definer = ' DEFINER' . explode('DEFINER', $query)[1] . 'DEFINER';
+        $query = str_replace(
+            $definer,
+            '',
+            $query
+        );
+        $query = str_replace(
+            'AS select ',
+            PHP_EOL . 'AS select' . PHP_EOL . '  ',
+            $query
+        );
+        $query = str_replace(
+            ',',
+            ',' . PHP_EOL . '  ',
+            $query
+        );
+        $query = str_replace(
+            ' from ',
+            ' ' . PHP_EOL . 'from' . PHP_EOL . '  ',
+            $query
+        );
+        $query = str_replace(
+            ' where ',
+            ' ' . PHP_EOL . 'where' . PHP_EOL . '  ',
+            $query
+        );
+        return $query;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getAliasList(): array
+    public function getRawQuery(): string
     {
-        return $this->aliasList;
-    }
-
-    /**
-     * @return array
-     */
-    public function getColumnList(): array
-    {
-        return $this->columnList;
-    }
-
-    /**
-     * @return array
-     */
-    public function getJoinStructure(): JoinStructure
-    {
-        return $this->joinStructure;
-    }
-
-    /**
-     * @return array
-     */
-    public function getProperties(): array
-    {
-        return $this->properties;
+        return $this->createQuery;
     }
 
     /**
@@ -91,7 +82,7 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
      */
     public function getType(): string
     {
-        return TableStructureType::VIEW;
+        return TableStructureType::VIEW_RAW;
     }
 
     /**
@@ -103,30 +94,14 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCreateQuery(): string
+    public function toArray(): array
     {
-        $createQuery = '';
-        if (is_null($this->getAlgorithm())) {
-            $createQuery = "CREATE VIEW `$this->viewName`" . PHP_EOL;
-        } else {
-            $algorithm = strtoupper($this->getAlgorithm());
-            $createQuery = "CREATE ALGORITHM=$algorithm VIEW `$this->viewName`" . PHP_EOL;
-        }
-        $createQuery .= 'AS select' . PHP_EOL;
-
-        $bodyList = [];
-        foreach ($this->getColumnList() as $field => $value) {
-            $targetTableName = strstr($value, '.', true);
-            $targetColumn = ltrim(strstr($value, '.', false), '.');
-            $bodyList[] = "`$targetTableName`.`$targetColumn` AS `$field`";
-        }
-        $createQuery .= "  " . join(',' . PHP_EOL . '  ', $bodyList) . PHP_EOL;
-        $createQuery .= 'from' . PHP_EOL;
-        $createQuery .= '  ' . $this->getJoinStructure()->genareteJoinQuery() . ';' . PHP_EOL;
-
-        return $createQuery;
+        return [
+            SchemaKey::TABLE_TYPE => $this->getType(),
+            SchemaKey::VIEW_RAW_QUERY => $this->getRawQuery(),
+        ];
     }
 
     /**
@@ -134,9 +109,17 @@ class ViewStructure implements ViewStructureInterface, TableStructureInterface
      */
     public function getCompareQuery(): string
     {
-        $createQuery = $this->getCreateQuery();
-        $compareQuery = str_replace([PHP_EOL, ' '], '', $createQuery);
+        $definer = ' DEFINER' . explode('DEFINER', $this->createQuery)[1] . 'DEFINER';
+        $compareQuery = str_replace([$definer, PHP_EOL, ' '], '', $this->createQuery);
         $compareQuery = str_replace("`$this->viewName`", 'TABLENAME', $compareQuery);
         return rtrim($compareQuery, ';');
+    }
+
+    /**
+     * @return array
+     */
+    public function getProperties(): array
+    {
+        return $this->properties;
     }
 }
