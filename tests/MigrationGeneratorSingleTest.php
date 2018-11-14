@@ -2,6 +2,7 @@
 
 namespace Laminaria\Conv;
 
+use Composer\Semver\Semver;
 use Laminaria\Conv\Operator\DropOnlySilentOperator;
 use Laminaria\Conv\Structure\DatabaseStructure;
 
@@ -15,7 +16,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
     {
         $this->pdo = TestUtility::getPdo('conv_test');
         $this->prophet = new \Prophecy\Prophet();
-        $this->mysqlVersion = $this->pdo->query('SELECT VERSION()')->fetchColumn();
+        $this->mysqlVersion = $this->pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
     }
 
     protected function tearDown()
@@ -33,6 +34,16 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
      */
     public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath)
     {
+        $exploded = explode(':', $name);
+        $target = $exploded[1] ?? null;
+
+        if (!is_null($target)) {
+            if (!Semver::satisfies($this->mysqlVersion, $target)) {
+                // Skipped
+                $this->assertTrue(true);
+                return;
+            }
+        }
         if (file_exists($afterDir)) {
             $after = DatabaseStructureFactory::fromSqlDir(
                 $this->pdo,

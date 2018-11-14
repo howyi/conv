@@ -2,17 +2,7 @@
 
 namespace Laminaria\Conv;
 
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
-use Laminaria\Conv\Structure\DatabaseStructure;
-use Laminaria\Conv\Structure\TableStructureType;
-use Laminaria\Conv\Structure\ViewRawStructure;
-use Laminaria\Conv\Structure\TableStructure;
-use Symfony\Component\Yaml\Yaml;
 use Laminaria\Conv\Operator\OperatorInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class CreateQueryReflector
 {

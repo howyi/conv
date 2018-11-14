@@ -2,10 +2,9 @@
 
 namespace Laminaria\Conv\Structure;
 
-use Laminaria\Conv\Util\Config;
 use Laminaria\Conv\Util\SchemaKey;
 
-class ViewRawStructure implements ViewStructureInterface, TableStructureInterface
+class ViewStructure implements TableStructureInterface
 {
     private $viewName;
     private $createQuery;

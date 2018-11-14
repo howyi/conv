@@ -25,7 +25,7 @@ class TableAlterMigrationGenerator
      * @param TableStructure    $beforeTable
      * @param TableStructure    $afterTable
      * @param OperatorInterface $operator
-     * @return TableMigration
+     * @return TableAlterMigration
      */
     public static function generate(
         TableStructure $beforeTable,
