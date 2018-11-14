@@ -13,7 +13,7 @@ class DriverAllocator
     public static function fromPDO(\PDO $PDO): DriverInterface
     {
         $driverName = $PDO->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        $version = $PDO->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        $version = $PDO->query('select version()')->fetchColumn();
 
         switch (strtolower($driverName)) {
             case 'mysql':
