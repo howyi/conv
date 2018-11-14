@@ -3,7 +3,7 @@
 namespace Laminaria\Conv\Migration\Table;
 
 use Laminaria\Conv\MigrationType;
-use Laminaria\Conv\Structure\ViewStructureInterface;
+use Laminaria\Conv\Structure\ViewStructure;
 
 /**
  * CREATE OR REPLACE
@@ -14,14 +14,13 @@ class ViewAlterMigration extends AbstractTableMigration
     private $isSplit = false;
 
     /**
-     * @param ViewStructureInterface $beforeView
-     * @param ViewStructureInterface $afterView
-     * @param MigrationLineList $migrationLineList
-     * @param array             $allRenamedNameList
+     * @param ViewStructure $beforeView
+     * @param ViewStructure $afterView
+     * @param array         $allRenamedNameList
      */
     public function __construct(
-        ViewStructureInterface $beforeView,
-        ViewStructureInterface $afterView,
+        ViewStructure $beforeView,
+        ViewStructure $afterView,
         array $allRenamedNameList
     ) {
         $this->tableName = $afterView->getViewName();

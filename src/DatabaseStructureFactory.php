@@ -2,6 +2,7 @@
 
 namespace Laminaria\Conv;
 
+use Laminaria\Conv\Driver\DriverAllocator;
 use Laminaria\Conv\Factory\TableStructureFactory;
 use Laminaria\Conv\Factory\ViewStructureFactory;
 use Laminaria\Conv\Operator\OperatorInterface;
@@ -25,15 +26,16 @@ class DatabaseStructureFactory
         $rawTableList = $pdo->query(
             "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$dbName'"
         )->fetchAll();
+        $driver = DriverAllocator::fromPDO($pdo);
         $tableList = [];
         foreach ($rawTableList as $value) {
             $tableName = $value['TABLE_NAME'];
             switch ($value['TABLE_TYPE']) {
                 case 'BASE TABLE':
-                    $table = TableStructureFactory::fromTable($pdo, $dbName, $tableName);
+                    $table = $driver->createTableStructure($dbName, $tableName);
                     break;
                 case 'VIEW':
-                    $table = ViewStructureFactory::fromView($pdo, $dbName, $tableName);
+                    $table = $driver->createViewStructure($tableName);
                     break;
                 default:
                     continue 2;

@@ -3,7 +3,7 @@
 namespace Laminaria\Conv\Migration\Table;
 
 use Laminaria\Conv\MigrationType;
-use Laminaria\Conv\Structure\ViewStructureInterface;
+use Laminaria\Conv\Structure\ViewStructure;
 
 /**
  * DROP VIEW
@@ -11,10 +11,10 @@ use Laminaria\Conv\Structure\ViewStructureInterface;
 class ViewDropMigration extends AbstractTableMigration
 {
     /**
-     * @param ViewStructureInterface $viewStructure
+     * @param ViewStructure $viewStructure
      */
     public function __construct(
-        ViewStructureInterface $viewStructure
+        ViewStructure $viewStructure
     ) {
         $this->tableName = $viewStructure->getViewName();
         $this->type = MigrationType::VIEW_DROP;
