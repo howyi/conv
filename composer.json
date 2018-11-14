@@ -36,7 +36,8 @@
     "require": {
         "php":             ">=7.1",
         "ext-PDO":         "*",
-        "symfony/console": ">=2.0"
+        "symfony/console": ">=2.0",
+        "composer/semver": "^1.4"
     },
     "autoload": {
         "psr-4": {
