@@ -2,6 +2,6 @@
 
 namespace Laminaria\Conv\Driver;
 
-class MySQL80Driver implements MySQLDriverInterface
+class MySQL80Driver extends MySQL57Driver
 {
 }
