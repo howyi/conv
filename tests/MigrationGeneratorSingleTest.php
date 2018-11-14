@@ -16,7 +16,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
     {
         $this->pdo = TestUtility::getPdo('conv_test');
         $this->prophet = new \Prophecy\Prophet();
-        $this->mysqlVersion = $this->pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        $this->mysqlVersion = $this->pdo->query('select version()')->fetchColumn();
     }
 
     protected function tearDown()
