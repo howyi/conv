@@ -58,6 +58,7 @@ class ConsoleOperator implements OperatorInterface
 
     /**
      * @param string $message
+     * @codeCoverageIgnore
      */
     public function output(string $message): void
     {
@@ -66,6 +67,7 @@ class ConsoleOperator implements OperatorInterface
 
     /**
      * @param int $max
+     * @codeCoverageIgnore
      */
     public function startProgress(int $max): void
     {
@@ -75,6 +77,7 @@ class ConsoleOperator implements OperatorInterface
 
     /**
      * @param int $step
+     * @codeCoverageIgnore
      */
     public function advanceProgress(int $step = 1): void
     {
@@ -83,6 +86,10 @@ class ConsoleOperator implements OperatorInterface
         }
     }
 
+    /**
+     * @param string $format
+     * @codeCoverageIgnore
+     */
     public function setProgressFormat(string $format): void
     {
         if (!is_null($this->progress)) {
@@ -90,6 +97,10 @@ class ConsoleOperator implements OperatorInterface
         }
     }
 
+    /**
+     * @param string $message
+     * @codeCoverageIgnore
+     */
     public function finishProgress(string $message): void
     {
         if (!is_null($this->progress)) {
