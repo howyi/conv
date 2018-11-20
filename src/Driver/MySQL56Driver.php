@@ -8,6 +8,7 @@ use Laminaria\Conv\Structure\IndexStructure;
 use Laminaria\Conv\Structure\PartitionLongStructure;
 use Laminaria\Conv\Structure\PartitionPartStructure;
 use Laminaria\Conv\Structure\PartitionShortStructure;
+use Laminaria\Conv\Structure\PartitionStructureInterface;
 use Laminaria\Conv\Structure\TableStructure;
 use Laminaria\Conv\Structure\ViewStructure;
 use Laminaria\Conv\Util\PartitionType;
@@ -19,21 +20,28 @@ class MySQL56Driver extends AbstractDriver implements MySQLDriverInterface
         $this->PDO()->exec('USE ' . $dbName);
         $rawStatus = $this->PDO()->query("SHOW TABLE STATUS LIKE '$tableName'")->fetch();
 
-        $format = <<<EOT
-SELECT * 
-FROM information_schema.COLUMNS 
-WHERE table_schema = '%s' AND  table_name = '%s' 
-ORDER BY ORDINAL_POSITION ASC
-EOT;
+        $partition = $this->createPartitionStructure($dbName, $tableName);
+        $columnStructureList = $this->createColumnStructureList($dbName, $tableName);
+        $indexStructureList = $this->createIndexStructureList($dbName, $tableName);
+        $defaultCharset = $this->getDefaultCharset($dbName, $tableName);
 
-        $rawColumnList = $this->PDO()->query(
-            sprintf(
-                $format,
-                $dbName,
-                $tableName
-            )
-        )->fetchAll();
+        $tableStructure = new TableStructure(
+            $tableName,
+            $rawStatus['Comment'],
+            $rawStatus['Engine'],
+            $defaultCharset,
+            $rawStatus['Collation'],
+            $columnStructureList,
+            $indexStructureList,
+            $partition,
+            []
+        );
 
+        return $tableStructure;
+    }
+
+    protected function createPartitionStructure(string $dbName, string $tableName): ?PartitionStructureInterface
+    {
         $format = <<<EOT
 SELECT * 
 FROM information_schema.PARTITIONS 
@@ -101,6 +109,25 @@ EOT;
                     break;
             }
         }
+        return $partition;
+    }
+
+    protected function createColumnStructureList(string $dbName, string $tableName): array
+    {
+        $format = <<<EOT
+SELECT * 
+FROM information_schema.COLUMNS 
+WHERE table_schema = '%s' AND  table_name = '%s' 
+ORDER BY ORDINAL_POSITION ASC
+EOT;
+
+        $rawColumnList = $this->PDO()->query(
+            sprintf(
+                $format,
+                $dbName,
+                $tableName
+            )
+        )->fetchAll();
 
         $columnStructureList = [];
 
@@ -134,6 +161,11 @@ EOT;
             );
         }
 
+        return $columnStructureList;
+    }
+
+    protected function createIndexStructureList(string $dbName, string $tableName): array
+    {
         $rawIndexList = $this->PDO()->query("SHOW INDEX FROM $tableName")->fetchAll();
         $keyList = [];
         foreach ($rawIndexList as $index) {
@@ -157,29 +189,18 @@ EOT;
                 array_column($indexList, 'Column_name')
             );
         }
+        return $indexStructureList;
+    }
 
+    protected function getDefaultCharset(string $dbName, string $tableName): ?string
+    {
         $createQuery = $this->PDO()->query("SHOW CREATE TABLE $tableName")->fetch()[1];
         $defaultCharsetSearch = mb_strstr($createQuery, 'DEFAULT CHARSET=');
         if (false !== $defaultCharsetSearch) {
             $defaultCharsetSearch = str_replace('DEFAULT CHARSET=', '', $defaultCharsetSearch);
-            $defaultCharset = explode(' ', $defaultCharsetSearch)[0];
-        } else {
-            $defaultCharset = null;
+            return explode(' ', $defaultCharsetSearch)[0];
         }
-
-        $tableStructure = new TableStructure(
-            $tableName,
-            $rawStatus['Comment'],
-            $rawStatus['Engine'],
-            $defaultCharset,
-            $rawStatus['Collation'],
-            $columnStructureList,
-            $indexStructureList,
-            $partition,
-            []
-        );
-
-        return $tableStructure;
+        return null;
     }
 
     /**
