@@ -3,7 +3,7 @@
 namespace Laminaria\Conv\Driver;
 
 use Laminaria\Conv\Structure\Attribute;
-use Laminaria\Conv\Structure\ColumnStructure;
+use Laminaria\Conv\Structure\ColumnStructure\MySQL56ColumnStructure;
 use Laminaria\Conv\Structure\IndexStructure;
 use Laminaria\Conv\Structure\PartitionLongStructure;
 use Laminaria\Conv\Structure\PartitionPartStructure;
@@ -122,7 +122,7 @@ EOT;
             $collationName = $column['COLLATION_NAME'];
             $generationExpression = empty($column['GENERATION_EXPRESSION']) ? null : $column['GENERATION_EXPRESSION'];
 
-            $columnStructureList[] = new ColumnStructure(
+            $columnStructureList[] = new MySQL56ColumnStructure(
                 $column['COLUMN_NAME'],
                 str_replace(' unsigned', '', $column['COLUMN_TYPE']),
                 $column['COLUMN_DEFAULT'],
