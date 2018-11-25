@@ -4,7 +4,7 @@ services:
     build: ./
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-56
+      DB_HOST: mysql-56:3306
     command: ./wait-for-it.sh -t 0 mysql-56:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
@@ -20,7 +20,7 @@ services:
     build: ./
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-57
+      DB_HOST: mysql-57:3306
     command: ./wait-for-it.sh -t 0 mysql-57:3306 -- vendor/bin/phpunit
     volumes:
     - .:/usr/src/app
@@ -36,7 +36,7 @@ services:
     build: ./
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-80
+      DB_HOST: mysql-80:3306
     command: ./wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
     volumes:
     - .:/usr/src/app
