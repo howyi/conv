@@ -28,9 +28,8 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
      * @param string $upPath
      * @param string $downPath
      */
-    public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath)
+    public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath, $pdo)
     {
-        foreach (TestUtility::getPdoArray() as $pdo) {
             $mysqlVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
             preg_match("/^[0-9\.]+/", $mysqlVersion, $match);
             $mysqlVersion = $match[0];
@@ -99,29 +98,31 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
                 $after,
                 DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
             );
-        }
     }
 
     public function generateProvider()
     {
         $dir = 'vendor/laminaria/conv-test-suite/cases/part/';
 
-        foreach (new \DirectoryIterator($dir) as $fileInfo) {
-            if ($fileInfo->isDot()) {
-                continue;
-            }
-            if (!$fileInfo->isDir()) {
-                continue;
-            }
-            $name = $fileInfo->getFilename();
+        foreach (TestUtility::getPdoArray() as $pdo) {
+            foreach (new \DirectoryIterator($dir) as $fileInfo) {
+                if ($fileInfo->isDot()) {
+                    continue;
+                }
+                if (!$fileInfo->isDir()) {
+                    continue;
+                }
+                $name = $fileInfo->getFilename();
 
-            yield [
-                $name,
-                $dir . $name . '/before',
-                $dir . $name . '/after',
-                $dir . $name . '/up.sql',
-                $dir . $name . '/down.sql',
-            ];
+                yield [
+                    $name,
+                    $dir . $name . '/before',
+                    $dir . $name . '/after',
+                    $dir . $name . '/up.sql',
+                    $dir . $name . '/down.sql',
+                    $pdo,
+                ];
+            }
         }
     }
 }

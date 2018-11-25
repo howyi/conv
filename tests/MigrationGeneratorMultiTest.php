@@ -32,9 +32,8 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
      * @param string $calls
      * @param string $expected
      */
-    public function testGenerate($dir, $calls, $expected)
+    public function testGenerate($dir, $calls, $expected, $pdo)
     {
-        foreach (TestUtility::getPdoArray() as $pdo) {
             $operator = $this->prophet->prophesize(ConsoleOperator::class);
             $expectStructure = DatabaseStructureFactory::fromSqlDir(
                 $pdo,
@@ -70,12 +69,11 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
             for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
                 $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
             }
-        }
     }
 
     public function generateProvider()
     {
-        return [
+        $values = [
             [
                 'vendor/laminaria/conv-test-suite/cases/unit/000',
                 [],
@@ -179,5 +177,11 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
         ];
+
+        foreach (TestUtility::getPdoArray() as $pdo) {
+            foreach ($values as $value) {
+                yield array_merge($value, [$pdo]);
+            }
+        }
     }
 }
