@@ -1,10 +1,11 @@
 <?php
 
-namespace Laminaria\Conv\Structure;
+namespace Laminaria\Conv\Structure\ColumnStructure;
 
+use Laminaria\Conv\Structure\Attribute;
 use Laminaria\Conv\Util\SchemaKey;
 
-class ColumnStructure
+class MySQL56ColumnStructure implements ColumnStructureInterface
 {
     public $field;
     public $type;
@@ -116,10 +117,10 @@ class ColumnStructure
     }
 
     /**
-     * @param ColumnStructure $target
+     * @param MySQL56ColumnStructure $target
      * @return bool
      */
-    public function isChanged(ColumnStructure $target): bool
+    public function isChanged(MySQL56ColumnStructure $target): bool
     {
         if ($this->type === $target->type and
             $this->comment === $target->comment and
