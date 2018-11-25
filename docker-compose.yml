@@ -1,47 +1,32 @@
 version: '3'
 services:
-  php-71-56:
+  php-71:
     build: ./
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-56:3306
-    command: ./wait-for-it.sh -t 0 mysql-56:3306 -- vendor/bin/phpunit
+      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
+    command: ./wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
     depends_on:
       - mysql-56
+      - mysql-57
+      - mysql-80
+
   mysql-56:
     image: mysql:5.6
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
 
-  php-71-57:
-    build: ./
-    working_dir: /usr/src/app
-    environment:
-      DB_HOST: mysql-57:3306
-    command: ./wait-for-it.sh -t 0 mysql-57:3306 -- vendor/bin/phpunit
-    volumes:
-    - .:/usr/src/app
-    depends_on:
-    - mysql-57
   mysql-57:
     image: mysql:5.7
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
-
-  php-71-80:
-    build: ./
-    working_dir: /usr/src/app
-    environment:
-      DB_HOST: mysql-80:3306
-    command: ./wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
-    volumes:
-    - .:/usr/src/app
     depends_on:
-    - mysql-80
+     - mysql-56
+
   mysql-80:
     image: mysql:8.0
     command: mysqld --default-authentication-plugin=mysql_native_password
@@ -50,3 +35,5 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+     - mysql-57
