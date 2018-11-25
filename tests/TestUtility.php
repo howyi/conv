@@ -16,8 +16,7 @@ class TestUtility
         $rootPass = getenv('DB_ROOT_PASS') ? getenv('DB_ROOT_PASS')  : '';
 
         $pdoArray = [];
-        foreach ($hosts as $hostEnv)
-        {
+        foreach ($hosts as $hostEnv) {
             $host = explode(':', $hostEnv)[0];
             $port = explode(':', $hostEnv)[1];
             $pdo = new \PDO(

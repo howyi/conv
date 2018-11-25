@@ -43,13 +43,13 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
             $pdo->exec('USE conv_test');
             $actualStructure = DatabaseStructureFactory::fromPDO($pdo, 'conv_test');
 
-            foreach ($calls as $value) {
-                $operator->choiceQuestion(
-                    $value['message'],
-                    arg::type('array')
-                )->willReturn($value['return'])
-                    ->shouldBeCalledTimes(1);
-            }
+        foreach ($calls as $value) {
+            $operator->choiceQuestion(
+                $value['message'],
+                arg::type('array')
+            )->willReturn($value['return'])
+                ->shouldBeCalledTimes(1);
+        }
             $operator->output(\Prophecy\Argument::any());
 
             $alter = MigrationGenerator::generate(
@@ -57,18 +57,18 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 $expectStructure,
                 $operator->reveal()
             );
-            foreach ($alter->getMigrationList() as $migration) {
-                $pdo->exec($migration->getUp());
-            }
-            foreach ($alter->getMigrationList() as $migration) {
-                $pdo->exec($migration->getDown());
-            }
-            foreach ($alter->getMigrationList() as $migration) {
-                $pdo->exec($migration->getUp());
-            }
-            for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
-                $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
-            }
+        foreach ($alter->getMigrationList() as $migration) {
+            $pdo->exec($migration->getUp());
+        }
+        foreach ($alter->getMigrationList() as $migration) {
+            $pdo->exec($migration->getDown());
+        }
+        foreach ($alter->getMigrationList() as $migration) {
+            $pdo->exec($migration->getUp());
+        }
+        for ($i = 0; $i < count($alter->getMigrationList()); $i++) {
+            $this->assertInstanceOf($expected[$i], $alter->getMigrationList()[$i]);
+        }
     }
 
     public function generateProvider()
