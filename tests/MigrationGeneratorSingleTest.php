@@ -37,36 +37,36 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
             $exploded = explode(':', $name);
             $target = $exploded[1] ?? null;
 
-            if (!is_null($target)) {
-                if (!Semver::satisfies($mysqlVersion, $target)) {
-                    // Skipped
-                    $this->assertTrue(true);
-                    return;
-                }
+        if (!is_null($target)) {
+            if (!Semver::satisfies($mysqlVersion, $target)) {
+                // Skipped
+                $this->assertTrue(true);
+                return;
             }
-            if (file_exists($afterDir)) {
-                $after = DatabaseStructureFactory::fromSqlDir(
-                    $pdo,
-                    $afterDir,
-                    new DropOnlySilentOperator()
-                );
-            } else {
-                $after = new DatabaseStructure([]);
-            }
+        }
+        if (file_exists($afterDir)) {
+            $after = DatabaseStructureFactory::fromSqlDir(
+                $pdo,
+                $afterDir,
+                new DropOnlySilentOperator()
+            );
+        } else {
+            $after = new DatabaseStructure([]);
+        }
 
-            if (file_exists($beforeDir)) {
-                $before = DatabaseStructureFactory::fromSqlDir(
-                    $pdo,
-                    $beforeDir,
-                    new DropOnlySilentOperator(),
-                    null,
-                    false
-                );
-            } else {
-                $pdo->exec('DROP DATABASE IF EXISTS ' . DatabaseStructureFactory::TMP_DBNAME);
-                $pdo->exec('CREATE DATABASE ' . DatabaseStructureFactory::TMP_DBNAME);
-                $before = new DatabaseStructure([]);
-            }
+        if (file_exists($beforeDir)) {
+            $before = DatabaseStructureFactory::fromSqlDir(
+                $pdo,
+                $beforeDir,
+                new DropOnlySilentOperator(),
+                null,
+                false
+            );
+        } else {
+            $pdo->exec('DROP DATABASE IF EXISTS ' . DatabaseStructureFactory::TMP_DBNAME);
+            $pdo->exec('CREATE DATABASE ' . DatabaseStructureFactory::TMP_DBNAME);
+            $before = new DatabaseStructure([]);
+        }
 
             $migration = MigrationGenerator::generate(
                 $before,
