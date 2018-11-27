@@ -6,25 +6,32 @@ class TestUtility
 {
     /**
      * @param null|string $dbName
-     * @return \PDO
+     * @return \PDO[]
      */
-    public static function getPdo(?string $dbName = null): \PDO
+    public static function getPdoArray(?string $dbName = null): array
     {
-        $host = getenv('DB_HOST') ? getenv('DB_HOST')  : '127.0.0.1';
+        $hostEnv = getenv('DB_HOST') ? getenv('DB_HOST')  : '127.0.0.1:3306';
+        $hosts = explode(',', $hostEnv);
         $rootName = getenv('DB_ROOT_NAME') ? getenv('DB_ROOT_NAME')  : 'root';
         $rootPass = getenv('DB_ROOT_PASS') ? getenv('DB_ROOT_PASS')  : '';
 
-        $pdo = new \PDO(
-            "mysql:host=$host;charset=utf8;",
-            $rootName,
-            $rootPass,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
-        );
+        $pdoArray = [];
+        foreach ($hosts as $hostEnv) {
+            $host = explode(':', $hostEnv)[0];
+            $port = explode(':', $hostEnv)[1];
+            $pdo = new \PDO(
+                "mysql:host=$host;port=$port;charset=utf8;",
+                $rootName,
+                $rootPass,
+                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            );
 
-        if (!is_null($dbName)) {
-            $pdo->exec("USE $dbName");
+            if (!is_null($dbName)) {
+                $pdo->exec("USE $dbName");
+            }
+
+            $pdoArray[] = $pdo;
         }
-
-        return $pdo;
+        return $pdoArray;
     }
 }

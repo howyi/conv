@@ -2,6 +2,8 @@
 
 namespace Laminaria\Conv\Structure;
 
+use Laminaria\Conv\Structure\ColumnStructure\ColumnStructureInterface;
+
 class ModifiedColumnStructure
 {
     public $beforeField;
@@ -10,11 +12,11 @@ class ModifiedColumnStructure
 
     /**
      * @param string $beforeField
-     * @param ColumnStructure $column
+     * @param ColumnStructureInterface $column
      */
     public function __construct(
         string $beforeField,
-        ColumnStructure $column
+        ColumnStructureInterface $column
     ) {
         $this->beforeField = $beforeField;
         $this->column = clone $column;
@@ -47,9 +49,9 @@ class ModifiedColumnStructure
     }
 
     /**
-     * @return ColumnStructure
+     * @return ColumnStructureInterface
      */
-    public function getColumn(): ColumnStructure
+    public function getColumn(): ColumnStructureInterface
     {
         return $this->column;
     }
