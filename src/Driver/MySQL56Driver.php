@@ -192,7 +192,7 @@ EOT;
         return $indexStructureList;
     }
 
-    protected function getDefaultCharset(string $dbName, string $tableName): ?string
+    protected function getDefaultCharset(string $dbName, string $tableName): string
     {
         $createQuery = $this->PDO()->query("SHOW CREATE TABLE $tableName")->fetch()[1];
         $defaultCharsetSearch = mb_strstr($createQuery, 'DEFAULT CHARSET=');
@@ -200,7 +200,7 @@ EOT;
             $defaultCharsetSearch = str_replace('DEFAULT CHARSET=', '', $defaultCharsetSearch);
             return explode(' ', $defaultCharsetSearch)[0];
         }
-        return null;
+        return '';
     }
 
     /**
