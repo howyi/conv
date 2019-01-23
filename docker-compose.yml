@@ -1,11 +1,11 @@
 version: '3'
 services:
   php-71:
-    build: ./
+    build: ./docker
     working_dir: /usr/src/app
     environment:
       DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
-    command: ./wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
+    command: ./docker/wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
     depends_on:
