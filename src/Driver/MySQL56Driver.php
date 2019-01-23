@@ -3,6 +3,7 @@
 namespace Howyi\Conv\Driver;
 
 use Howyi\Conv\Structure\Attribute;
+use Howyi\Conv\Structure\ColumnStructure\ColumnStructureInterface;
 use Howyi\Conv\Structure\ColumnStructure\MySQL56ColumnStructure;
 use Howyi\Conv\Structure\IndexStructure;
 use Howyi\Conv\Structure\PartitionLongStructure;
@@ -131,37 +132,41 @@ EOT;
 
         $columnStructureList = [];
 
-        foreach ($rawColumnList as $column) {
-            $attribute = [];
-            if ((bool) preg_match('/auto_increment/', $column['EXTRA'])) {
-                $attribute[] = Attribute::AUTO_INCREMENT;
-            }
-            if ('YES' === $column['IS_NULLABLE']) {
-                $attribute[] = Attribute::NULLABLE;
-            }
-            if ((bool) preg_match('/unsigned/', $column['COLUMN_TYPE'])) {
-                $attribute[] = Attribute::UNSIGNED;
-            }
-            if ((bool) preg_match('/STORED/', $column['EXTRA'])) {
-                $attribute[] = Attribute::STORED;
-            }
-
-            $collationName = $column['COLLATION_NAME'];
-            $generationExpression = empty($column['GENERATION_EXPRESSION']) ? null : $column['GENERATION_EXPRESSION'];
-
-            $columnStructureList[] = new MySQL56ColumnStructure(
-                $column['COLUMN_NAME'],
-                str_replace(' unsigned', '', $column['COLUMN_TYPE']),
-                $column['COLUMN_DEFAULT'],
-                $column['COLUMN_COMMENT'],
-                $attribute,
-                $collationName,
-                $generationExpression,
-                []
-            );
+        foreach ($rawColumnList as $rawColumn) {
+            $columnStructureList[] = $this->createColumnStructure($rawColumn);
         }
 
         return $columnStructureList;
+    }
+
+
+    protected function createColumnStructure(array $rawColumn): ColumnStructureInterface
+    {
+        $attribute = [];
+        if ((bool) preg_match('/auto_increment/', $rawColumn['EXTRA'])) {
+            $attribute[] = Attribute::AUTO_INCREMENT;
+        }
+        if ('YES' === $rawColumn['IS_NULLABLE']) {
+            $attribute[] = Attribute::NULLABLE;
+        }
+        if ((bool) preg_match('/unsigned/', $rawColumn['COLUMN_TYPE'])) {
+            $attribute[] = Attribute::UNSIGNED;
+        }
+        if ((bool) preg_match('/STORED/', $rawColumn['EXTRA'])) {
+            $attribute[] = Attribute::STORED;
+        }
+
+        $collationName = $rawColumn['COLLATION_NAME'];
+
+        return new MySQL56ColumnStructure(
+            $rawColumn['COLUMN_NAME'],
+            str_replace(' unsigned', '', $rawColumn['COLUMN_TYPE']),
+            $rawColumn['COLUMN_DEFAULT'],
+            $rawColumn['COLUMN_COMMENT'],
+            $attribute,
+            $collationName,
+            []
+        );
     }
 
     protected function createIndexStructureList(string $dbName, string $tableName): array

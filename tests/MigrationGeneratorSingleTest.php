@@ -27,6 +27,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
      * @param string $afterDir
      * @param string $upPath
      * @param string $downPath
+     * @param \PDO   $pdo
      */
     public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath, $pdo)
     {
