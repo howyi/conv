@@ -31,12 +31,12 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
      */
     public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath, $pdo)
     {
-            $mysqlVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
-            preg_match("/^[0-9\.]+/", $mysqlVersion, $match);
-            $mysqlVersion = $match[0];
+        $mysqlVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        preg_match("/^[0-9\.]+/", $mysqlVersion, $match);
+        $mysqlVersion = $match[0];
 
-            $exploded = explode(':', $name);
-            $target = $exploded[1] ?? null;
+        $exploded = explode(':', $name);
+        $target = $exploded[1] ?? null;
 
         if (!is_null($target)) {
             if (!Semver::satisfies($mysqlVersion, $target)) {
@@ -69,36 +69,36 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
             $before = new DatabaseStructure([]);
         }
 
-            $migration = MigrationGenerator::generate(
-                $before,
-                $after,
-                new DropOnlySilentOperator()
-            )->getMigrationList()[0];
+        $migration = MigrationGenerator::generate(
+            $before,
+            $after,
+            new DropOnlySilentOperator()
+        )->getMigrationList()[0];
 
-            $expectedUp = file_get_contents($upPath);
-            $this->assertSame($expectedUp, $migration->getUp());
-            $expectedDown = file_get_contents($downPath);
-            $this->assertSame($expectedDown, $migration->getDown());
+        $expectedUp = file_get_contents($upPath);
+        $this->assertSame($expectedUp, $migration->getUp());
+        $expectedDown = file_get_contents($downPath);
+        $this->assertSame($expectedDown, $migration->getDown());
 
-            $pdo->exec('USE ' . DatabaseStructureFactory::TMP_DBNAME);
+        $pdo->exec('USE ' . DatabaseStructureFactory::TMP_DBNAME);
 
-            $pdo->exec(stripslashes($migration->getUp()));
-            $this->assertEquals(
-                $after,
-                DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
-            );
+        $pdo->exec(stripslashes($migration->getUp()));
+        $this->assertEquals(
+            $after,
+            DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
+        );
 
-            $pdo->exec(stripslashes($migration->getDown()));
-            $this->assertEquals(
-                $before,
-                DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
-            );
+        $pdo->exec(stripslashes($migration->getDown()));
+        $this->assertEquals(
+            $before,
+            DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
+        );
 
-            $pdo->exec(stripslashes($migration->getUp()));
-            $this->assertEquals(
-                $after,
-                DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
-            );
+        $pdo->exec(stripslashes($migration->getUp()));
+        $this->assertEquals(
+            $after,
+            DatabaseStructureFactory::fromPDO($pdo, DatabaseStructureFactory::TMP_DBNAME)
+        );
     }
 
     public function generateProvider()
