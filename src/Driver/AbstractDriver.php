@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Driver;
+namespace Howyi\Conv\Driver;
 
 abstract class AbstractDriver implements DriverInterface
 {

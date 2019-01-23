@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Structure\ColumnStructure;
+namespace Howyi\Conv\Structure\ColumnStructure;
 
-use Laminaria\Conv\Structure\Attribute;
-use Laminaria\Conv\Util\SchemaKey;
+use Howyi\Conv\Structure\Attribute;
+use Howyi\Conv\Util\SchemaKey;
 
 class MySQL56ColumnStructure implements ColumnStructureInterface
 {

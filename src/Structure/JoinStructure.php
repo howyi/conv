@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv\Structure;
+namespace Howyi\Conv\Structure;
 
-use Laminaria\Conv\Util\SchemaKey;
+use Howyi\Conv\Util\SchemaKey;
 
 class JoinStructure
 {

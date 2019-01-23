@@ -1,11 +1,11 @@
 <?php
 
-namespace Laminaria\Conv\Generator;
+namespace Howyi\Conv\Generator;
 
-use Laminaria\Conv\Migration\Line\IndexAddMigrationLine;
-use Laminaria\Conv\Migration\Line\IndexDropMigrationLine;
-use Laminaria\Conv\Migration\Line\IndexAllMigrationLine;
-use Laminaria\Conv\Structure\IndexStructure;
+use Howyi\Conv\Migration\Line\IndexAddMigrationLine;
+use Howyi\Conv\Migration\Line\IndexDropMigrationLine;
+use Howyi\Conv\Migration\Line\IndexAllMigrationLine;
+use Howyi\Conv\Structure\IndexStructure;
 
 class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 {

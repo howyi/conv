@@ -1,10 +1,10 @@
 <?php
 
-namespace Laminaria\Conv\Command;
+namespace Howyi\Conv\Command;
 
-use Laminaria\Conv\Migration\Database\Migration;
+use Howyi\Conv\Migration\Database\Migration;
 use Symfony\Component\Console\Command\Command;
-use Laminaria\Conv\Operator\ConsoleOperator;
+use Howyi\Conv\Operator\ConsoleOperator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

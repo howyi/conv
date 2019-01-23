@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Structure;
+namespace Howyi\Conv\Structure;
 
 class PartitionShortStructure implements PartitionStructureInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Line;
+namespace Howyi\Conv\Migration\Line;
 
-use Laminaria\Conv\Structure\ModifiedColumnStructureSet;
+use Howyi\Conv\Structure\ModifiedColumnStructureSet;
 
 /**
  * ALTER TABLE ~ MODIFY ~

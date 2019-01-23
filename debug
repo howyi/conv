@@ -12,7 +12,7 @@ $dir = current(current($composerData->autoload));
 
 $app = new Application();
 
-$app->add(new \Laminaria\Conv\DebugCommand\CheckAlterCommand());
-$app->add(new \Laminaria\Conv\DebugCommand\ReflectCommand());
-$app->add(new \Laminaria\Conv\DebugCommand\SetupCommand());
+$app->add(new \Howyi\Conv\DebugCommand\CheckAlterCommand());
+$app->add(new \Howyi\Conv\DebugCommand\ReflectCommand());
+$app->add(new \Howyi\Conv\DebugCommand\SetupCommand());
 $app->run();

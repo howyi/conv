@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
-use Laminaria\Conv\Operator\OperatorInterface;
+use Howyi\Conv\Operator\OperatorInterface;
 
 class CreateQueryReflector
 {

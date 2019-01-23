@@ -1,15 +1,15 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
-use Laminaria\Conv\Migration\Table\TableAlterMigration;
-use Laminaria\Conv\Migration\Table\TableCreateMigration;
-use Laminaria\Conv\Migration\Table\TableDropMigration;
-use Laminaria\Conv\Migration\Table\ViewAlterMigration;
-use Laminaria\Conv\Migration\Table\ViewCreateMigration;
-use Laminaria\Conv\Migration\Table\ViewDropMigration;
-use Laminaria\Conv\Migration\Table\ViewRenameMigration;
-use Laminaria\Conv\Operator\ConsoleOperator;
+use Howyi\Conv\Migration\Table\TableAlterMigration;
+use Howyi\Conv\Migration\Table\TableCreateMigration;
+use Howyi\Conv\Migration\Table\TableDropMigration;
+use Howyi\Conv\Migration\Table\ViewAlterMigration;
+use Howyi\Conv\Migration\Table\ViewCreateMigration;
+use Howyi\Conv\Migration\Table\ViewDropMigration;
+use Howyi\Conv\Migration\Table\ViewRenameMigration;
+use Howyi\Conv\Operator\ConsoleOperator;
 use Prophecy\Argument as arg;
 
 class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase

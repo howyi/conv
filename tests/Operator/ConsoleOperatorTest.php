@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Operator;
+namespace Howyi\Conv\Operator;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

@@ -1,10 +1,10 @@
 <?php
 
-namespace Laminaria\Conv\DebugCommand;
+namespace Howyi\Conv\DebugCommand;
 
-use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\MigrationGenerator;
-use Laminaria\Conv\Operator\DropOnlySilentOperator;
+use Howyi\Conv\DatabaseStructureFactory;
+use Howyi\Conv\MigrationGenerator;
+use Howyi\Conv\Operator\DropOnlySilentOperator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

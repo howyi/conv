@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Driver;
+namespace Howyi\Conv\Driver;
 
-use Laminaria\Conv\Structure\TableStructure;
-use Laminaria\Conv\Structure\ViewStructure;
+use Howyi\Conv\Structure\TableStructure;
+use Howyi\Conv\Structure\ViewStructure;
 
 interface DriverInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Table;
+namespace Howyi\Conv\Migration\Table;
 
-use Laminaria\Conv\Migration\Line\PartitionMigration;
-use Laminaria\Conv\MigrationType;
+use Howyi\Conv\Migration\Line\PartitionMigration;
+use Howyi\Conv\MigrationType;
 
 /**
  * ALTER TABLE

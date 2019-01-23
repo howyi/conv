@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Line;
+namespace Howyi\Conv\Migration\Line;
 
 /**
  * ALTER TABLE ~ KEY ~

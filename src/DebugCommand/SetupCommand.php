@@ -1,16 +1,16 @@
 <?php
 
-namespace Laminaria\Conv\DebugCommand;
+namespace Howyi\Conv\DebugCommand;
 
-use Laminaria\Conv\CreateQueryReflector;
-use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\Migration\Table\TableCreateMigration;
-use Laminaria\Conv\Migration\Table\ViewCreateMigration;
+use Howyi\Conv\CreateQueryReflector;
+use Howyi\Conv\DatabaseStructureFactory;
+use Howyi\Conv\Migration\Table\TableCreateMigration;
+use Howyi\Conv\Migration\Table\ViewCreateMigration;
 use Symfony\Component\Console\Command\Command;
-use Laminaria\Conv\MigrationGenerator;
+use Howyi\Conv\MigrationGenerator;
 use Symfony\Component\Console\Input\InputInterface;
-use Laminaria\Conv\Structure\TableStructureType;
-use Laminaria\Conv\Structure\DatabaseStructure;
+use Howyi\Conv\Structure\TableStructureType;
+use Howyi\Conv\Structure\DatabaseStructure;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetupCommand extends AbstractCommand

@@ -1,17 +1,17 @@
 <?php
 
-namespace Laminaria\Conv\Driver;
+namespace Howyi\Conv\Driver;
 
-use Laminaria\Conv\Structure\Attribute;
-use Laminaria\Conv\Structure\ColumnStructure\MySQL56ColumnStructure;
-use Laminaria\Conv\Structure\IndexStructure;
-use Laminaria\Conv\Structure\PartitionLongStructure;
-use Laminaria\Conv\Structure\PartitionPartStructure;
-use Laminaria\Conv\Structure\PartitionShortStructure;
-use Laminaria\Conv\Structure\PartitionStructureInterface;
-use Laminaria\Conv\Structure\TableStructure;
-use Laminaria\Conv\Structure\ViewStructure;
-use Laminaria\Conv\Util\PartitionType;
+use Howyi\Conv\Structure\Attribute;
+use Howyi\Conv\Structure\ColumnStructure\MySQL56ColumnStructure;
+use Howyi\Conv\Structure\IndexStructure;
+use Howyi\Conv\Structure\PartitionLongStructure;
+use Howyi\Conv\Structure\PartitionPartStructure;
+use Howyi\Conv\Structure\PartitionShortStructure;
+use Howyi\Conv\Structure\PartitionStructureInterface;
+use Howyi\Conv\Structure\TableStructure;
+use Howyi\Conv\Structure\ViewStructure;
+use Howyi\Conv\Util\PartitionType;
 
 class MySQL56Driver extends AbstractDriver implements MySQLDriverInterface
 {
