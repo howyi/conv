@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Command;
+namespace Howyi\Conv\Command;
 
-use Laminaria\Conv\DatabaseStructureFactory;
-use Laminaria\Conv\MigrationGenerator;
+use Howyi\Conv\DatabaseStructureFactory;
+use Howyi\Conv\MigrationGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

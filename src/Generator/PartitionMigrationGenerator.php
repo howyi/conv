@@ -1,11 +1,11 @@
 <?php
 
-namespace Laminaria\Conv\Generator;
+namespace Howyi\Conv\Generator;
 
-use Laminaria\Conv\Migration\Line\PartitionMigration;
-use Laminaria\Conv\Migration\Line\PartitionRemoveMigration;
-use Laminaria\Conv\Migration\Line\PartitionResetMigration;
-use Laminaria\Conv\Structure\PartitionStructureInterface;
+use Howyi\Conv\Migration\Line\PartitionMigration;
+use Howyi\Conv\Migration\Line\PartitionRemoveMigration;
+use Howyi\Conv\Migration\Line\PartitionResetMigration;
+use Howyi\Conv\Structure\PartitionStructureInterface;
 
 class PartitionMigrationGenerator
 {

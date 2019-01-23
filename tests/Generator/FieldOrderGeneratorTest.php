@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv\Generator;
+namespace Howyi\Conv\Generator;
 
-use Laminaria\Conv\Util\FieldOrder;
+use Howyi\Conv\Util\FieldOrder;
 
 class FieldOrderGeneratorTest extends \PHPUnit\Framework\TestCase
 {

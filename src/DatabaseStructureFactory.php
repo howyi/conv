@@ -1,12 +1,12 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
-use Laminaria\Conv\Driver\DriverAllocator;
-use Laminaria\Conv\Factory\TableStructureFactory;
-use Laminaria\Conv\Factory\ViewStructureFactory;
-use Laminaria\Conv\Operator\OperatorInterface;
-use Laminaria\Conv\Structure\DatabaseStructure;
+use Howyi\Conv\Driver\DriverAllocator;
+use Howyi\Conv\Factory\TableStructureFactory;
+use Howyi\Conv\Factory\ViewStructureFactory;
+use Howyi\Conv\Operator\OperatorInterface;
+use Howyi\Conv\Structure\DatabaseStructure;
 
 class DatabaseStructureFactory
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Table;
+namespace Howyi\Conv\Migration\Table;
 
-use Laminaria\Conv\MigrationType;
-use Laminaria\Conv\Structure\ViewStructure;
+use Howyi\Conv\MigrationType;
+use Howyi\Conv\Structure\ViewStructure;
 
 /**
  * RENAME TABLE ~ TO ~

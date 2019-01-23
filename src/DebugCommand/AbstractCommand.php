@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\DebugCommand;
+namespace Howyi\Conv\DebugCommand;
 
 use Symfony\Component\Console\Command\Command;
-use Laminaria\Conv\Operator\ConsoleOperator;
+use Howyi\Conv\Operator\ConsoleOperator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

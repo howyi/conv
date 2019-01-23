@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Driver;
+namespace Howyi\Conv\Driver;
 
 interface MySQLDriverInterface extends DriverInterface
 {

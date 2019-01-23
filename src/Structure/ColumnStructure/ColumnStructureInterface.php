@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Structure\ColumnStructure;
+namespace Howyi\Conv\Structure\ColumnStructure;
 
 interface ColumnStructureInterface
 {

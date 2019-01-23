@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Table;
+namespace Howyi\Conv\Migration\Table;
 
 abstract class AbstractTableMigration implements TableMigrationInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Database;
+namespace Howyi\Conv\Migration\Database;
 
-use Laminaria\Conv\Migration\Table\TableMigrationInterface;
-use Laminaria\Conv\Migration\Table\ViewAlterMigration;
+use Howyi\Conv\Migration\Table\TableMigrationInterface;
+use Howyi\Conv\Migration\Table\ViewAlterMigration;
 
 class Migration
 {

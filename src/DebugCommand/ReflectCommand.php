@@ -1,12 +1,12 @@
 <?php
 
-namespace Laminaria\Conv\DebugCommand;
+namespace Howyi\Conv\DebugCommand;
 
-use Laminaria\Conv\CreateQueryReflector;
-use Laminaria\Conv\DatabaseStructureFactory;
+use Howyi\Conv\CreateQueryReflector;
+use Howyi\Conv\DatabaseStructureFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Laminaria\Conv\Operator\DropOnlySilentOperator;
+use Howyi\Conv\Operator\DropOnlySilentOperator;
 
 class ReflectCommand extends AbstractCommand
 {

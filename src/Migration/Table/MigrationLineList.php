@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv\Migration\Table;
+namespace Howyi\Conv\Migration\Table;
 
-use Laminaria\Conv\Migration\Line\MigrationLineInterface;
+use Howyi\Conv\Migration\Line\MigrationLineInterface;
 
 class MigrationLineList
 {

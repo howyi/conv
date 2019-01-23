@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Operator;
+namespace Howyi\Conv\Operator;
 
 class DropOnlyConsoleOperator extends ConsoleOperator
 {

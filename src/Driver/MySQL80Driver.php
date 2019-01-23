@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv\Driver;
+namespace Howyi\Conv\Driver;
 
 class MySQL80Driver extends MySQL57Driver
 {

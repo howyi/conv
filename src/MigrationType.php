@@ -1,6 +1,6 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
 class MigrationType
 {

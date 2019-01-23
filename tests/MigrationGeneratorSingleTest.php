@@ -1,10 +1,10 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
 use Composer\Semver\Semver;
-use Laminaria\Conv\Operator\DropOnlySilentOperator;
-use Laminaria\Conv\Structure\DatabaseStructure;
+use Howyi\Conv\Operator\DropOnlySilentOperator;
+use Howyi\Conv\Structure\DatabaseStructure;
 
 class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
 {

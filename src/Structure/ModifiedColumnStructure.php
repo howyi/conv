@@ -1,8 +1,8 @@
 <?php
 
-namespace Laminaria\Conv\Structure;
+namespace Howyi\Conv\Structure;
 
-use Laminaria\Conv\Structure\ColumnStructure\ColumnStructureInterface;
+use Howyi\Conv\Structure\ColumnStructure\ColumnStructureInterface;
 
 class ModifiedColumnStructure
 {

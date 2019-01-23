@@ -41,12 +41,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Laminaria\\Conv\\": "src/"
+            "Howyi\\Conv\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Laminaria\\Conv\\": "tests/"
+            "Howyi\\Conv\\": "tests/"
         }
     },
     "require-dev": {

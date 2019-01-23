@@ -1,20 +1,20 @@
 <?php
 
-namespace Laminaria\Conv;
+namespace Howyi\Conv;
 
-use Laminaria\Conv\Generator\TableAlterMigrationGenerator;
-use Laminaria\Conv\Generator\ViewAlterMigrationGenerator;
-use Laminaria\Conv\Migration\Database\Migration;
-use Laminaria\Conv\Migration\Table\TableAlterMigration;
-use Laminaria\Conv\Migration\Table\TableCreateMigration;
-use Laminaria\Conv\Migration\Table\ViewCreateMigration;
-use Laminaria\Conv\Migration\Table\TableDropMigration;
-use Laminaria\Conv\Migration\Table\ViewDropMigration;
-use Laminaria\Conv\Migration\Table\ViewAlterMigration;
-use Laminaria\Conv\Migration\Table\ViewRenameMigration;
-use Laminaria\Conv\Structure\DatabaseStructure;
-use Laminaria\Conv\Operator\OperatorInterface;
-use Laminaria\Conv\Structure\TableStructureType;
+use Howyi\Conv\Generator\TableAlterMigrationGenerator;
+use Howyi\Conv\Generator\ViewAlterMigrationGenerator;
+use Howyi\Conv\Migration\Database\Migration;
+use Howyi\Conv\Migration\Table\TableAlterMigration;
+use Howyi\Conv\Migration\Table\TableCreateMigration;
+use Howyi\Conv\Migration\Table\ViewCreateMigration;
+use Howyi\Conv\Migration\Table\TableDropMigration;
+use Howyi\Conv\Migration\Table\ViewDropMigration;
+use Howyi\Conv\Migration\Table\ViewAlterMigration;
+use Howyi\Conv\Migration\Table\ViewRenameMigration;
+use Howyi\Conv\Structure\DatabaseStructure;
+use Howyi\Conv\Operator\OperatorInterface;
+use Howyi\Conv\Structure\TableStructureType;
 
 class MigrationGenerator
 {
