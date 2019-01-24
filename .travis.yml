@@ -1,17 +1,15 @@
 dist: trusty
 
+language: php
+php:
+- 7.1
+
 before_script:
   - composer install
 
 script:
-  - docker-compose up
-  - docker-compose logs -f php-71
-  - vendor/bin/phpunit --coverage-clover=build/log/clover.xml
-  - composer stan
-  - composer cs
-
-after_success:
-  - travis_retry php vendor/bin/php-coveralls -v
+  - docker-compose up check
+  - docker-compose logs -f check
 
 notifications:
   slack:
