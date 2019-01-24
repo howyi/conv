@@ -17,8 +17,8 @@ services:
     build: ./docker
     working_dir: /usr/src/app
     environment:
-      - TRAVIS
-      - TRAVIS_JOB_ID
+      TRAVIS:
+      TRAVIS_JOB_ID:
       DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
     command: ./docker/wait-for-it.sh -t 0 mysql-80:3306 -- ./docker/ci.sh
     volumes:
