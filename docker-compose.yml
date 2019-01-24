@@ -1,6 +1,6 @@
 version: '3'
 services:
-  php-71:
+  test:
     build: ./docker
     working_dir: /usr/src/app
     environment:
@@ -12,6 +12,19 @@ services:
       - mysql-56
       - mysql-57
       - mysql-80
+
+  check:
+    build: ./docker
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
+    command: ./docker/wait-for-it.sh -t 0 mysql-80:3306 -- ./docker/check.sh
+    volumes:
+    - .:/usr/src/app
+    depends_on:
+    - mysql-56
+    - mysql-57
+    - mysql-80
 
   mysql-56:
     image: mysql:5.6
