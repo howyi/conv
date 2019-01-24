@@ -8,8 +8,8 @@ before_script:
   - composer install
 
 script:
-  - docker-compose up -d check
-  - docker-compose logs -f check
+  - docker-compose up -d travis
+  - docker-compose logs -f travis
 
 notifications:
   slack:
