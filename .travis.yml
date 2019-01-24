@@ -8,8 +8,11 @@ before_script:
   - composer install
 
 script:
-  - docker-compose up check
+  - docker-compose up -d check
   - docker-compose logs -f check
+
+after_success:
+  - travis_retry vendor/bin/php-coveralls -v
 
 notifications:
   slack:
