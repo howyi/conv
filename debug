@@ -12,20 +12,7 @@ $dir = current(current($composerData->autoload));
 
 $app = new Application();
 
-$s = DIRECTORY_SEPARATOR;
-$iterator = new \RecursiveIteratorIterator(
-    new \RecursiveDirectoryIterator("$dir$name{$s}DebugCommand")
-);
-
-foreach ($iterator as $fileinfo) {
-    if ($fileinfo->isFile() and 'php' === strtolower($fileinfo->getExtension())) {
-        $path = $fileinfo->getPathName();
-        $className = str_replace([$dir, '.php', '/'], ['', '', '\\'], $path);
-        $class = (new \ReflectionClass($className));
-        if ($class->isAbstract() or $class->isInterface()) {
-            continue;
-        }
-        $app->add(new $className());
-    }
-}
+$app->add(new \Howyi\Conv\DebugCommand\CheckAlterCommand());
+$app->add(new \Howyi\Conv\DebugCommand\ReflectCommand());
+$app->add(new \Howyi\Conv\DebugCommand\SetupCommand());
 $app->run();
