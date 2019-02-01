@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/howyi/conv.svg?branch=master)](https://travis-ci.org/howyi/conv)
 [![Coverage Status](https://coveralls.io/repos/github/howyi/conv/badge.svg?branch=master#konbu)](https://coveralls.io/github/howyi/conv?branch=master)
+[![Total Downloads](https://poser.pugx.org/howyi/conv/downloads)](https://packagist.org/packages/howyi/conv)
 # conv
 Core package for [howyi/conv-laravel](https://github.com/howyi/conv-laravel)  
 
