@@ -4,14 +4,12 @@ services:
     build: ./docker
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
-    command: ./docker/wait-for-it.sh -t 0 mysql-80:3306 -- vendor/bin/phpunit
+      DB_HOST: maria-103:3306
+    command: ./docker/wait-for-it.sh -t 0 maria-103:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mysql-56
-      - mysql-57
-      - mysql-80
+      - maria-103
 
   travis:
     build: ./docker
@@ -19,14 +17,12 @@ services:
     environment:
       TRAVIS:
       TRAVIS_JOB_ID:
-      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306
-    command: ./docker/wait-for-it.sh -t 0 mysql-80:3306 -- ./docker/ci.sh
+      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306,maria-100:3306,maria-101:3306,maria-102:3306,maria-103:3306
+    command: ./docker/wait-for-it.sh -t 0 maria-103:3306 -- ./docker/ci.sh
     volumes:
     - .:/usr/src/app
     depends_on:
-    - mysql-56
-    - mysql-57
-    - mysql-80
+    - maria-103
 
   mysql-56:
     image: mysql:5.6
@@ -52,3 +48,37 @@ services:
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
      - mysql-57
+
+  maria-100:
+    image: mariadb:10.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+        - mysql-80
+
+  maria-101:
+    image: mariadb:10.1
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+        - maria-100
+
+  maria-102:
+    image: mariadb:10.2
+    command: mysqld --sql_mode=""
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+        - maria-101
+
+  maria-103:
+    image: mariadb:10.3
+    command: mysqld --sql_mode=""
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+        - maria-102

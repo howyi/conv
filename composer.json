@@ -6,7 +6,7 @@
     "authors": [
         {
             "name":  "Hayashi Takuya",
-            "email": "qrbys@outlook.com"
+            "email": "howyi.lq@gmail.com"
         }
     ],
     "scripts": {
@@ -28,7 +28,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/laminaria/conv-test-suite.git",
+            "url": "https://github.com/howyi/conv-test-suite.git",
             "no-api": true
         }
     ],
