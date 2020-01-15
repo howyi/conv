@@ -5,6 +5,7 @@ namespace Howyi\Conv\Driver;
 use Howyi\Conv\Structure\Attribute;
 use Howyi\Conv\Structure\ColumnStructure\ColumnStructureInterface;
 use Howyi\Conv\Structure\ColumnStructure\MySQL57ColumnStructure;
+use Howyi\Conv\Structure\ColumnStructure\MySQLColumnStructureInterface;
 
 class MySQL57Driver extends MySQL56Driver
 {
@@ -27,7 +28,7 @@ class MySQL57Driver extends MySQL56Driver
         $collationName = $rawColumn['COLLATION_NAME'];
         $generationExpression = empty($rawColumn['GENERATION_EXPRESSION']) ? null : $rawColumn['GENERATION_EXPRESSION'];
 
-        return new MySQL57ColumnStructure(
+        return $this->generateColumnStructure(
             $rawColumn['COLUMN_NAME'],
             str_replace(' unsigned', '', $rawColumn['COLUMN_TYPE']),
             $rawColumn['COLUMN_DEFAULT'],
@@ -37,5 +38,14 @@ class MySQL57Driver extends MySQL56Driver
             $generationExpression,
             []
         );
+    }
+
+    /**
+     * @param mixed[] $values
+     * @return MySQLColumnStructureInterface
+     */
+    protected function generateColumnStructure(...$values)
+    {
+        return new MySQL57ColumnStructure(...$values);
     }
 }
