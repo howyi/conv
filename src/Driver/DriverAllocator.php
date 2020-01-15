@@ -6,6 +6,9 @@ use Composer\Semver\Semver;
 
 class DriverAllocator
 {
+    const TYPE_MYSQL = 'mysql';
+    const TYPE_MARIA_DB = 'mariadb';
+
     /**
      * @param \PDO $PDO
      * @return DriverInterface
@@ -13,22 +16,45 @@ class DriverAllocator
     public static function fromPDO(\PDO $PDO): DriverInterface
     {
         $driverName = $PDO->getAttribute(\PDO::ATTR_DRIVER_NAME);
-        $version = $PDO->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        preg_match("/^[0-9\.]+/", $version, $match);
-        $version = $match[0];
+        $rawVersion = $PDO->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        preg_match(
+            "/^[0-9\.]+/",
+            $rawVersion,
+            $match
+        );
 
-        switch (strtolower($driverName)) {
-            case 'mysql':
+        $type = $version = null;
+
+        if ($match[0] === $rawVersion and strtolower($driverName) === 'mysql') {
+            $type = self::TYPE_MYSQL;
+            $version = $match[0];
+        } elseif (strpos($rawVersion, 'MariaDB') !== false) {
+            $type = self::TYPE_MARIA_DB;
+            $split = explode('-', $rawVersion);
+            $version = $split[1];
+        }
+
+        switch ($type) {
+            case self::TYPE_MYSQL:
                 switch (true) {
-                    case Semver::satisfies($version, '8.0.*'):
+                    case Semver::satisfies($version, '>= 8.0.0'):
                         return new MySQL80Driver($PDO);
                     case Semver::satisfies($version, '5.7.*'):
                         return new MySQL57Driver($PDO);
                     case Semver::satisfies($version, '5.6.*'):
                         return new MySQL56Driver($PDO);
                 }
+            case self::TYPE_MARIA_DB:
+                switch (true) {
+                    case Semver::satisfies($version, '>= 10.2.0'):
+                        return new MariaDB102Driver($PDO);
+                    case Semver::satisfies($version, '10.1.*'):
+                        return new MySQL57Driver($PDO);
+                    case Semver::satisfies($version, '10.0.*'):
+                        return new MySQL56Driver($PDO);
+                }
         }
 
-        throw new \RuntimeException('Unsupported driver. conv supported MySQL 5.6.*|5.7.*|8.0.*');
+        throw new \RuntimeException('Unsupported driver. conv supported MySQL 5.6~ and MariaDB 10.0~');
     }
 }
