@@ -24,6 +24,17 @@ services:
     depends_on:
     - maria-103
 
+  testdb:
+    image: mysql:8.0
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    ports:
+      - 33060:3306
+
   mysql-56:
     image: mysql:5.6
     environment:
@@ -37,8 +48,6 @@ services:
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
      - mysql-56
-    ports:
-     - 33060:3306
 
   mysql-80:
     image: mysql:8.0
@@ -50,8 +59,6 @@ services:
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
      - mysql-57
-#    ports:
-#     - 33061:3306
 
   maria-100:
     image: mariadb:10.0
@@ -68,8 +75,6 @@ services:
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
         - maria-100
-#    ports:
-#      - 33062:3306
 
   maria-102:
     image: mariadb:10.2
@@ -78,8 +83,6 @@ services:
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
         - maria-101
-#    ports:
-#      - 33063:3306
 
   maria-103:
     image: mariadb:10.3
