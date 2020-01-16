@@ -53,5 +53,7 @@ class DiffDb2DbCommand extends AbstractConvCommand
         );
 
         $this->displayAlterMigration($alterMigrations, $operator);
+
+        return 0;
     }
 }

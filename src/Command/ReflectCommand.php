@@ -46,5 +46,7 @@ class ReflectCommand extends AbstractConvCommand
             (string) $input->getOption('dir'),
             $this->getOperator($input, $output)
         );
+
+        return 0;
     }
 }

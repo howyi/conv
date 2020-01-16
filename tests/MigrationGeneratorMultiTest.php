@@ -75,7 +75,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
     {
         $values = [
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/000',
+                'vendor/howyi/conv-test-suite/cases/unit/000',
                 [],
                 [
                     TableCreateMigration::class,
@@ -90,14 +90,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/001',
+                'vendor/howyi/conv-test-suite/cases/unit/001',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/002',
+                'vendor/howyi/conv-test-suite/cases/unit/002',
                 [],
                 [
                     TableDropMigration::class,
@@ -105,14 +105,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/003',
+                'vendor/howyi/conv-test-suite/cases/unit/003',
                 [],
                 [
                     ViewAlterMigration::class,
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/004',
+                'vendor/howyi/conv-test-suite/cases/unit/004',
                 [
                     [
                         'message' => 'Table tbl_country is missing. Choose an action.',
@@ -130,7 +130,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/005',
+                'vendor/howyi/conv-test-suite/cases/unit/005',
                 [
                     [
                         'message' => 'View view_user2 is missing. Choose an action.',
@@ -147,7 +147,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/006',
+                'vendor/howyi/conv-test-suite/cases/unit/006',
                 [
                     [
                         'message' => 'Column tbl_music.name is missing. Choose an action.',
@@ -163,14 +163,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/007',
+                'vendor/howyi/conv-test-suite/cases/unit/007',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'vendor/laminaria/conv-test-suite/cases/unit/008',
+                'vendor/howyi/conv-test-suite/cases/unit/008',
                 [],
                 [
                     TableAlterMigration::class,

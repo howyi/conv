@@ -48,5 +48,7 @@ class SetupCommand extends AbstractCommand
          }
 
          $output->writeln('<fg=cyan>setup success</>');
+
+        return 0;
     }
 }

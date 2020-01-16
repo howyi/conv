@@ -31,5 +31,7 @@ class ReflectCommand extends AbstractCommand
             'conv'
         );
         CreateQueryReflector::fromPDO($this->getPDO('conv'), 'conv', 'database', new DropOnlySilentOperator());
+
+        return 0;
     }
 }
