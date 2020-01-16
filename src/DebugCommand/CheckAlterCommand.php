@@ -48,5 +48,7 @@ class CheckAlterCommand extends AbstractCommand
         );
 
         $operator->output(sprintf('<fg=cyan>DBとの差分:%d</>', count($alter->getMigrationList())));
+
+        return 0;
     }
 }
