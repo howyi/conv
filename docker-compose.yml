@@ -43,6 +43,7 @@ services:
 
   mysql-57:
     image: mysql:5.7
+    command: mysqld --general-log=true
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''

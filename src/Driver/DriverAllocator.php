@@ -25,13 +25,13 @@ class DriverAllocator
 
         $type = $version = null;
 
-        if ($match[0] === $rawVersion and strtolower($driverName) === 'mysql') {
-            $type = self::TYPE_MYSQL;
-            $version = $match[0];
-        } elseif (strpos($rawVersion, 'MariaDB') !== false) {
+        if (strpos($rawVersion, 'MariaDB') !== false) {
             $type = self::TYPE_MARIA_DB;
             $split = explode('-', $rawVersion);
             $version = $split[1];
+        } elseif (strtolower($driverName) === 'mysql') {
+            $type = self::TYPE_MYSQL;
+            $version = $match[0];
         }
 
         switch ($type) {
