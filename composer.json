@@ -37,7 +37,7 @@
         "php":             ">=7.1",
         "ext-PDO":         "*",
         "symfony/console": ">=2.0",
-        "composer/semver": "^1.4"
+        "composer/semver": "^1.4 || ^3.0"
     },
     "autoload": {
         "psr-4": {
