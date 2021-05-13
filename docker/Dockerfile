@@ -1,4 +1,4 @@
-FROM php:7.1
+FROM php:7.3
 RUN yes "" | pecl install xdebug && docker-php-ext-enable xdebug
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends git
