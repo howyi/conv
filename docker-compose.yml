@@ -1,17 +1,19 @@
 version: '3'
 services:
   test:
+    platform: linux/x86_64
     build: ./docker
     working_dir: /usr/src/app
     environment:
-      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306,maria-100:3306,maria-101:3306,maria-102:3306,maria-103:3306
+      DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306,maria-100:3306,maria-101:3306,maria-102:3306,maria-103:3306,maria-113:3306
     command: ./docker/wait-for-it.sh -t 0 maria-103:3306 -- vendor/bin/phpunit
     volumes:
       - .:/usr/src/app
     depends_on:
-      - maria-103
+      - maria-113
 
   travis:
+    platform: linux/x86_64
     build: ./docker
     working_dir: /usr/src/app
     environment:
@@ -25,6 +27,7 @@ services:
     - maria-103
 
   testdb:
+    platform: linux/x86_64
     image: mysql:8.0
     command: mysqld --default-authentication-plugin=mysql_native_password
     security_opt:
@@ -36,12 +39,14 @@ services:
       - 33060:3306
 
   mysql-56:
+    platform: linux/x86_64
     image: mysql:5.6
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
 
   mysql-57:
+    platform: linux/x86_64
     image: mysql:5.7
     command: mysqld --general-log=true
     environment:
@@ -51,6 +56,7 @@ services:
      - mysql-56
 
   mysql-80:
+    platform: linux/x86_64
     image: mysql:8.0
     command: mysqld --default-authentication-plugin=mysql_native_password
     security_opt:
@@ -62,6 +68,7 @@ services:
      - mysql-57
 
   maria-100:
+    platform: linux/x86_64
     image: mariadb:10.0
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
@@ -70,6 +77,7 @@ services:
         - mysql-80
 
   maria-101:
+    platform: linux/x86_64
     image: mariadb:10.1
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
@@ -78,6 +86,7 @@ services:
         - maria-100
 
   maria-102:
+    platform: linux/x86_64
     image: mariadb:10.2
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
@@ -86,9 +95,19 @@ services:
         - maria-101
 
   maria-103:
+    platform: linux/x86_64
     image: mariadb:10.3
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: ''
     depends_on:
         - maria-102
+
+  maria-113:
+    platform: linux/x86_64
+    image: mariadb:11.3
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ''
+    depends_on:
+        - maria-103

@@ -7,7 +7,7 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
-    <testsuite>
+    <testsuite name="testsuite">
         <directory suffix="Test.php">./tests</directory>
     </testsuite>
 
@@ -20,7 +20,7 @@
         </whitelist>
     </filter>
 
-    <logging>
-        <log type="coverage-html" target="build/log/"/>
-    </logging>
+<!--    <logging>-->
+<!--        <log type="coverage-html" target="build/log/"/>-->
+<!--    </logging>-->
 </phpunit>
