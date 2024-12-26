@@ -209,15 +209,16 @@ EOT;
     }
 
     /**
-     * @param string $viewName
+     * @param string $dbName
+	 * @param string $viewName
      * @return ViewStructure
      */
-    public function createViewStructure(string $viewName): ViewStructure
+    public function createViewStructure(string $dbName, string $viewName): ViewStructure
     {
         $createQuery = $this->PDO()->query("SHOW CREATE VIEW $viewName")->fetch()['Create View'];
         return new ViewStructure(
             $viewName,
-            "$createQuery;",
+            str_replace("`$dbName`.", '', "$createQuery;"),
             []
         );
     }

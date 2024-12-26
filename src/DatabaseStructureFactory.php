@@ -35,7 +35,7 @@ class DatabaseStructureFactory
                     $table = $driver->createTableStructure($dbName, $tableName);
                     break;
                 case 'VIEW':
-                    $table = $driver->createViewStructure($tableName);
+                    $table = $driver->createViewStructure($dbName, $tableName);
                     break;
                 default:
                     continue 2;
