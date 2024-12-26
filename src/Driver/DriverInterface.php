@@ -15,8 +15,9 @@ interface DriverInterface
     public function createTableStructure(string $dbName, string $tableName): TableStructure;
 
     /**
+	 * @param string $dbName
      * @param string $viewName
      * @return ViewStructure
      */
-    public function createViewStructure(string $viewName): ViewStructure;
+    public function createViewStructure(string $dbName, string $viewName): ViewStructure;
 }
