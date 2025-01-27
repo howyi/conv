@@ -5,6 +5,8 @@ namespace Howyi\Conv\Driver;
 use Howyi\Conv\Structure\ColumnStructure\ColumnStructureInterface;
 use Howyi\Conv\Structure\ColumnStructure\TiDBTempColumnStructure;
 use Howyi\Conv\Structure\ColumnStructure\MySQLColumnStructureInterface;
+use Howyi\Conv\Structure\TableStructure;
+use Howyi\Conv\Structure\Attribute;
 
 class TiDBTempDriver extends MySQL80Driver
 {
