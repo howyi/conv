@@ -21,6 +21,7 @@ class TiDBTempColumnStructure implements MySQLColumnStructureInterface
      * @param string|null $collationName
      * @param string|null $generationExpression
      * @param array       $properties
+     * @param array       $auto_random
      */
     public function __construct(
         string $field,

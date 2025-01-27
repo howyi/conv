@@ -57,7 +57,7 @@ EOT;
             $attribute[] = Attribute::STORED;
         }
 
-        if((bool) preg_match('/PK_AUTO_RANDOM/', $rawPkStatus) && $rawColumn['COLUMN_KEY'] == 'PRI') {
+        if ((bool) preg_match('/PK_AUTO_RANDOM/', $rawPkStatus) && $rawColumn['COLUMN_KEY'] == 'PRI') {
             preg_match_all('/[0-9]+/', $rawPkStatus, $bit_range);
             $auto_random = [
               'AUTO_RANDOM',
