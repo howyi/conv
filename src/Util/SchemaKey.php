@@ -13,6 +13,7 @@ class SchemaKey
     const TABLE_DEFAULT_CHARSET = 'default_charset';
     const TABLE_COLLATE         = 'collate';
     const TABLE_PARTITION       = 'partition';
+    const TABLE_AUTO_RANDOM     = 'auto_random';
 
     const TABLE_KEYS = [
         self::TABLE_TYPE,
@@ -24,6 +25,7 @@ class SchemaKey
         self::TABLE_DEFAULT_CHARSET,
         self::TABLE_COLLATE,
         self::TABLE_PARTITION,
+        self::TABLE_AUTO_RANDOM,
     ];
 
     const TABLE_REQUIRE_KEYS = [
@@ -39,6 +41,7 @@ class SchemaKey
         self::TABLE_DEFAULT_CHARSET,
         self::TABLE_COLLATE,
         self::TABLE_PARTITION,
+        self::TABLE_AUTO_RANDOM,
     ];
 
     const COLUMN_TYPE      = 'type';
