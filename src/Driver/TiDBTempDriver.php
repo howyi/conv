@@ -13,8 +13,6 @@ class TiDBTempDriver extends MySQL80Driver
     protected function createColumnStructureList(string $dbName, string $tableName): array
     {
         $attribute = [];
-        if ((bool) preg_match('/auto_random/', $rawColumn['EXTRA'])) {
-            $attribute[] = Attribute::AUTO_RANDOM;
         $format = <<<EOT
 SELECT *
 FROM information_schema.COLUMNS
@@ -43,7 +41,7 @@ EOT;
 
 
 
-    protected function createColumnStructure(array $rawColumn, array $rawPkStatus = null): ColumnStructureInterface
+    protected function createColumnStructure(array $rawColumn, ?string $rawPkStatus = null): ColumnStructureInterface
     {
         $attribute = [];
         $auto_random = null;
@@ -88,8 +86,8 @@ EOT;
      * @param mixed[] 
      * @return MySQLColumnStructureInterface
      */
-    protected function generateColumnStructure(...)
+    protected function generateColumnStructure(...$values)
     {
-        return new TiDBTempColumnStructure(...);
+        return new TiDBTempColumnStructure(...$values);
     }
 }
