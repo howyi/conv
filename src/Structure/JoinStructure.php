@@ -6,9 +6,6 @@ use Howyi\Conv\Util\SchemaKey;
 
 class JoinStructure
 {
-    private $joinArray;
-    private $aliasList;
-
     const MYSQL_OPERATOR = [
       '=',
       '<=>',
@@ -24,12 +21,8 @@ class JoinStructure
      * @param array $joinArray
      * @param array $aliasList
      */
-    public function __construct(
-        array $joinArray,
-        array $aliasList
-    ) {
-        $this->joinArray = $joinArray;
-        $this->aliasList = $aliasList;
+    public function __construct(private array $joinArray, private readonly array $aliasList)
+    {
     }
 
     /**
@@ -90,7 +83,7 @@ class JoinStructure
             foreach ($match as $part) {
                 $originPart = ltrim(rtrim($part, ')'), '(');
                 $part = $this->gravePartDecorator($originPart);
-                $text = preg_replace("/$originPart/", $part, $text, 1);
+                $text = preg_replace("/$originPart/", $part, (string) $text, 1);
             }
             return $text;
         }
@@ -112,7 +105,7 @@ class JoinStructure
             }
             foreach (explode('.', trim($pieces)) as $piece) {
                 $insert = sprintf($sep, $id);
-                $text = preg_replace("/$piece/", $insert, $text, 1);
+                $text = preg_replace("/$piece/", $insert, (string) $text, 1);
                 $replace[] = $insert;
                 $replaced[] =  "`$piece`";
                 $id++;

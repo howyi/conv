@@ -1,7 +1,7 @@
 <?php
 set_time_limit(0);
 
-require dirname(__FILE__) . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 foreach (\Howyi\Conv\TestUtility::getPdoArray() as $pdo) {
     $pdo->exec('DROP DATABASE IF EXISTS conv_test');

@@ -143,16 +143,16 @@ EOT;
     protected function createColumnStructure(array $rawColumn): ColumnStructureInterface
     {
         $attribute = [];
-        if ((bool) preg_match('/auto_increment/', $rawColumn['EXTRA'])) {
+        if ((bool) preg_match('/auto_increment/', (string) $rawColumn['EXTRA'])) {
             $attribute[] = Attribute::AUTO_INCREMENT;
         }
         if ('YES' === $rawColumn['IS_NULLABLE']) {
             $attribute[] = Attribute::NULLABLE;
         }
-        if ((bool) preg_match('/unsigned/', $rawColumn['COLUMN_TYPE'])) {
+        if ((bool) preg_match('/unsigned/', (string) $rawColumn['COLUMN_TYPE'])) {
             $attribute[] = Attribute::UNSIGNED;
         }
-        if ((bool) preg_match('/STORED/', $rawColumn['EXTRA'])) {
+        if ((bool) preg_match('/STORED/', (string) $rawColumn['EXTRA'])) {
             $attribute[] = Attribute::STORED;
         }
 
@@ -200,7 +200,7 @@ EOT;
     protected function getDefaultCharset(string $dbName, string $tableName): string
     {
         $createQuery = $this->PDO()->query("SHOW CREATE TABLE $tableName")->fetch()[1];
-        $defaultCharsetSearch = mb_strstr($createQuery, 'DEFAULT CHARSET=');
+        $defaultCharsetSearch = mb_strstr((string) $createQuery, 'DEFAULT CHARSET=');
         if (false !== $defaultCharsetSearch) {
             $defaultCharsetSearch = str_replace('DEFAULT CHARSET=', '', $defaultCharsetSearch);
             return explode(' ', $defaultCharsetSearch)[0];

@@ -6,23 +6,13 @@ use Howyi\Conv\Util\SchemaKey;
 
 class ViewStructure implements TableStructureInterface
 {
-    private $viewName;
-    private $createQuery;
-    private $properties;
-
     /**
      * @param string $viewName
      * @param string $createQuery
      * @param array  $properties
      */
-    public function __construct(
-        string $viewName,
-        string $createQuery,
-        array $properties
-    ) {
-        $this->viewName = $viewName;
-        $this->createQuery = $createQuery;
-        $this->properties = $properties;
+    public function __construct(private readonly string $viewName, private readonly string $createQuery, private readonly array $properties)
+    {
     }
 
     /**

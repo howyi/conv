@@ -1,0 +1,167 @@
+name: "Continuous Integration"
+
+on:
+  push:
+
+concurrency:
+  group: ci-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  DB_ROOT_NAME: root
+  DB_ROOT_PASS: root
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        php-versions:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+          - "8.4"
+          #- "8.5"
+        prefer:
+          - lowest
+          - highest
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    services:
+      mysql57:
+        image: mirror.gcr.io/mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: nori57
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping -h localhost" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql80:
+        image: mirror.gcr.io/mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: nori80
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping -h localhost" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql84:
+        image: mirror.gcr.io/mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: nori84
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping -h localhost" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+      mariadb10:
+        image: mirror.gcr.io/mariadb:10
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: mariadb10
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+      mariadb11:
+        image: mirror.gcr.io/mariadb:11
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: mariadb11
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+      mariadb12:
+        image: mirror.gcr.io/mariadb:12
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: mariadb12
+          MYSQL_USER: nori
+          MYSQL_PASSWORD: nori
+        ports:
+          - 3306/tcp
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-start-period=10s --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@ec406be512d7077f68eed36e63f4d91bc006edc4 # v2.35.4
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mysqli, pdo_mysql, xsl, opcache, zip
+          tools: composer
+          coverage: xdebug
+          ini-values: opcache.enable_cli=1, opcache.jit_buffer_size=0
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ matrix.prefer }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ matrix.prefer }}-
+
+      - name: Install dependencies
+        run: composer install --no-progress --audit
+
+      - name: Update dependencies to lowest
+        if: ${{ matrix.prefer == 'lowest' }}
+        run: composer update --no-progress --prefer-stable
+        env:
+          COMPOSER_PREFER_LOWEST: 1
+
+      - name: Run composer validate
+        run: composer validate --strict
+
+      - name: Run PHP CS Fixer
+        run: composer lint
+
+      - name: Run PHPUnit 10
+        if: ${{ matrix.php-versions == '8.1' || matrix.prefer == 'lowest' }}
+        run: composer test -- --configuration=phpunit10.xml --coverage-text
+        env:
+          XDEBUG_MODE: coverage
+          MYSQL57_DB_PORT: ${{ job.services.mysql57.ports['3306'] }}
+          MYSQL80_DB_PORT: ${{ job.services.mysql80.ports['3306'] }}
+          MYSQL84_DB_PORT: ${{ job.services.mysql84.ports['3306'] }}
+          MARIADB10_DB_PORT: ${{ job.services.mariadb10.ports['3306'] }}
+          MARIADB11_DB_PORT: ${{ job.services.mariadb11.ports['3306'] }}
+          MARIADB12_DB_PORT: ${{ job.services.mariadb12.ports['3306'] }}
+
+      - name: Run PHPUnit 11
+        if: ${{ matrix.php-versions == '8.2' && matrix.prefer == 'highest' }}
+        run: composer test -- --configuration=phpunit11.xml --coverage-text
+        env:
+          XDEBUG_MODE: coverage
+          MYSQL57_DB_PORT: ${{ job.services.mysql57.ports['3306'] }}
+          MYSQL80_DB_PORT: ${{ job.services.mysql80.ports['3306'] }}
+          MYSQL84_DB_PORT: ${{ job.services.mysql84.ports['3306'] }}
+          MARIADB10_DB_PORT: ${{ job.services.mariadb10.ports['3306'] }}
+          MARIADB11_DB_PORT: ${{ job.services.mariadb11.ports['3306'] }}
+          MARIADB12_DB_PORT: ${{ job.services.mariadb12.ports['3306'] }}
+
+      - name: Run PHPUnit 12
+        if: ${{ matrix.php-versions >= '8.3' && matrix.prefer == 'highest' }}
+        run: composer test -- --configuration=phpunit12.xml --coverage-text
+        env:
+          XDEBUG_MODE: coverage
+          MYSQL57_DB_PORT: ${{ job.services.mysql57.ports['3306'] }}
+          MYSQL80_DB_PORT: ${{ job.services.mysql80.ports['3306'] }}
+          MYSQL84_DB_PORT: ${{ job.services.mysql84.ports['3306'] }}
+          MARIADB10_DB_PORT: ${{ job.services.mariadb10.ports['3306'] }}
+          MARIADB11_DB_PORT: ${{ job.services.mariadb11.ports['3306'] }}
+          MARIADB12_DB_PORT: ${{ job.services.mariadb12.ports['3306'] }}

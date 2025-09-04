@@ -16,22 +16,22 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
 {
     private $prophet;
 
-    protected function setup()
+    protected function setup(): void
     {
         $this->prophet = new \Prophecy\Prophet();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
     }
 
     /**
-     * @dataProvider generateProvider
      * @param string $dir
      * @param string $calls
      * @param string $expected
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('generateProvider')]
     public function testGenerate($dir, $calls, $expected, $pdo)
     {
             $operator = $this->prophet->prophesize(ConsoleOperator::class);
@@ -71,7 +71,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         $values = [
             [

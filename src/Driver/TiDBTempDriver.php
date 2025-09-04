@@ -48,15 +48,15 @@ EOT;
         if ('YES' === $rawColumn['IS_NULLABLE']) {
             $attribute[] = Attribute::NULLABLE;
         }
-        if ((bool) preg_match('/unsigned/', $rawColumn['COLUMN_TYPE'])) {
+        if ((bool) preg_match('/unsigned/', (string) $rawColumn['COLUMN_TYPE'])) {
             $attribute[] = Attribute::UNSIGNED;
         }
-        if ((bool) preg_match('/STORED/', $rawColumn['EXTRA'])) {
+        if ((bool) preg_match('/STORED/', (string) $rawColumn['EXTRA'])) {
             $attribute[] = Attribute::STORED;
         }
 
-        if ((bool) preg_match('/PK_AUTO_RANDOM/', $rawPkStatus) && $rawColumn['COLUMN_KEY'] == 'PRI') {
-            preg_match_all('/[0-9]+/', $rawPkStatus, $bit_range);
+        if ((bool) preg_match('/PK_AUTO_RANDOM/', (string) $rawPkStatus) && $rawColumn['COLUMN_KEY'] == 'PRI') {
+            preg_match_all('/[0-9]+/', (string) $rawPkStatus, $bit_range);
             $auto_random = [
               'AUTO_RANDOM',
                 $bit_range[0][0],

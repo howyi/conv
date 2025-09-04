@@ -47,7 +47,7 @@ class IndexStructure
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
             } elseif ($this->isBtree === false) {
-                $query[] = strtoupper($this->indexType);
+                $query[] = strtoupper((string) $this->indexType);
             }
             $query[] = 'KEY';
 
@@ -70,7 +70,7 @@ class IndexStructure
             if ($this->isUnique) {
                 $query[] = 'UNIQUE';
             } elseif ($this->isBtree === false) {
-                $query[] = strtoupper($this->indexType);
+                $query[] = strtoupper((string) $this->indexType);
             } else {
                 $query[] = 'INDEX';
             }
@@ -109,7 +109,7 @@ class IndexStructure
     {
         $list = [];
         foreach ($this->columnNameList as $name) {
-            preg_match('/\(.+?\)/', $name, $match);
+            preg_match('/\(.+?\)/', (string) $name, $match);
             if (!empty($match)) {
                 $subPart = $match[0];
                 $actualName = str_replace($subPart, '', $name);

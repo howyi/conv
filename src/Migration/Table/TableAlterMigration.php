@@ -11,7 +11,6 @@ use Howyi\Conv\MigrationType;
 class TableAlterMigration extends AbstractTableMigration
 {
     private $isAltered = false;
-    private $renamedNameList;
 
     /**
      * @param string                  $beforeTableName
@@ -24,12 +23,11 @@ class TableAlterMigration extends AbstractTableMigration
         string $beforeTableName,
         string $afterTableName,
         MigrationLineList $migrationLineList,
-        array $renamedNameList,
+        private readonly array $renamedNameList,
         ?PartitionMigration $partitionMigration
     ) {
         $this->tableName = $beforeTableName;
         $this->type = MigrationType::ALTER;
-        $this->renamedNameList = $renamedNameList;
 
         $this->isAltered = ($migrationLineList->isMigratable() or !is_null($partitionMigration));
 

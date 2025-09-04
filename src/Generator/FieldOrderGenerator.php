@@ -60,7 +60,7 @@ class FieldOrderGenerator
             );
             $rightSide = self::oneside($beforeRightSide, $afterRightSide);
 
-            list($bothSide, $num) = self::bothsides($leftSide, $center, $rightSide);
+            [$bothSide, $num] = self::bothsides($leftSide, $center, $rightSide);
             $sides[$num] = $bothSide;
         }
 

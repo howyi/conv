@@ -4,15 +4,11 @@ namespace Howyi\Conv\Structure;
 
 class DatabaseStructure
 {
-    private $tableList = [];
-
     /**
      * @param TableStructureInterface[] $tableList
      */
-    public function __construct(
-        array $tableList
-    ) {
-        $this->tableList = $tableList;
+    public function __construct(private readonly array $tableList)
+    {
     }
 
     /**

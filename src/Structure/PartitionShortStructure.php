@@ -4,23 +4,13 @@ namespace Howyi\Conv\Structure;
 
 class PartitionShortStructure implements PartitionStructureInterface
 {
-    private $type;
-    private $value;
-    private $num;
-
     /**
      * @param string $type
      * @param string $value
      * @param int    $num
      */
-    public function __construct(
-        string $type,
-        string $value,
-        int $num
-    ) {
-        $this->type = $type;
-        $this->value = $value;
-        $this->num = $num;
+    public function __construct(private readonly string $type, private readonly string $value, private readonly int $num)
+    {
     }
 
     /**

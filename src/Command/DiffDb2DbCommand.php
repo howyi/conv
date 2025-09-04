@@ -38,7 +38,7 @@ class DiffDb2DbCommand extends AbstractConvCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        [$dbName1, $dbName2] = explode(':', $input->getArgument('dbNames'));
+        [$dbName1, $dbName2] = explode(':', (string) $input->getArgument('dbNames'));
 
         $pdo1 = $this->convertToPdo((string) $input->getOption('server1'), $dbName1);
         $db1Structure = DatabaseStructureFactory::fromPDO($pdo1, $dbName1);

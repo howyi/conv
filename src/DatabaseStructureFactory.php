@@ -21,7 +21,7 @@ class DatabaseStructureFactory
     public static function fromPDO(
         \PDO $pdo,
         string $dbName,
-        callable $filter = null
+        ?callable $filter = null
     ): DatabaseStructure {
         $rawTableList = $pdo->query(
             "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$dbName'"
@@ -60,7 +60,7 @@ class DatabaseStructureFactory
         \PDO $pdo,
         string $path,
         OperatorInterface $operator,
-        callable $filter = null,
+        ?callable $filter = null,
         $drop = true
     ): DatabaseStructure {
         $operator->output('<comment>Generate temporary database</>');
@@ -81,28 +81,22 @@ class DatabaseStructureFactory
             }
             $query = file_get_contents($fileInfo->getRealPath());
             $ddl = new class($query, $pdo, $operator) {
-                private $query;
                 private $isView;
                 private $hasCreated = false;
                 private $references = [];
-                private $pdo;
-                private $operator;
 
                 /**
                  * @param string            $query
                  * @param \PDO              $pdo
                  * @param OperatorInterface $operator
                  */
-                public function __construct(string $query, \PDO $pdo, OperatorInterface $operator)
+                public function __construct(private readonly string $query, private readonly \PDO $pdo, private readonly OperatorInterface $operator)
                 {
-                    $this->query = $query;
-                    $this->isView =  false !== strpos($query, 'CREATE ALGORITHM');
-                    preg_match_all('/REFERENCES `?([a-zA-Z][a-zA-Z0-9_\ ]*?)`? /s', $query, $matches);
+                    $this->isView =  str_contains((string) $this->query, 'CREATE ALGORITHM');
+                    preg_match_all('/REFERENCES `?([a-zA-Z][a-zA-Z0-9_\ ]*?)`? /s', (string) $this->query, $matches);
                     if (0 < count($matches[1])) {
                         $this->references = $matches[1];
                     }
-                    $this->pdo = $pdo;
-                    $this->operator = $operator;
                 }
 
                 /**

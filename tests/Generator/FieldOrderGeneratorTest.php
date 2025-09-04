@@ -6,16 +6,14 @@ use Howyi\Conv\Util\FieldOrder;
 
 class FieldOrderGeneratorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider generateProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('generateProvider')]
     public function testGenerate($before, $after, $expected)
     {
         $actual = FieldOrderGenerator::generate($before, $after);
         $this->assertEquals($expected, $actual);
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         return [
             [
@@ -48,16 +46,14 @@ class FieldOrderGeneratorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @dataProvider onesideProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('onesideProvider')]
     public function testOneside($before, $after, $expected)
     {
         $actual = FieldOrderGenerator::oneside($before, $after);
         $this->assertEquals($expected, $actual);
     }
 
-    public function onesideProvider()
+    public static function onesideProvider()
     {
         return [
             [

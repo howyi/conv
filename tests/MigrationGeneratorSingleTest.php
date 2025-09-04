@@ -10,18 +10,17 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
 {
     private $prophet;
 
-    protected function setup()
+    protected function setup(): void
     {
         $this->prophet = new \Prophecy\Prophet();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
     }
 
     /**
-     * @dataProvider generateProvider
      * @param string $name
      * @param string $beforeDir
      * @param string $afterDir
@@ -29,10 +28,11 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
      * @param string $downPath
      * @param \PDO   $pdo
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('generateProvider')]
     public function testGenerate($name, $beforeDir, $afterDir, $upPath, $downPath, $pdo)
     {
         $mysqlVersion = $pdo->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        preg_match("/^[0-9\.]+/", $mysqlVersion, $match);
+        preg_match("/^[0-9\.]+/", (string) $mysqlVersion, $match);
         $mysqlVersion = $match[0];
 
         $exploded = explode(':', $name);
@@ -101,7 +101,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         $dir = 'vendor/howyi/conv-test-suite/cases/part/';
 
