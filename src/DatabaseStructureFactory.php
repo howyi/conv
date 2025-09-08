@@ -21,7 +21,7 @@ class DatabaseStructureFactory
     public static function fromPDO(
         \PDO $pdo,
         string $dbName,
-        callable $filter = null
+        ?callable $filter = null
     ): DatabaseStructure {
         $rawTableList = $pdo->query(
             "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '$dbName'"
@@ -60,7 +60,7 @@ class DatabaseStructureFactory
         \PDO $pdo,
         string $path,
         OperatorInterface $operator,
-        callable $filter = null,
+        ?callable $filter = null,
         $drop = true
     ): DatabaseStructure {
         $operator->output('<comment>Generate temporary database</>');

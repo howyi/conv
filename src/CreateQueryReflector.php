@@ -18,7 +18,7 @@ class CreateQueryReflector
         string $dbName,
         string $path,
         OperatorInterface $operator,
-        callable $filter = null
+        ?callable $filter = null
     ) {
         $dbs = DatabaseStructureFactory::fromPDO(
             $pdo,
