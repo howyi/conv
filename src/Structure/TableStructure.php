@@ -14,8 +14,6 @@ class TableStructure implements TableStructureInterface
     public $collate;
     public $columnStructureList;
     public $indexStructureList;
-    private $partition;
-    private $properties;
 
     /**
      * @param string                           $tableName
@@ -36,8 +34,8 @@ class TableStructure implements TableStructureInterface
         string $collate,
         array $columnStructureList,
         array $indexStructureList,
-        $partition,
-        array $properties
+        private $partition,
+        private readonly array $properties
     ) {
         $this->tableName = $tableName;
         $this->comment = $comment;
@@ -46,8 +44,6 @@ class TableStructure implements TableStructureInterface
         $this->collate = $collate;
         $this->columnStructureList = $columnStructureList;
         $this->indexStructureList = $indexStructureList;
-        $this->partition = $partition;
-        $this->properties = $properties;
     }
 
     /**

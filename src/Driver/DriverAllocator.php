@@ -20,25 +20,25 @@ class DriverAllocator
         $rawVersion = $PDO->getAttribute(\PDO::ATTR_SERVER_VERSION);
         preg_match(
             "/^[0-9\.]+/",
-            $rawVersion,
+            (string) $rawVersion,
             $match
         );
 
         $type = $version = null;
 
-        if (strpos($rawVersion, 'MariaDB') !== false) {
+        if (str_contains((string) $rawVersion, 'MariaDB')) {
             $type = self::TYPE_MARIA_DB;
-            $split = explode('-', $rawVersion);
+            $split = explode('-', (string) $rawVersion);
             if (strtolower($split[1]) === 'mariadb') {
                 // MariaDB 11 ~
                 $version = $split[0];
             } else {
                 $version = $split[1];
             }
-        } elseif (strpos($rawVersion, 'TiDB') !== false){
+        } elseif (str_contains((string) $rawVersion, 'TiDB')){
             $type = self::TYPE_TIDB;
             $version = $match[0];
-        } elseif (strtolower($driverName) === 'mysql') {
+        } elseif (strtolower((string) $driverName) === 'mysql') {
             $type = self::TYPE_MYSQL;
             $version = $match[0];
         }

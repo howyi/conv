@@ -4,23 +4,16 @@ namespace Howyi\Conv\Structure;
 
 class PartitionLongStructure implements PartitionStructureInterface
 {
-    private $type;
-    private $value;
-    private $parts;
-
     /**
      * @param string                   $type
      * @param string                   $value
      * @param PartitionPartStructure[] $parts
      */
     public function __construct(
-        string $type,
-        string $value,
-        array $parts
+        private readonly string $type,
+        private readonly string $value,
+        private array $parts
     ) {
-        $this->type = $type;
-        $this->value = $value;
-        $this->parts = $parts;
         ksort($this->parts);
     }
 

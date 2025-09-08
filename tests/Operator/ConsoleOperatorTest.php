@@ -17,7 +17,7 @@ class ConsoleOperatorTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setup()
+    protected function setup(): void
     {
         $this->prophet = new \Prophecy\Prophet();
     }
@@ -25,7 +25,7 @@ class ConsoleOperatorTest extends \PHPUnit\Framework\TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
     }

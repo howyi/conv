@@ -4,14 +4,11 @@ namespace Howyi\Conv\Driver;
 
 abstract class AbstractDriver implements DriverInterface
 {
-    private $PDO;
-
     /**
      * @param \PDO $PDO
      */
-    public function __construct(\PDO $PDO)
+    public function __construct(private readonly \PDO $PDO)
     {
-        $this->PDO = $PDO;
     }
 
     /**

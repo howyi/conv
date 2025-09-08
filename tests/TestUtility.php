@@ -10,10 +10,10 @@ class TestUtility
      */
     public static function getPdoArray(?string $dbName = null): array
     {
-        $hostEnv = getenv('DB_HOST') ? getenv('DB_HOST')  : '127.0.0.1:3306';
+        $hostEnv = getenv('DB_HOST') ?: '127.0.0.1:3306';
         $hosts = explode(',', $hostEnv);
-        $rootName = getenv('DB_ROOT_NAME') ? getenv('DB_ROOT_NAME')  : 'root';
-        $rootPass = getenv('DB_ROOT_PASS') ? getenv('DB_ROOT_PASS')  : '';
+        $rootName = getenv('DB_ROOT_NAME') ?: 'root';
+        $rootPass = getenv('DB_ROOT_PASS') ?: '';
 
         $pdoArray = [];
         foreach ($hosts as $hostEnv) {

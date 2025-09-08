@@ -5,7 +5,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name":  "Hayashi Takuya",
+            "name": "Hayashi Takuya",
             "email": "howyi.lq@gmail.com"
         }
     ],
@@ -25,17 +25,23 @@
             "composer cs"
         ]
     },
+    "prefer-stable": true,
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/howyi/conv-test-suite.git",
-            "no-api": true
+            "no-api": false
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php":             ">=7.1",
-        "ext-PDO":         "*",
+        "php": "^8.1",
+        "ext-PDO": "*",
         "symfony/console": ">=2.0",
         "composer/semver": "^1.4 || ^2.0 || ^3.0"
     },
@@ -50,13 +56,18 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit":             "^6.2 || ^7.0",
-        "symfony/var-dumper":          "^3.3",
-        "phpspec/prophecy":            "^1.7",
-        "phpstan/phpstan":             "^0.12.5",
-        "squizlabs/php_codesniffer":   "^3.0",
-        "howyi/conv-test-suite":       "dev-master",
-        "php-coveralls/php-coveralls": "^2.2"
+        "howyi/conv-test-suite": "dev-master",
+        "php-coveralls/php-coveralls": "^2.2",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpspec/prophecy-phpunit": "^2.4",
+        "phpstan/phpstan": "^2.1.22",
+        "phpunit/phpunit": "^10.5|^11.5|^12.3",
+        "rector/rector": "^2.1.4",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.0",
+        "symfony/var-dumper": ">=3.3"
     },
-    "bin": ["bin/conv"]
+    "bin": [
+        "bin/conv"
+    ]
 }

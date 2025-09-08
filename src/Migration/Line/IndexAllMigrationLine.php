@@ -7,18 +7,11 @@ namespace Howyi\Conv\Migration\Line;
  */
 class IndexAllMigrationLine
 {
-    private $first;
-    private $last;
-
     /**
      * @param bool
      */
-    public function __construct(
-        IndexDropMigrationLine $first = null,
-        IndexAddMigrationLine $last = null
-    ) {
-        $this->first = $first;
-        $this->last = $last;
+    public function __construct(private ?\Howyi\Conv\Migration\Line\IndexDropMigrationLine $first = null, private ?\Howyi\Conv\Migration\Line\IndexAddMigrationLine $last = null)
+    {
     }
 
     /**

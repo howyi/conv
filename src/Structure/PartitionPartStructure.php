@@ -4,27 +4,14 @@ namespace Howyi\Conv\Structure;
 
 class PartitionPartStructure
 {
-    private $name;
-    private $operator;
-    private $value;
-    private $comment;
-
     /**
      * @param string $name
      * @param string $operator
      * @param string $value
      * @param string $comment
      */
-    public function __construct(
-        string $name,
-        string $operator,
-        string $value,
-        string $comment
-    ) {
-        $this->name = $name;
-        $this->operator = $operator;
-        $this->value = $value;
-        $this->comment = $comment;
+    public function __construct(private readonly string $name, private readonly string $operator, private readonly string $value, private readonly string $comment)
+    {
     }
 
     /**

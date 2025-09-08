@@ -4,23 +4,13 @@ namespace Howyi\Conv\Util;
 
 class FieldOrder
 {
-    private $field;
-    private $previousAfterField;
-    private $nextAfterField;
-
     /**
      * @param string      $field
      * @param string|null $previousAfterField
      * @param string|null $nextAfterField
      */
-    public function __construct(
-        string $field,
-        $previousAfterField,
-        $nextAfterField
-    ) {
-        $this->field = $field;
-        $this->previousAfterField = $previousAfterField;
-        $this->nextAfterField = $nextAfterField;
+    public function __construct(private readonly string $field, private $previousAfterField, private $nextAfterField)
+    {
     }
 
     /**

@@ -57,7 +57,7 @@ class CreateQueryReflector
             if (isset($showCreateTable['Create Table'])) {
                 $query = preg_replace('/ AUTO_INCREMENT=[0-9]+/i', '', $showCreateTable['Create Table']);
             } else {
-                $query = preg_replace('/ DEFINER=.+ SQL SECURITY DEFINER/', '', $showCreateTable['Create View']);
+                $query = preg_replace('/ DEFINER=.+ SQL SECURITY DEFINER/', '', (string) $showCreateTable['Create View']);
                 $query = strtr($query, [
                     ' AS select ' => ' AS select' . PHP_EOL . '  ',
                     ',' => ',' . PHP_EOL . '  ',

@@ -1,0 +1,309 @@
+services:
+  php81:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.1
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql57:3306,mysql80:3306,mysql84:3306,mariadb100:3306,mariadb101:3306,mariadb102:3306,mariadb103:3306,mariadb110:3306,mariadb120:3306
+      DB_ROOT_NAME: root
+      DB_ROOT_PASS: root
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+        consistency: cached
+    depends_on:
+      mysql57:
+        condition: service_healthy
+      mysql80:
+        condition: service_healthy
+      mysql84:
+        condition: service_healthy
+      mariadb101:
+        condition: service_healthy
+      mariadb102:
+        condition: service_healthy
+      mariadb103:
+        condition: service_healthy
+      mariadb110:
+        condition: service_healthy
+      mariadb120:
+        condition: service_healthy
+
+  php82:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.2
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql57:3306,mysql80:3306,mysql84:3306,mariadb100:3306,mariadb101:3306,mariadb102:3306,mariadb103:3306,mariadb110:3306,mariadb120:3306
+      DB_ROOT_NAME: root
+      DB_ROOT_PASS: root
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+        consistency: cached
+    depends_on:
+      mysql57:
+        condition: service_healthy
+      mysql80:
+        condition: service_healthy
+      mysql84:
+        condition: service_healthy
+      mariadb101:
+        condition: service_healthy
+      mariadb102:
+        condition: service_healthy
+      mariadb103:
+        condition: service_healthy
+      mariadb110:
+        condition: service_healthy
+      mariadb120:
+        condition: service_healthy
+
+  php83:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.3
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql57:3306,mysql80:3306,mysql84:3306,mariadb100:3306,mariadb101:3306,mariadb102:3306,mariadb103:3306,mariadb110:3306,mariadb120:3306
+      DB_ROOT_NAME: root
+      DB_ROOT_PASS: root
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+        consistency: cached
+    depends_on:
+      mysql57:
+        condition: service_healthy
+      mysql80:
+        condition: service_healthy
+      mysql84:
+        condition: service_healthy
+      mariadb101:
+        condition: service_healthy
+      mariadb102:
+        condition: service_healthy
+      mariadb103:
+        condition: service_healthy
+      mariadb110:
+        condition: service_healthy
+      mariadb120:
+        condition: service_healthy
+
+  php84:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: 8.4
+    working_dir: /usr/src/app
+    environment:
+      DB_HOST: mysql57:3306,mysql80:3306,mysql84:3306,mariadb100:3306,mariadb101:3306,mariadb102:3306,mariadb103:3306,mariadb110:3306,mariadb120:3306
+      DB_ROOT_NAME: root
+      DB_ROOT_PASS: root
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/src/app
+        consistency: cached
+    depends_on:
+      mysql57:
+        condition: service_healthy
+      mysql80:
+        condition: service_healthy
+      mysql84:
+        condition: service_healthy
+      mariadb100:
+        condition: service_healthy
+      mariadb101:
+        condition: service_healthy
+      mariadb102:
+        condition: service_healthy
+      mariadb103:
+        condition: service_healthy
+      mariadb110:
+        condition: service_healthy
+      mariadb120:
+        condition: service_healthy
+
+  mysql57:
+    image: mirror.gcr.io/mysql:5.7
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mysql57-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mysql80:
+    image: mirror.gcr.io/mysql:8.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mysql80-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mysql84:
+    image: mirror.gcr.io/mysql:8.4
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mysql84-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb100:
+    image: mariadb:10.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb100-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb101:
+    image: mariadb:10.1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb101-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb102:
+    image: mariadb:10.2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb102-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb103:
+    image: mariadb:10.3
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb103-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb110:
+    image: mariadb:11
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb110-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+  mariadb120:
+    image: mariadb:12
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 20s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - type: volume
+        source: mariadb120-volume
+        target: /var/lib/mysql
+    networks:
+      - default
+
+networks:
+  default: {}
+
+volumes:
+  mysql57-volume: {}
+  mysql80-volume: {}
+  mysql84-volume: {}
+  mariadb100-volume: {}
+  mariadb101-volume: {}
+  mariadb102-volume: {}
+  mariadb103-volume: {}
+  mariadb110-volume: {}
+  mariadb120-volume: {}

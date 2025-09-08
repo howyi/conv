@@ -9,16 +9,14 @@ use Howyi\Conv\Structure\IndexStructure;
 
 class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @dataProvider generateProvider
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('generateProvider')]
     public function testGenerate($before, $after, $expected)
     {
         $actual = IndexMigrationGenerator::generate($before, $after);
         $this->assertEquals($expected, $actual);
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         return [
             [

@@ -38,7 +38,7 @@ class ViewAlterMigration extends AbstractTableMigration
         foreach ($allRenamedNameList as $renamedNameList) {
             $count = 0;
             foreach ($renamedNameList as $name) {
-                $count += (strpos($this->up, $name) === false) ? 0 : 1;
+                $count += (!str_contains((string) $this->up, (string) $name)) ? 0 : 1;
             }
             if ($count === count($renamedNameList)) {
                 $this->isSplit = true;
