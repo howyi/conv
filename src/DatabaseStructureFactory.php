@@ -72,7 +72,12 @@ class DatabaseStructureFactory
 
         $operator->startProgress(count(glob("$path/*.sql")));
         $ddls = [];
-        foreach (new \DirectoryIterator($path) as $fileInfo) {
+        // DirectoryIterator::current() returns $this, so iterator_to_array() would
+        // fill the array with references to a single (already exhausted) iterator.
+        // FilesystemIterator yields a fresh SplFileInfo per entry and skips dot entries.
+        $files = iterator_to_array(new \FilesystemIterator($path), false);
+        usort($files, fn(\SplFileInfo $a, \SplFileInfo $b) => strcmp($a->getFilename(), $b->getFilename()));
+        foreach ($files as $fileInfo) {
             if (!$fileInfo->isFile()) {
                 continue;
             }
