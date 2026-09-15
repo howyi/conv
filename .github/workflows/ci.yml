@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: phpunit, phpstan, phpcs
+    runs-on: ubuntu-latest
+    # The suite runs against eight MySQL and MariaDB servers, and the GitHub
+    # runners are slower than the servers are quick to start.
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the test image
+        run: docker compose build ci
+
+      - name: Install dependencies
+        run: docker compose run --rm ci composer install --no-interaction --no-progress
+
+      # docker/ci.sh waits for every server in DB_HOST, then runs phpunit,
+      # phpstan and phpcs. Unlike `docker compose logs -f`, which is what Travis
+      # used, `run` reports the container's exit code as the step's result.
+      - name: Run the checks
+        run: docker compose run --rm ci
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Show the server logs on failure
+        if: failure()
+        run: docker compose logs --tail=50

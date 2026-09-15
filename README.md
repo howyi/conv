@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/howyi/conv.svg?branch=master)](https://travis-ci.org/howyi/conv)
+[![CI](https://github.com/howyi/conv/actions/workflows/ci.yml/badge.svg)](https://github.com/howyi/conv/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/howyi/conv/badge.svg?branch=master#konbu)](https://coveralls.io/github/howyi/conv?branch=master)
 [![Total Downloads](https://poser.pugx.org/howyi/conv/downloads)](https://packagist.org/packages/howyi/conv)
 # conv
