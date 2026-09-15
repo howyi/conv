@@ -31,12 +31,10 @@ jobs:
         run: docker compose run --rm ci composer install --no-interaction --no-progress
 
       # docker/ci.sh waits for every server in DB_HOST, then runs phpunit,
-      # phpstan and phpcs. Unlike `docker compose logs -f`, which is what Travis
-      # used, `run` reports the container's exit code as the step's result.
+      # phpstan and phpcs. `run` reports the container's exit code as the
+      # step's result.
       - name: Run the checks
         run: docker compose run --rm ci
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
       - name: Show the server logs on failure
         if: failure()

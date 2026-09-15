@@ -10,12 +10,6 @@ for host in "${hosts[@]}"; do
     ./docker/wait-for-it.sh -t 180 "$host"
 done
 
-vendor/bin/phpunit --coverage-clover=build/log/clover.xml
+vendor/bin/phpunit
 vendor/bin/phpstan analyse
 vendor/bin/phpcs --standard=PSR12 src tests
-
-if [ -n "${COVERALLS_REPO_TOKEN:-}" ]; then
-    vendor/bin/php-coveralls -v
-else
-    echo 'COVERALLS_REPO_TOKEN is not set, skipping the coverage upload.'
-fi

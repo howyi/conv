@@ -16,15 +16,7 @@ services:
     build: ./docker
     working_dir: /usr/src/app
     environment:
-      # xdebug 3 collects no coverage unless the mode asks for it.
-      XDEBUG_MODE: coverage
       DB_HOST: mysql-56:3306,mysql-57:3306,mysql-80:3306,maria-100:3306,maria-101:3306,maria-102:3306,maria-103:3306,maria-113:3306
-      # Read from the host when set; php-coveralls detects GitHub Actions itself.
-      COVERALLS_REPO_TOKEN:
-      GITHUB_ACTIONS:
-      GITHUB_EVENT_NAME:
-      GITHUB_REF:
-      GITHUB_RUN_ID:
     command: ./docker/ci.sh
     volumes:
     - .:/usr/src/app
