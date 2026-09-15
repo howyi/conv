@@ -103,7 +103,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
 
     public static function generateProvider()
     {
-        $dir = 'vendor/howyi/conv-test-suite/cases/part/';
+        $dir = __DIR__ . '/fixtures/part/';
 
         foreach (TestUtility::getPdoArray() as $pdo) {
             foreach (new \DirectoryIterator($dir) as $fileInfo) {

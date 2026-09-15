@@ -73,9 +73,10 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
 
     public static function generateProvider()
     {
+        $fixtureRoot = __DIR__ . '/fixtures/unit/';
         $values = [
             [
-                'vendor/howyi/conv-test-suite/cases/unit/000',
+                $fixtureRoot . '000',
                 [],
                 [
                     TableCreateMigration::class,
@@ -90,14 +91,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/001',
+                $fixtureRoot . '001',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/002',
+                $fixtureRoot . '002',
                 [],
                 [
                     TableDropMigration::class,
@@ -105,14 +106,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/003',
+                $fixtureRoot . '003',
                 [],
                 [
                     ViewAlterMigration::class,
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/004',
+                $fixtureRoot . '004',
                 [
                     [
                         'message' => 'Table tbl_country is missing. Choose an action.',
@@ -130,7 +131,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/005',
+                $fixtureRoot . '005',
                 [
                     [
                         'message' => 'View view_user2 is missing. Choose an action.',
@@ -147,7 +148,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/006',
+                $fixtureRoot . '006',
                 [
                     [
                         'message' => 'Column tbl_music.name is missing. Choose an action.',
@@ -163,14 +164,14 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/007',
+                $fixtureRoot . '007',
                 [],
                 [
                     TableAlterMigration::class,
                 ]
             ],
             [
-                'vendor/howyi/conv-test-suite/cases/unit/008',
+                $fixtureRoot . '008',
                 [],
                 [
                     TableAlterMigration::class,
