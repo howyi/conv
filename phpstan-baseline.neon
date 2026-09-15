@@ -31,12 +31,6 @@ parameters:
 			path: src/DatabaseStructureFactory.php
 
 		-
-			message: '#^Parameter \#1 \$query of class class@anonymous/DatabaseStructureFactory\.php\:83 constructor expects string, string\|false given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/DatabaseStructureFactory.php
-
-		-
 			message: '#^Parameter \#1 \$value of function count expects array\|Countable, list\<string\>\|false given\.$#'
 			identifier: argument.type
 			count: 1
