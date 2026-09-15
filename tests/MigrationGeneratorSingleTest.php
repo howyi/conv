@@ -101,7 +101,7 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         $dir = 'vendor/howyi/conv-test-suite/cases/part/';
 

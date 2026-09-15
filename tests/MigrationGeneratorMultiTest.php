@@ -71,7 +71,7 @@ class MigrationGeneratorMultiTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         $values = [
             [

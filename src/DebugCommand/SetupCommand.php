@@ -41,11 +41,11 @@ class SetupCommand extends AbstractCommand
          );
 
          $pdo = $this->getPDO('conv');
-         foreach ($alter->getMigrationList() as $migration) {
-             $operator->output('<fg=green>実行クエリ</>');
-             $operator->output($migration->getUp());
-             $pdo->exec($migration->getUp());
-         }
+        foreach ($alter->getMigrationList() as $migration) {
+            $operator->output('<fg=green>実行クエリ</>');
+            $operator->output($migration->getUp());
+            $pdo->exec($migration->getUp());
+        }
 
          $output->writeln('<fg=cyan>setup success</>');
 

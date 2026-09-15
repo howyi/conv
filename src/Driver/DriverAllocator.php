@@ -6,9 +6,9 @@ use Composer\Semver\Semver;
 
 class DriverAllocator
 {
-    const TYPE_MYSQL = 'mysql';
-    const TYPE_MARIA_DB = 'mariadb';
-    const TYPE_TIDB = 'tidb';
+    public const TYPE_MYSQL = 'mysql';
+    public const TYPE_MARIA_DB = 'mariadb';
+    public const TYPE_TIDB = 'tidb';
 
     /**
      * @param \PDO $PDO
@@ -35,7 +35,7 @@ class DriverAllocator
             } else {
                 $version = $split[1];
             }
-        } elseif (strpos($rawVersion, 'TiDB') !== false){
+        } elseif (strpos($rawVersion, 'TiDB') !== false) {
             $type = self::TYPE_TIDB;
             $version = $match[0];
         } elseif (strtolower($driverName) === 'mysql') {
@@ -53,6 +53,7 @@ class DriverAllocator
                     case Semver::satisfies($version, '5.6.*'):
                         return new MySQL56Driver($PDO);
                 }
+                break;
             case self::TYPE_MARIA_DB:
                 switch (true) {
                     case Semver::satisfies($version, '>= 10.2.0'):
@@ -62,6 +63,7 @@ class DriverAllocator
                     case Semver::satisfies($version, '10.0.*'):
                         return new MySQL56Driver($PDO);
                 }
+                break;
             case self::TYPE_TIDB:
                 switch (true) {
                     case Semver::satisfies($version, '>= 8.0.0'):

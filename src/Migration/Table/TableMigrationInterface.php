@@ -4,7 +4,6 @@ namespace Howyi\Conv\Migration\Table;
 
 interface TableMigrationInterface
 {
-
     /**
      * @return string
      */

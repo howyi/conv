@@ -80,7 +80,7 @@ class DatabaseStructureFactory
                 continue;
             }
             $query = file_get_contents($fileInfo->getRealPath());
-            $ddl = new class($query, $pdo, $operator) {
+            $ddl = new class ($query, $pdo, $operator) {
                 private $query;
                 private $isView;
                 private $hasCreated = false;

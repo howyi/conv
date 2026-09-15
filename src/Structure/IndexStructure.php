@@ -127,9 +127,11 @@ class IndexStructure
      */
     public function isChanged(IndexStructure $after): bool
     {
-        if ($this->columnNameList === $after->columnNameList and
+        if (
+            $this->columnNameList === $after->columnNameList and
                 $this->isUnique === $after->isUnique and
-                $this->indexType === $after->indexType) {
+                $this->indexType === $after->indexType
+        ) {
             return false;
         }
         return true;

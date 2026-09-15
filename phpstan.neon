@@ -1,0 +1,15 @@
+parameters:
+    level: 7
+    paths:
+        - src
+
+    # Annotating every property, parameter and array shape in src is a separate
+    # piece of work; exclude those identifiers rather than baseline 162 entries.
+    ignoreErrors:
+        - identifier: missingType.property
+        - identifier: missingType.iterableValue
+        - identifier: missingType.return
+        - identifier: missingType.parameter
+
+includes:
+    - phpstan-baseline.neon

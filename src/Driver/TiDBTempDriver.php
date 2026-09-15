@@ -76,12 +76,17 @@ EOT;
             )
         )->fetchAll();
 
-        $rawPkStatus = $this->PDO()->query("SELECT TIDB_ROW_ID_SHARDING_INFO FROM information_schema.TABLES WHERE table_name = '$tableName'")->fetch();
+        $rawPkStatus = $this->PDO()->query(
+            "SELECT TIDB_ROW_ID_SHARDING_INFO FROM information_schema.TABLES WHERE table_name = '$tableName'"
+        )->fetch();
 
         $columnStructureList = [];
 
         foreach ($rawColumnList as $rawColumn) {
-            $columnStructureList[] = $this->createColumnStructure($rawColumn, $rawPkStatus['TIDB_ROW_ID_SHARDING_INFO']);
+            $columnStructureList[] = $this->createColumnStructure(
+                $rawColumn,
+                $rawPkStatus['TIDB_ROW_ID_SHARDING_INFO']
+            );
         }
 
         return $columnStructureList;

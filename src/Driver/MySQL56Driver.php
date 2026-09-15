@@ -210,7 +210,7 @@ EOT;
 
     /**
      * @param string $dbName
-	 * @param string $viewName
+     * @param string $viewName
      * @return ViewStructure
      */
     public function createViewStructure(string $dbName, string $viewName): ViewStructure

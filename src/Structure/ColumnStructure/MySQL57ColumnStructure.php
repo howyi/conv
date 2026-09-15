@@ -93,7 +93,8 @@ class MySQL57ColumnStructure implements MySQLColumnStructureInterface
      */
     public function isChanged(MySQL57ColumnStructure $target): bool
     {
-        if ($this->type === $target->type and
+        if (
+            $this->type === $target->type and
             $this->comment === $target->comment and
             $this->isNullable() === $target->isNullable() and
             $this->isUnsigned() === $target->isUnsigned() and
@@ -101,7 +102,8 @@ class MySQL57ColumnStructure implements MySQLColumnStructureInterface
             $this->isAutoIncrement() === $target->isAutoIncrement() and
             $this->collationName === $this->collationName and
             $this->generationExpression === $this->generationExpression and
-            $this->isStored() === $this->isStored()) {
+            $this->isStored() === $this->isStored()
+        ) {
             return false;
         }
         return true;

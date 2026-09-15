@@ -109,14 +109,16 @@ trait MySQL56ColumnStructureTrait
      */
     public function isChanged(MySQL56ColumnStructure $target): bool
     {
-        if ($this->type === $target->type and
+        if (
+            $this->type === $target->type and
             $this->comment === $target->comment and
             $this->isNullable() === $target->isNullable() and
             $this->isUnsigned() === $target->isUnsigned() and
             $this->default === $target->default and
             $this->isAutoIncrement() === $target->isAutoIncrement() and
             $this->collationName === $this->collationName and
-            $this->isStored() === $this->isStored()) {
+            $this->isStored() === $this->isStored()
+        ) {
             return false;
         }
         return true;

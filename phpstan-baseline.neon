@@ -1,0 +1,223 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$helper of class Howyi\\Conv\\Operator\\ConsoleOperator constructor expects Symfony\\Component\\Console\\Helper\\QuestionHelper, Symfony\\Component\\Console\\Helper\\HelperInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command/AbstractConvCommand.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Command/DiffSchema2DbCommand.php
+
+		-
+			message: '#^Cannot call method fetch\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/CreateQueryReflector.php
+
+		-
+			message: '#^Cannot call method fetchAll\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/CreateQueryReflector.php
+
+		-
+			message: '#^Cannot call method fetchAll\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/DatabaseStructureFactory.php
+
+		-
+			message: '#^Parameter \#1 \$query of class class@anonymous/DatabaseStructureFactory\.php\:83 constructor expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DatabaseStructureFactory.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, list\<string\>\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DatabaseStructureFactory.php
+
+		-
+			message: '#^Parameter \#1 \$helper of class Howyi\\Conv\\Operator\\ConsoleOperator constructor expects Symfony\\Component\\Console\\Helper\\QuestionHelper, Symfony\\Component\\Console\\Helper\\HelperInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/DebugCommand/AbstractCommand.php
+
+		-
+			message: '#^Offset 0 might not exist on array\{\}\|array\{non\-empty\-string\}\.$#'
+			identifier: offsetAccess.notFound
+			count: 2
+			path: src/Driver/DriverAllocator.php
+
+		-
+			message: '#^Parameter \#1 \$field of class Howyi\\Conv\\Structure\\ColumnStructure\\MariaDB102ColumnStructure constructor expects string, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Driver/MariaDB102Driver.php
+
+		-
+			message: '#^Cannot call method fetch\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/Driver/MySQL56Driver.php
+
+		-
+			message: '#^Cannot call method fetchAll\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/Driver/MySQL56Driver.php
+
+		-
+			message: '#^Parameter \#1 \$field of class Howyi\\Conv\\Structure\\ColumnStructure\\MySQL57ColumnStructure constructor expects string, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Driver/MySQL57Driver.php
+
+		-
+			message: '#^Cannot call method fetch\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Driver/TiDBTempDriver.php
+
+		-
+			message: '#^Cannot call method fetchAll\(\) on PDOStatement\|false\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Driver/TiDBTempDriver.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(mixed\[\]\)\: Unexpected token "\\n     \* ", expected variable at offset 25 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Driver/TiDBTempDriver.php
+
+		-
+			message: '#^Parameter \#1 \$field of class Howyi\\Conv\\Structure\\ColumnStructure\\TiDBTempColumnStructure constructor expects string, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Driver/TiDBTempDriver.php
+
+		-
+			message: '#^Binary operation "\+" between int\|string\|false and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^Binary operation "\-" between int\|string and int\|string results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^Binary operation "\-" between int\|string\|false and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arg1 of function min expects non\-empty\-array, list\<\(int\|string\)\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^Parameter \#2 \$offset of function array_slice expects int, int\|string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^Parameter \#3 \$length of function array_slice expects int\|null, int\|string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Generator/FieldOrderGenerator.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(IndexAddMigrationLine\)\: Unexpected token "\\n     ", expected variable at offset 39 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Migration/Line/IndexAllMigrationLine.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(IndexDropMigrationLine\)\: Unexpected token "\\n     ", expected variable at offset 40 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Migration/Line/IndexAllMigrationLine.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(bool\)\: Unexpected token "\\n     ", expected variable at offset 22 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Migration/Line/IndexAllMigrationLine.php
+
+		-
+			message: '#^PHPDoc tag @return with type bool is incompatible with native type Howyi\\Conv\\Migration\\Line\\IndexAddMigrationLine\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Migration/Line/IndexAllMigrationLine.php
+
+		-
+			message: '#^PHPDoc tag @return with type bool is incompatible with native type Howyi\\Conv\\Migration\\Line\\IndexDropMigrationLine\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: src/Migration/Line/IndexAllMigrationLine.php
+
+		-
+			message: '#^Property Howyi\\Conv\\Migration\\Table\\ViewRenameMigration\:\:\$isAltered is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Migration/Table/ViewRenameMigration.php
+
+		-
+			message: '#^Method Howyi\\Conv\\Structure\\ColumnStructure\\MySQL56ColumnStructure\:\:getDefault\(\) should return string but returns float\|int\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Structure/ColumnStructure/MySQL56ColumnStructure.php
+
+		-
+			message: '#^Right side of and is always true\.$#'
+			identifier: logicalAnd.rightAlwaysTrue
+			count: 1
+			path: src/Structure/ColumnStructure/MySQL56ColumnStructureTrait.php
+
+		-
+			message: '#^Method Howyi\\Conv\\Structure\\ColumnStructure\\MySQL57ColumnStructure\:\:getDefault\(\) should return string but returns float\|int\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Structure/ColumnStructure/MySQL57ColumnStructure.php
+
+		-
+			message: '#^Method Howyi\\Conv\\Structure\\ColumnStructure\\TiDBTempColumnStructure\:\:getDefault\(\) should return string but returns float\|int\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Structure/ColumnStructure/TiDBTempColumnStructure.php
+
+		-
+			message: '#^Binary operation "\-" between int\|string\|false and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Structure/TableStructure.php
+
+		-
+			message: '#^Method Howyi\\Conv\\Structure\\ViewStructure\:\:getCreateQuery\(\) should return string but returns array\<string\>\|string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Structure/ViewStructure.php
+
+		-
+			message: '#^Parameter \#1 \$string of function rtrim expects string, array\<string\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Structure/ViewStructure.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(string\)\: Unexpected token "\\n     ", expected variable at offset 24 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Util/FieldOrder.php

@@ -4,7 +4,7 @@ namespace Howyi\Conv\Structure;
 
 class TableStructureType
 {
-    const TABLE    = 'table';
-    const VIEW     = 'view';
-    const VIEW_RAW = 'view_raw';
+    public const TABLE    = 'table';
+    public const VIEW     = 'view';
+    public const VIEW_RAW = 'view_raw';
 }

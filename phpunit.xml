@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.2/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         forceCoversAnnotation="false"
-         beStrictAboutCoversAnnotation="true"
+         cacheDirectory=".phpunit.cache"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         verbose="true">
-    <testsuite name="testsuite">
-        <directory suffix="Test.php">./tests</directory>
-    </testsuite>
+         requireCoverageMetadata="false"
+         beStrictAboutCoverageMetadata="true">
+    <testsuites>
+        <testsuite name="testsuite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <source>
+        <include>
             <directory suffix=".php">./src</directory>
-            <exclude>
-                <directory>./src/Conv/DebugCommand</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
-<!--    <logging>-->
-<!--        <log type="coverage-html" target="build/log/"/>-->
-<!--    </logging>-->
+        </include>
+        <exclude>
+            <directory>./src/DebugCommand</directory>
+        </exclude>
+    </source>
 </phpunit>

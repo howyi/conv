@@ -1,4 +1,5 @@
 <?php
+
 set_time_limit(0);
 
 require dirname(__FILE__) . '/../vendor/autoload.php';

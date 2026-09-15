@@ -18,7 +18,7 @@ class IndexMigrationGeneratorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function generateProvider()
+    public static function generateProvider()
     {
         return [
             [

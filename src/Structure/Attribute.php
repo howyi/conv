@@ -4,8 +4,8 @@ namespace Howyi\Conv\Structure;
 
 class Attribute
 {
-    const UNSIGNED       = 'unsigned';
-    const NULLABLE       = 'nullable';
-    const AUTO_INCREMENT = 'auto_increment';
-    const STORED         = 'stored';
+    public const UNSIGNED       = 'unsigned';
+    public const NULLABLE       = 'nullable';
+    public const AUTO_INCREMENT = 'auto_increment';
+    public const STORED         = 'stored';
 }

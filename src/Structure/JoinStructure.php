@@ -9,7 +9,7 @@ class JoinStructure
     private $joinArray;
     private $aliasList;
 
-    const MYSQL_OPERATOR = [
+    public const MYSQL_OPERATOR = [
       '=',
       '<=>',
       '<>',
