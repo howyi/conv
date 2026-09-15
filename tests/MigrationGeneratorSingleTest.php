@@ -10,12 +10,12 @@ class MigrationGeneratorSingleTest extends \PHPUnit\Framework\TestCase
 {
     private $prophet;
 
-    protected function setup()
+    protected function setUp(): void
     {
         $this->prophet = new \Prophecy\Prophet();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
     }
